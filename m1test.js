@@ -70,7 +70,7 @@ function setFood() {
     }
   }
 }
-/*
+
 var p1_snake =
 {
   direction: null,
@@ -90,7 +90,7 @@ var p1_snake =
     return this._snake_array.pop();
   }
 }
-*/
+
 var p2_snake =
 {
   direction: null,
