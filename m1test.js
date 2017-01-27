@@ -113,7 +113,9 @@ var p2_snake =
 
 var canvas;
 var context;
-var frames;
+var frames1;
+var frames2;
+var frameSpeed;
 var keystate;
 var p1_score;
 var p2_score;
@@ -125,22 +127,22 @@ function init() {
   p2_score = 0;
   game_state.init(free_space,wall_space,col,row);
   var p1_start = {x:col-3, y:row-2};
-  var p2_start = {x:col-18, y:row-4};
+  var p2_start = {x:col-5, y:row-5};
   p1_snake.init(dir_up, p1_start.x, p1_start.y);
   game_state.set(snake1_space, p1_start.x, p1_start.y);
-  p2_snake.init(dir_up, p2_start.x, p2_start.y);
+  p2_snake.init(dir_left, p2_start.x, p2_start.y);
   game_state.set(snake2_space, p2_start.x, p2_start.y);
   setFood();
 }
 
 function p1_update() {
-  frames++;
+  frames1++;
   if (keystate[move_left] && p1_snake.direction !== dir_right) p1_snake.direction = dir_left;
   if (keystate[move_right] && p1_snake.direction !== dir_left) p1_snake.direction = dir_right;
   if (keystate[move_up] && p1_snake.direction !== dir_down) p1_snake.direction = dir_up;
   if (keystate[move_down] && p1_snake.direction !== dir_up) p1_snake.direction = dir_down;
 
-  if (frames%10 === 0){
+  if (frames1 % frameSpeed === 0) {
     var nx = p1_snake.last.x;
     var ny = p1_snake.last.y;
     switch (p1_snake.direction){
@@ -157,7 +159,7 @@ function p1_update() {
         ny++;
         break;
     }
-    if (game_state.get(nx,ny) === snake1_space || game_state.get(nx,ny) === wall_space){
+    if (game_state.get(nx, ny) === snake1_space || game_state.get(nx, ny) === wall_space || game_state.get(nx, ny) === snake2_space) {
       return init();
     }
     if (game_state.get(nx,ny) === food_space){
@@ -177,13 +179,13 @@ function p1_update() {
 }
 
 function p2_update() {
-  frames++;
+  frames2++;
   if (keystate[move_left2] && p2_snake.direction !== dir_right) p2_snake.direction = dir_left;
   if (keystate[move_right2] && p2_snake.direction !== dir_left) p2_snake.direction = dir_right;
   if (keystate[move_up2] && p2_snake.direction !== dir_down) p2_snake.direction = dir_up;
   if (keystate[move_down2] && p2_snake.direction !== dir_up) p2_snake.direction = dir_down;
 
-  if (frames%3 === 0){
+  if (frames2 % frameSpeed === 0){
     var nx = p2_snake.last.x;
     var ny = p2_snake.last.y;
     switch (p2_snake.direction){
@@ -200,12 +202,12 @@ function p2_update() {
         ny++;
         break;
     }
-    if (game_state.get(nx,ny) === snake2_space || game_state.get(nx,ny) === wall_space){
+    if (game_state.get(nx,ny) === snake2_space || game_state.get(nx,ny) === wall_space || game_state.get(nx, ny) === snake1_space){
       return init();
     }
     if (game_state.get(nx,ny) === food_space){
       var tail = {x:nx, y:ny};
-      p1_score++;
+      p2_score++;
       setFood();
     }
     else{
@@ -247,7 +249,8 @@ function draw_board() {
     }
   }
   context.fillStyle = "#000";
-  context.fillText("SCORE: " + p1_score, 50, canvas.height-50);
+  context.fillText("P1 Score: " + p1_score, 50, canvas.height - 50);
+  context.fillText("P2 Score: " + p2_score, canvas.width - 150, canvas.height - 50);
 }
 
 function loop() {
@@ -258,7 +261,9 @@ function loop() {
 }
 
 function main() {
-  frames = 0;
+    frames1 = 0;
+    frames2 = 0;
+    frameSpeed = 10;
   canvas = document.createElement("canvas");
   canvas.width = col*col;
   canvas.height = row*row;
