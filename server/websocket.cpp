@@ -1,4 +1,3 @@
-
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #ifdef __linux__
@@ -116,6 +115,9 @@ vector<int> webSocket::getClientIDs(){
         if (wsClients[i] != NULL)
             clientIDs.push_back(i);    
     }
+
+	// SNAKES ON A PLANE ENTRY
+	numOfActiveConnections = wsClients.size();
 
     return clientIDs;
 }
@@ -361,7 +363,7 @@ bool webSocket::wsProcessClientMessage(int clientID, unsigned char opcode, strin
         wsRemoveClient(clientID);
     }
     else if (opcode == WS_OPCODE_TEXT || opcode == WS_OPCODE_BINARY){
-        if (callOnMessage != NULL)
+		if (callOnMessage != NULL)
             callOnMessage(clientID, data.substr(0, dataLength));
     }
     else {
@@ -723,6 +725,10 @@ void webSocket::startServer(int port){
                             /* add new client */
                             wsAddClient(newfd, cli_addr.sin_addr);
                             printf("New connection from %s on socket %d\n", inet_ntoa(cli_addr.sin_addr), newfd);
+							
+							if (wsClients.size() == 2) {
+								std::cout << "Game On!" << std::endl;
+							}
                         }
                     }
                     else {

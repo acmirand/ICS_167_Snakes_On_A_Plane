@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
 	<meta charset='UTF-8' />
@@ -14,7 +14,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="fancywebsocket.js"></script>
 	<script>
-		var Server;
+        var Server;
 
 		function log( text ) {
 			$log = $('#log');
@@ -32,20 +32,23 @@
             log('Connecting...');
 			Server = new FancyWebSocket('ws://' + document.getElementById('ip').value + ':' + document.getElementById('port').value);
 
-			$('#message').keypress(function(e) {
-				if ( e.keyCode == 13 && this.value ) {
-					log( 'You: ' + this.value );
-					send( this.value );
+			$('#message').keypress(function (e) {
+			    if (e.keyCode == 13 && this.value) {
+			        log('You: ' + this.value);
+			        send(this.value);
 
-					$(this).val('');
-				}
+			        $(this).val('');
+			    }
+			});
+
+			Server.bind('getACs', function () {
+			    log("hello");
 			});
 
 			//Let the user know we're connected
 			Server.bind('open', function() {
                 document.getElementById("cntBtn").disabled = true;
-				log( "Connected." );
-				self.location = "m1test.html";
+                log("Connected.");
 			});
 
 			//OH NOES! Disconnection occurred.
@@ -55,7 +58,13 @@
 			});
 
 			//Log any messages sent from server
-			Server.bind('message', function( payload ) {
+			Server.bind('message', function (payload) {
+
+			    if (payload == "Game On!") {
+			        self.location = "m1test.html";
+			        log("game on");
+			    }
+
 				log( payload );
 			});
 

@@ -22,12 +22,17 @@ void openHandler(int clientID){
             server.wsSend(clientIDs[i], os.str());
     }
     server.wsSend(clientID, "Welcome!");
+
+	// SNAKES ON A PLANE ENTRY
+	if (server.numOfActiveConnections == 2) {
+		server.wsSend(clientID, "Game On!");
+	}
 }
 
 /* called when a client disconnects */
 void closeHandler(int clientID){
     ostringstream os;
-    os << "Stranger " << clientID << " has leaved.";
+    os << "Stranger " << clientID << " has left.";
 
     vector<int> clientIDs = server.getClientIDs();
     for (int i = 0; i < clientIDs.size(); i++){
