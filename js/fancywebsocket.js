@@ -10,7 +10,7 @@ var FancyWebSocket = function(url)
 		return this;// chainable
 	};
 
-	this.send = function(event_name, event_data){
+	this.send = function (event_name, event_data) {
 	    this.conn.send(event_data);
 		return this;
 	};
@@ -22,10 +22,7 @@ var FancyWebSocket = function(url)
 	        this.conn = new WebSocket(url);
 
 	    // dispatch to the right handlers
-		this.conn.onmessage = function(evt){
-			dispatch('message', evt.data);
-		};
-
+		this.conn.onmessage = function(evt){ dispatch('message', evt.data); };
 		this.conn.onclose = function(){dispatch('close',null)}
 		this.conn.onopen = function(){dispatch('open',null)}
 	};

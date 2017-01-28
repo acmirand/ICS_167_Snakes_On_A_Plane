@@ -100,11 +100,11 @@ public:
     vector<int> getClientIDs();
     string getClientIP(int clientID);
 
-	void SetPlayerName(std::string name);
-	void GetPlayerNames(int clientID);
+	void SetPlayerName(int playerNum, std::string name);
+	void GetPlayerName(int clientID, int playerID);
 
 	int numOfActiveConnections = 0;
-	vector<std::string> playerNames;
+	std::string playerNames[2];
 
 private:
     vector<wsClient *> wsClients;
@@ -129,9 +129,6 @@ private:
     defaultCallback callOnOpen;
     defaultCallback callOnClose;
     messageCallback callOnMessage;
-
-	//SNAKES ON A PLANE ENTRY
-	defaultCallback callOnGetServerInfor;
 
     nullCallback callPeriodic;
 };

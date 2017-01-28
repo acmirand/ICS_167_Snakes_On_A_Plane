@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <time.h>
+#include <algorithm>
 #include "websocket.h"
 
 using namespace std;
@@ -45,10 +46,29 @@ void closeHandler(int clientID){
 void messageHandler(int clientID, string message){
 
     ostringstream os;
-	os << message;
+	int cmdCutOff = 0;
 
-	server.SetPlayerName(os.str());
-	server.GetPlayerNames(clientID);
+	std::string command;
+	for (int i = 0; message.length(); ++i) {
+		if (message[i] == 58) {
+			cmdCutOff = i;
+			break;
+		}
+	}
+
+	os << message.substr(cmdCutOff + 1);
+	command = message.substr(0, cmdCutOff);
+	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+
+	if (command == "setp1name") { server.SetPlayerName(0, os.str()); }
+	if (command == "setp2name") { server.SetPlayerName(1, os.str()); }
+	if (command == "getp1name") { server.GetPlayerName(clientID, 0); }
+	if (command == "getp2name") { server.GetPlayerName(clientID, 1); }
+
+	//std::cout << os.str() << std::endl << std::endl;
+
+	//server.SetPlayerName(os.str());
+	//server.GetPlayerNames(clientID);
 
     //os << "Stranger " << clientID << " says: " << message;
 

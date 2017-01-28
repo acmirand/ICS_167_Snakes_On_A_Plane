@@ -2,6 +2,12 @@ var Server;
 var p1id;
 var p2id;
 
+//COMMANDS TO SEND TO THE SERVER
+var SETP1NAME = "setp1name";
+var SETP2NAME = "setp2name";
+var GETP1NAME = "getp1name";
+var GETP2NAME = "getp2name";
+
 function log( text ) {
     $log = $('#log');
     //Add text to log
@@ -9,6 +15,7 @@ function log( text ) {
     //Autoscroll
     $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
 }
+
 
 function send( text ) {
 Server.send( 'message', text );
@@ -32,10 +39,8 @@ $('#message').keypress(function (e) {
 
 //Let the user know we're connected
 Server.bind('open', function() {
-        document.getElementById("cntBtn").disabled = true;
-        log("Connected.");
-    
-        send(p1id);
+    document.getElementById("cntBtn").disabled = true;
+    log("Connected.");
 });
 
 //OH NOES! Disconnection occurred.
@@ -48,7 +53,7 @@ Server.bind('close', function( data ) {
 Server.bind('message', function (payload) {
 
     if (payload == "startGame") {
-        //self.location = "m1test.html";
+        self.location = "m1test.html";
     }
     else {
         log(payload);

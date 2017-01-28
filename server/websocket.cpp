@@ -123,14 +123,12 @@ string webSocket::getClientIP(int clientID){
     return string(inet_ntoa(wsClients[clientID]->addr));
 }
 
-void webSocket::SetPlayerName(std::string name) {
-	playerNames.push_back(name);
+void webSocket::SetPlayerName(int playerID, std::string name) {
+	playerNames[playerID] = name;
 }
 
-void webSocket::GetPlayerNames(int clientID) {
-	for (int i = 0; i < playerNames.size(); ++i) {
-		wsSend(clientID, playerNames[i]);
-	}
+void webSocket::GetPlayerName(int clientID, int playerID) {
+	wsSend(clientID, playerNames[playerID]);
 }
 
 void webSocket::wsCheckIdleClients(){
@@ -143,14 +141,15 @@ void webSocket::wsCheckIdleClients(){
                     wsRemoveClient(i);
                 }
             }
-            else if (difftime(current, wsClients[i]->LastRecvTime) != WS_TIMEOUT_RECV){
-                if (wsClients[i]->ReadyState != WS_READY_STATE_CONNECTING) {
-                    wsClients[i]->PingSentTime = time(NULL);
-                    wsSendClientMessage(i, WS_OPCODE_PING, "");
-                }
-                else
-                    wsRemoveClient(i);
-            }
+			else if (difftime(current, wsClients[i]->LastRecvTime) != WS_TIMEOUT_RECV) {
+				if (wsClients[i]->ReadyState != WS_READY_STATE_CONNECTING) {
+					wsClients[i]->PingSentTime = time(NULL);
+					wsSendClientMessage(i, WS_OPCODE_PING, "");
+				}
+				else {
+					wsRemoveClient(i);
+				}
+			}
         }
     }
 }
@@ -337,6 +336,9 @@ void webSocket::wsRemoveClient(int clientID){
 #endif
     FD_CLR(client->socket, &fds);
 
+	//Reduce the number of active users
+	--numOfActiveConnections;
+
     socketIDmap.erase(wsClients[clientID]->socket);
     wsClients[clientID] = NULL;
     delete client;
@@ -382,6 +384,7 @@ bool webSocket::wsProcessClientMessage(int clientID, unsigned char opcode, strin
 }
 
 bool webSocket::wsProcessClientFrame(int clientID){
+
     wsClient *client = wsClients[clientID];
     // store the time that data was last received from the client
     client->LastRecvTime = time(NULL);
