@@ -1,0 +1,7 @@
+﻿  main.cpp
+d:\users\daniel\downloads\chatroom\chatroom\server\main.cpp(20): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\downloads\chatroom\chatroom\server\main.cpp(33): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\downloads\chatroom\chatroom\server\main.cpp(45): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\downloads\chatroom\chatroom\server\main.cpp(62): warning C4018: '<': signed/unsigned mismatch
+  ServerVS.vcxproj -> D:\Users\Daniel\Downloads\chatroom\chatroom\server\ServerVS\ServerVS\Debug\ServerVS.exe
+  ServerVS.vcxproj -> D:\Users\Daniel\Downloads\chatroom\chatroom\server\ServerVS\ServerVS\Debug\ServerVS.pdb (Partial PDB)
