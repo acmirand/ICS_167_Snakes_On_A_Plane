@@ -3,11 +3,11 @@ var p1id;
 var p2id;
 
 function log( text ) {
-$log = $('#log');
-//Add text to log
-$log.append(($log.val()?"\n":'')+text);
-//Autoscroll
-$log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
+    $log = $('#log');
+    //Add text to log
+    $log.append(($log.val()?"\n":'')+text);
+    //Autoscroll
+    $log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
 }
 
 function send( text ) {
@@ -30,31 +30,29 @@ $('#message').keypress(function (e) {
   }
 });
 
-Server.bind('getACs', function () {
-  log("hello");
-});
-
 //Let the user know we're connected
 Server.bind('open', function() {
         document.getElementById("cntBtn").disabled = true;
         log("Connected.");
+    
+        send(p1id);
 });
 
 //OH NOES! Disconnection occurred.
 Server.bind('close', function( data ) {
         document.getElementById("cntBtn").disabled = false;
-log( "Disconnected." );
+        log( "Disconnected." );
 });
 
 //Log any messages sent from server
 Server.bind('message', function (payload) {
 
-  if (payload == "Game On!") {
-      self.location = "m1test.html";
-      log("game on");
-  }
-
-log( payload );
+    if (payload == "startGame") {
+        //self.location = "m1test.html";
+    }
+    else {
+        log(payload);
+    }
 });
 
 Server.connect();

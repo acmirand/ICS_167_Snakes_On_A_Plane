@@ -25,7 +25,7 @@ void openHandler(int clientID){
 
 	// SNAKES ON A PLANE ENTRY
 	if (server.numOfActiveConnections == 1) {
-		server.wsSend(clientID, "Game On!");
+		server.wsSend(clientID, "startGame");
 	}
 }
 
@@ -43,14 +43,20 @@ void closeHandler(int clientID){
 
 /* called when a client sends a message to the server */
 void messageHandler(int clientID, string message){
-    ostringstream os;
-    os << "Stranger " << clientID << " says: " << message;
 
-    vector<int> clientIDs = server.getClientIDs();
-    for (int i = 0; i < clientIDs.size(); i++){
-        if (clientIDs[i] != clientID)
-            server.wsSend(clientIDs[i], os.str());
-    }
+    ostringstream os;
+	os << message;
+
+	server.SetPlayerName(os.str());
+	server.GetPlayerNames(clientID);
+
+    //os << "Stranger " << clientID << " says: " << message;
+
+    //vector<int> clientIDs = server.getClientIDs();
+    //for (int i = 0; i < clientIDs.size(); i++){
+    //    if (clientIDs[i] != clientID)
+    //        server.wsSend(clientIDs[i], os.str());
+    //}
 }
 
 /* called once per select() loop */

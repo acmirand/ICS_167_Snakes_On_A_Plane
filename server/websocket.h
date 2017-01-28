@@ -77,8 +77,6 @@ public:
     string FrameBuffer;                    // joined onto end as a frame's data comes in, reset to blank string when all frame data has been read
     unsigned char MessageOpcode;           // stored by the first frame for fragmented messages, default value is 0
     size_t MessageBufferLength;            // the payload data length of MessageBuffer
-
-	int numOfActiveConnections;
 };
 
 class webSocket{
@@ -94,9 +92,6 @@ public:
     void setCloseHandler(defaultCallback callback);
     void setMessageHandler(messageCallback callback);
 
-	//SNAKES ON A PLANE ENTRY
-	int setServerInfoHandler(defaultCallback callback);
-
     void setPeriodicHandler(nullCallback callback);
     void startServer(int port);
     void stopServer();
@@ -105,7 +100,11 @@ public:
     vector<int> getClientIDs();
     string getClientIP(int clientID);
 
-	int numOfActiveConnections;
+	void SetPlayerName(std::string name);
+	void GetPlayerNames(int clientID);
+
+	int numOfActiveConnections = 0;
+	vector<std::string> playerNames;
 
 private:
     vector<wsClient *> wsClients;

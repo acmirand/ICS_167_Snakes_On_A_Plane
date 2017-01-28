@@ -3,7 +3,6 @@ var FancyWebSocket = function(url)
 	var callbacks = {};
 	var ws_url = url;
 	var conn;
-	var numOfActiveConnections;
 
 	this.bind = function(event_name, callback){
 		callbacks[event_name] = callbacks[event_name] || [];
@@ -41,9 +40,5 @@ var FancyWebSocket = function(url)
 		for(var i = 0; i < chain.length; i++){
 			chain[i]( message )
 		}
-	}
-
-	this.GetNumOfActiveConnections = function () {
-	    numOfActiveConnections = this.conn
 	}
 };

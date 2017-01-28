@@ -116,14 +116,21 @@ vector<int> webSocket::getClientIDs(){
             clientIDs.push_back(i);    
     }
 
-	// SNAKES ON A PLANE ENTRY
-	numOfActiveConnections = wsClients.size();
-
     return clientIDs;
 }
 
 string webSocket::getClientIP(int clientID){
     return string(inet_ntoa(wsClients[clientID]->addr));
+}
+
+void webSocket::SetPlayerName(std::string name) {
+	playerNames.push_back(name);
+}
+
+void webSocket::GetPlayerNames(int clientID) {
+	for (int i = 0; i < playerNames.size(); ++i) {
+		wsSend(clientID, playerNames[i]);
+	}
 }
 
 void webSocket::wsCheckIdleClients(){
@@ -718,18 +725,20 @@ void webSocket::startServer(int port){
         if (select(fdmax+1, &read_fds, NULL, NULL, &timeout) > 0){
             for (int i = 0; i <= fdmax; i++){
                 if (FD_ISSET(i, &read_fds)){
+
+					// ENSURE ONLY ONE CLIENT CAN BE ON AT A TIME.
                     if (i == listenfd){
                         socklen_t addrlen = sizeof(cli_addr);
                         int newfd = accept(listenfd, (struct sockaddr*)&cli_addr, &addrlen);
-                        if (newfd != -1){
+                        if (newfd != -1 && wsClients.size() < 1){
                             /* add new client */
                             wsAddClient(newfd, cli_addr.sin_addr);
                             printf("New connection from %s on socket %d\n", inet_ntoa(cli_addr.sin_addr), newfd);
-							
-							if (wsClients.size() == 2) {
-								std::cout << "Game On!" << std::endl;
-							}
+							++numOfActiveConnections;
                         }
+						else if (wsClients.size() >= 1) {
+							printf("Server at maximum capacity. New Connection Blocked.");
+						}
                     }
                     else {
                         int nbytes = recv(i, buf, sizeof(buf), 0);
