@@ -50,7 +50,7 @@ log( "Disconnected." );
 Server.bind('message', function (payload) {
 
   if (payload == "Game On!") {
-      setTimeout(function(){self.location = "m1test.html";}, 3000);
+      self.location = "m1test.html";
       log("game on");
   }
 

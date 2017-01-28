@@ -1,7 +1,7 @@
 ﻿  main.cpp
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(20): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(38): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(50): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(67): warning C4018: '<': signed/unsigned mismatch
-  SERVERVS.vcxproj -> D:\Users\Daniel\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
-  SERVERVS.vcxproj -> D:\Users\Daniel\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.pdb (Full PDB)
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(20): warning C4018: '<': signed/unsigned mismatch
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(38): warning C4018: '<': signed/unsigned mismatch
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(50): warning C4018: '<': signed/unsigned mismatch
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(67): warning C4018: '<': signed/unsigned mismatch
+  SERVERVS.vcxproj -> C:\Users\Nerianne\Desktop\Git Projects\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
+  SERVERVS.vcxproj -> C:\Users\Nerianne\Desktop\Git Projects\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.pdb (Full PDB)

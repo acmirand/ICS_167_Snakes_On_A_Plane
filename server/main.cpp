@@ -24,7 +24,7 @@ void openHandler(int clientID){
     server.wsSend(clientID, "Welcome!");
 
 	// SNAKES ON A PLANE ENTRY
-	if (server.numOfActiveConnections == 2) {
+	if (server.numOfActiveConnections == 1) {
 		server.wsSend(clientID, "Game On!");
 	}
 }
