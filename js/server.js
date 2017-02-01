@@ -1,9 +1,12 @@
 var connectBtn = document.getElementById('cntBtn');
+var startBtn = document.getElementById('startBtn');
 
 connectBtn.addEventListener('click', function() {
   connect();
 });
 
+
+// Start of server
 var Server;
 var p1id;
 var p2id;
@@ -34,7 +37,7 @@ function connect(){
     p1id = document.getElementById('p1id').value; //get p1 id from text field
     p2id = document.getElementById('p2id').value; //get p2 id from text field
     log('Connecting...');
-    log(p1id + " " + p2id);
+
     Server = new FancyWebSocket('ws://' + document.getElementById('ip').value + ':' + document.getElementById('port').value);
 
 $('#message').keypress(function (e) {
@@ -51,12 +54,16 @@ Server.bind('open', function() {
     document.getElementById("cntBtn").disabled = true;
     log("Connected.");
 
-    // Swapping pages
-    var page1 = document.getElementById('connectPage'); /*variable for dean's page*/
-    var page2 = document.getElementById('snakePage'); /*variable for ney's page*/
+    setTimeout(function(){
+        var page1 = document.getElementById('connectPage'); /*variable for dean's page*/
+        var page2 = document.getElementById('snakePage'); /*variable for ney's page*/
 
-    page1.style.display = "none";
-    page2.style.display = "block";
+        connectBtn.style.visibility = 'hidden';
+        startBtn.style.visibility = "visible";
+    }, 1000);
+
+    log('Welcome to snakes ' + p1id + " and " + p2id + "!");
+    log("Click the Start Game button when you're ready to play.");
 });
 
 //OH NOES! Disconnection occurred.

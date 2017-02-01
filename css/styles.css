@@ -1,3 +1,6 @@
+body {
+  background-color: #E6EBE0;
+}
 /*************
  Connect Body STYLING
 *************/
@@ -40,12 +43,12 @@ button {
 }
 
 #log {
-  width: 25%;
+  width: 50%;
   height: 300px
 }
 
 #message {
-  width: 25%;
+  width: 50%;
   line-height: 20px
 }
 

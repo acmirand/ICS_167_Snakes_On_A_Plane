@@ -22,11 +22,15 @@ void openHandler(int clientID){
         if (clientIDs[i] != clientID)
             server.wsSend(clientIDs[i], os.str());
     }
-    server.wsSend(clientID, "Welcome!");
+    server.wsSend(clientID, "");
 
 	// SNAKES ON A PLANE ENTRY
+	cout << server.numOfActiveConnections << endl;
 	if (server.numOfActiveConnections == 1) {
 		server.wsSend(clientID, "startGame");
+	}
+	else {
+		os << "Server at maximum capacity. New Connection Blocked.";
 	}
 }
 

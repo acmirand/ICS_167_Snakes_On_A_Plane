@@ -1,3 +1,5 @@
+//var startBtn = document.getElementById('startBtn');
+
 // Snake Game
 var col = 30; //gameboard size
 var row = 30;
@@ -282,9 +284,12 @@ function main() {
     delete keystate[evt.keyCode];
   });
 
-  var startBtn = document.getElementById('startBtn');
   startBtn.addEventListener('click', function() {
-    startBtn.style.display = "none";
+    var page1 = document.getElementById('connectPage'); /*variable for dean's page*/
+    var page2 = document.getElementById('snakePage'); /*variable for ney's page*/
+
+    page1.style.display = "none";
+    page2.style.display = "block";
     init();
     loop();
   });
