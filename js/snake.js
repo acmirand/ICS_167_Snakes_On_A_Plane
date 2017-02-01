@@ -1,3 +1,4 @@
+// Snake Game
 var col = 30; //gameboard size
 var row = 30;
 
@@ -129,11 +130,13 @@ function init() {
   game_state.init(free_space,wall_space,col,row);
   var p1_start = {x:col-3, y:row-2};
   var p2_start = {x:col-5, y:row-5};
+
   p1_snake.init(dir_up, p1_start.x, p1_start.y);
   game_state.set(snake1_space, p1_start.x, p1_start.y);
   p2_snake.init(dir_left, p2_start.x, p2_start.y);
   game_state.set(snake2_space, p2_start.x, p2_start.y);
   setFood();
+
 }
 
 function p1_update() {
@@ -278,7 +281,13 @@ function main() {
   document.addEventListener("keyup",function(evt) {
     delete keystate[evt.keyCode];
   });
-  init();
-  loop();
+
+  var startBtn = document.getElementById('startBtn');
+  startBtn.addEventListener('click', function() {
+    startBtn.style.display = "none";
+    init();
+    loop();
+  });
 }
+
 main();

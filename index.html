@@ -1,34 +1,46 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
 	<meta charset='UTF-8' />
-	<style>
-				input, textarea {border:1px solid #CCC;margin:0px;padding:0px}
-
-        #ip {line-height:20px}
-        #port {line-height:20px}
-				#p1id {line-height:20px}
-				#p2id {line-height:20px}
-				#body {max-width:800px;margin:auto}
-				#log {width:100%;height:400px}
-				#message {width:100%;line-height:20px}
-	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="js/fancywebsocket.js"></script>
-	<script src="js/server.js"></script>
-	<script src="js/m1test.js"></script>
+	<link rel="stylesheet" href="css/styles.css" type="text/css" />
 </head>
 
 <!-- Player IDS are in server.js as p1id and p2id -->
 <body>
-	<div id='body'>
-				Player 1 ID: <input type='text' id='p1id' name='p1id'>
-				Player 2 ID: <input type='text' id='p2id' name='p2id'></br>
-        Server ip: <input type='text' id='ip' name='ip'>
-        Server port: <input type='text' id='port' name='port'>
-        <button type="button" id='cntBtn' onclick="connect();">Connect</button>
-				<textarea id='log' name='log' readonly='readonly'></textarea><br/>
-	</div>
-</body>
+	<!--<img src="images/logo.png" id="logo">-->
+	<section id='connectPage' style='text-align: center;'>
+		<table align="center">
+				<tr>
+					<td>Player 1 ID:</td>
+					<td><input type='text' id='p1id' name='p1id'></td>
+				</tr>
+				<tr>
+					<td>Player 2 ID:</td>
+					<td><input type='text' id='p2id' name='p2id'></td>
+				</tr>
+				<tr>
+					<td>Server ip:</td>
+					<td><input type='text' id='ip' name='ip'></td>
+				</tr>
+				<tr>
+					<td>Server port:</td>
+					<td><input type='text' id='port' name='port'></td>
+				</tr>
+			</table>
+      <button type="button" id='cntBtn'>Connect</button><br/>
+			<textarea id='log' name='log' readonly='readonly'></textarea><br/>
+	</section>
 
+	<section id='snakePage'>
+		<img src="images/snake1.png" id="snake_head1" width="1" height="1">
+		<img src="images/snake2.png" id="snake_head2" width="1" height="1"></br>
+
+		<button type='button' id='startBtn'>Start Game</button>
+	</section>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="js/fancywebsocket.js"></script>
+	<script src="js/server.js"></script>
+	<script src="js/snake.js"></script>
+</body>
 </html>

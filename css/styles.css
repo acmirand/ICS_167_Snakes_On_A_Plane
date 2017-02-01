@@ -1,0 +1,62 @@
+/*************
+ Connect Body STYLING
+*************/
+#connectPage {
+  margin-top: 5%;
+  display: block;
+  text-align: center;
+}
+
+input, textarea {
+  border: 2px solid #CCC;
+  margin: 0px;
+  resize: none
+}
+
+button {
+  margin: 1%;
+  width: 200px;
+}
+
+#ip {
+  line-height: 20px
+}
+
+#port {
+  line-height: 20px
+}
+
+#p1id {
+  line-height: 20px
+}
+
+#p2id {
+  line-height: 20px
+}
+
+#body {
+  max-width: 500px;
+  margin: auto
+}
+
+#log {
+  width: 25%;
+  height: 300px
+}
+
+#message {
+  width: 25%;
+  line-height: 20px
+}
+
+/*************
+ Snake Game STYLING
+*************/
+#snakePage {
+  display: none;
+  text-align: center;
+}
+
+img {
+  display: none;
+}
