@@ -1,11 +1,14 @@
+/*************
+ General STYLING
+*************/
 body {
   background-color: #E6EBE0;
 }
+
 /*************
  Connect Body STYLING
 *************/
 #connectPage {
-  margin-top: 5%;
   display: block;
   text-align: center;
 }
@@ -17,8 +20,14 @@ input, textarea {
 }
 
 button {
-  margin: 1%;
+  margin: 10px;
   width: 200px;
+}
+
+#logo {
+  margin-left: 47%;
+  width: 100px;
+  height: 100px;
 }
 
 #ip {
@@ -60,6 +69,6 @@ button {
   text-align: center;
 }
 
-img {
+.snakes {
   display: none;
 }
