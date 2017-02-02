@@ -125,10 +125,25 @@ string webSocket::getClientIP(int clientID){
 
 void webSocket::SetPlayerName(int playerID, std::string name) {
 	playerNames[playerID] = name;
+	playerScores[playerID] = 0;
 }
 
 std::string webSocket::GetPlayerName(int clientID, int playerID) {
 	return playerNames[playerID];
+}
+
+void webSocket::UpdateScore(int playerID) {
+	playerScores[playerID] += 1;
+}
+
+void webSocket::ResetGame() {
+	for (int i = 0; i < 2; ++i) {
+		playerScores[i] = 0;
+	}
+}
+
+std::string webSocket::GetPlayerScore(int playerID) {
+	return std::to_string( playerScores[playerID] );
 }
 
 void webSocket::wsCheckIdleClients(){

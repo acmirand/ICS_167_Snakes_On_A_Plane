@@ -11,6 +11,9 @@
 using namespace std;
 
 webSocket server;
+std::string PRINT = "print:";
+std::string UPDATEP1SCORE = "updateP1Score:";
+std::string UPDATEP2SCORE = "updateP2Score:";
 
 /* called when a client connects */
 void openHandler(int clientID){
@@ -58,6 +61,12 @@ void messageHandler(int clientID, string message){
 	command = message.substr(0, cmdCutOff);
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
+	if (command == "resetgame") {
+		server.ResetGame();
+		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0));
+		server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
+	}
+
 	// Commands to process incoming messages.
 	if (command == "setp1name") {
 
@@ -72,8 +81,8 @@ void messageHandler(int clientID, string message){
 		// To ensure the server is keeping track of the names, ask the server for 
 		//the name of player one to print out to the console and send it to the client.
 		std::cout << server.GetPlayerName(clientID, 0) << " has joined the game as Player 1." << std::endl;
-		server.wsSend(clientID, "Welcome " + server.GetPlayerName(clientID, 0) + " to the game.");
-
+		server.wsSend(clientID, PRINT + "Welcome " + server.GetPlayerName(clientID, 0) + " to the game.");
+		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0));
 	}
 
 	if (command == "setp2name") { 
@@ -88,7 +97,8 @@ void messageHandler(int clientID, string message){
 		// To ensure the server is keeping track of the names, ask the server for 
 		//the name of player 2 to print out to the console and send it to the client.
 		std::cout << server.GetPlayerName(clientID, 1) << " has joined the game as Player 2." << std::endl;
-		server.wsSend(clientID, "Welcome " + server.GetPlayerName(clientID, 1) + " to the game.");
+		server.wsSend(clientID, PRINT + "Welcome " + server.GetPlayerName(clientID, 1) + " to the game.");
+		server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
 	}
 
 	if (command == "getp1name") { 
@@ -100,7 +110,15 @@ void messageHandler(int clientID, string message){
 	}
 
 	if (command == "p1scored") {
+		server.UpdateScore(0);
+		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0) );
+		std::cout << "Player 1 scored. Total score is: " << server.GetPlayerScore(0) << std::endl;
+	}
 
+	if (command == "p2scored") {
+		server.UpdateScore(1);
+		server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
+		std::cout << "Player 2 scored. Total score is: " << server.GetPlayerScore(1) << std::endl;
 	}
 
 	//std::cout << os.str() << std::endl << std::endl;

@@ -103,10 +103,13 @@ public:
 	// SNAKE ON A PLANE ADDITIONS
 	void SetPlayerName(int playerNum, std::string name);
 	std::string GetPlayerName(int clientID, int playerID);
+	void UpdateScore(int playerID);
+	void ResetGame();
+	std::string GetPlayerScore(int playerID);
 
 	int numOfActiveConnections = 0;
 	std::string playerNames[2];
-	std::map<std::string, int> playerScores;
+	int playerScores[2];
 
 private:
     vector<wsClient *> wsClients;

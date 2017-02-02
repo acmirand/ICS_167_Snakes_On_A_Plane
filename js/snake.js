@@ -10,6 +10,8 @@ connectBtn.addEventListener('click', function () {
 var Server;
 var p1id;
 var p2id;
+var p1_score;
+var p2_score;
 
 //variables to switch screen to snake
 var snakeGame = document.getElementById('snake');
@@ -19,6 +21,9 @@ var SETP1NAME = "setp1name:";
 var SETP2NAME = "setp2name:";
 var GETP1NAME = "getp1name:";
 var GETP2NAME = "getp2name:";
+var P1SCORED = "p1scored:";
+var P2SCORED = "p2scored:";
+var RESETGAME = "resetgame:";
 
 function log(text) {
     $log = $('#log');
@@ -90,17 +95,25 @@ function connect() {
     //Log any messages sent from server
     Server.bind('message', function (payload) {
 
-        log(payload);
+        var cmdCutOff;
+        for (var i = 0; i < payload.length; ++i){
+            if (payload[i] == ':') {
+                cmdCutOff = i; break;
+            }
+        }
+        var command = payload.substring(0, cmdCutOff);
+        command.toLowerCase();
+        var message = payload.substring(cmdCutOff + 1);
 
-        //var cmdCutOff;
-        //for (var i = 0; i < payload.length; ++i){
-        //    if (payload[i] == 58) {
-        //        cmdCutOff = i; break;
-        //    }
-        //}
-        //var command = payload.substring(0, cmdCutOff);
-        //command.toLowerCase();
-        //var message = payload.substring(cmdCutOff + 1);
+        if (command == "print") {
+            log(payload);
+        }
+        else if (command == "updateP1Score") {
+            p1_score = parseInt(message);
+        }
+        else if (command == "updateP2Score") {
+            p2_score = parseInt(message);
+        }
 
     });
 
@@ -235,14 +248,14 @@ var frames1;
 var frames2;
 var frameSpeed;
 var keystate;
-var p1_score;
-var p2_score;
+
 var img_snake_head1 = document.getElementById("snake_head1");
 var img_snake_head2 = document.getElementById("snake_head2");
 
 function init() {
-  p1_score = 0;
-  p2_score = 0;
+
+    // TELL THE SERVER TO RESET THE SCORE
+    send(RESETGAME);
   game_state.init(free_space,wall_space,col,row);
   var p1_start = {x:col-3, y:row-2};
   var p2_start = {x:col-5, y:row-5};
@@ -284,8 +297,9 @@ function p1_update() {
     }
     if (game_state.get(nx,ny) === food_space){
       var tail = {x:nx, y:ny};
-      //UPDATE SERVER WITH THE SCORE HERE
-      p1_score++;
+        //UPDATE SERVER WITH THE SCORE HERE
+      send(P1SCORED);
+      //p1_score++;
       setFood();
     }
     else{
@@ -323,13 +337,13 @@ function p2_update() {
         ny++;
         break;
     }
-    if (game_state.get(nx,ny) === snake2_space || game_state.get(nx,ny) === wall_space || game_state.get(nx, ny) === snake1_space){
+    if (game_state.get(nx, ny) === snake2_space || game_state.get(nx, ny) === wall_space || game_state.get(nx, ny) === snake1_space) {
       return init();
     }
     if (game_state.get(nx,ny) === food_space){
       var tail = {x:nx, y:ny};
-        //UPDATE SERVER WITH THE SCORE HERE
-      p2_score++;
+      send(P2SCORED);
+      //p2_score++;
       setFood();
     }
     else{
