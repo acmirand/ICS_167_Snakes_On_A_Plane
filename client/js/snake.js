@@ -3,8 +3,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Snake Game
-var col = 30; //gameboard size
-var row = 30;
+var col = 20; //gameboard size
+var row = 20;
 
 //array value content
 var free_space = 0;
@@ -278,6 +278,7 @@ function main() {
   canvas = document.createElement("canvas");
   canvas.width = col*col;
   canvas.height = row*row;
+  canvas.style = "position:absolute; left: 50%; width: 400px; margin-left: -200px;";
   context = canvas.getContext("2d");
   context.font = "20px Times New Roman";
   document.body.appendChild(canvas);
