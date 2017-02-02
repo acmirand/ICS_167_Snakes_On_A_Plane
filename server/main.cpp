@@ -25,7 +25,6 @@ void openHandler(int clientID){
     server.wsSend(clientID, "");
 
 	// SNAKES ON A PLANE ENTRY
-	cout << server.numOfActiveConnections << endl;
 	if (server.numOfActiveConnections == 1) {
 		server.wsSend(clientID, "startGame");
 	}
@@ -64,11 +63,20 @@ void messageHandler(int clientID, string message){
 	command = message.substr(0, cmdCutOff);
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
-	if (command == "setp1name") { server.SetPlayerName(0, os.str()); }
-	if (command == "setp2name") { server.SetPlayerName(1, os.str()); }
-	if (command == "getp1name") { server.GetPlayerName(clientID, 0); }
-	if (command == "getp2name") { server.GetPlayerName(clientID, 1); }
+	if (command == "setp1name") { 
+		server.SetPlayerName(0, os.str());
+	}
+	if (command == "setp2name") { 
+		server.SetPlayerName(1, os.str()); 
+	}
+	if (command == "getp1name") { 
+		server.GetPlayerName(clientID, 0); 
+	}
+	if (command == "getp2name") { 
+		server.GetPlayerName(clientID, 1); 
+	}
 
+	send(server.playerNames[0]);
 	//std::cout << os.str() << std::endl << std::endl;
 
 	//server.SetPlayerName(os.str());

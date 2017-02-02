@@ -64,6 +64,16 @@ Server.bind('open', function() {
 
     log('Welcome to snakes ' + p1id + " and " + p2id + "!");
     log("Click the Start Game button when you're ready to play.");
+
+    var textInput = document.getElementById('log').value.split('\n');
+    var lastValue;
+    //get last value of log/textArea
+    for(var i = 0; i < textInput.length; ++i){
+      if(i == textInput.length-1){
+          console.log('Inside textArea: ' + textInput[i]);
+          lastValue = textInput[i];
+      }
+    }
 });
 
 //OH NOES! Disconnection occurred.
