@@ -100,11 +100,13 @@ public:
     vector<int> getClientIDs();
     string getClientIP(int clientID);
 
+	// SNAKE ON A PLANE ADDITIONS
 	void SetPlayerName(int playerNum, std::string name);
-	void GetPlayerName(int clientID, int playerID);
+	std::string GetPlayerName(int clientID, int playerID);
 
 	int numOfActiveConnections = 0;
 	std::string playerNames[2];
+	std::map<std::string, int> playerScores;
 
 private:
     vector<wsClient *> wsClients;

@@ -23,14 +23,6 @@ void openHandler(int clientID){
             server.wsSend(clientIDs[i], os.str());
     }
     server.wsSend(clientID, "");
-
-	// SNAKES ON A PLANE ENTRY
-	if (server.numOfActiveConnections == 1) {
-		server.wsSend(clientID, "startGame");
-	}
-	else {
-		os << "Server at maximum capacity. New Connection Blocked.";
-	}
 }
 
 /* called when a client disconnects */
@@ -51,6 +43,8 @@ void messageHandler(int clientID, string message){
     ostringstream os;
 	int cmdCutOff = 0;
 
+	// Parse the string until it reaches a ":". This will mark the command being passed in.
+	// Everything after that point will be consider data to be dealt with.
 	std::string command;
 	for (int i = 0; message.length(); ++i) {
 		if (message[i] == 58) {
@@ -59,24 +53,56 @@ void messageHandler(int clientID, string message){
 		}
 	}
 
+	// Parse the info for processing.
 	os << message.substr(cmdCutOff + 1);
 	command = message.substr(0, cmdCutOff);
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
-	if (command == "setp1name") { 
-		server.SetPlayerName(0, os.str());
+	// Commands to process incoming messages.
+	if (command == "setp1name") {
+
+		// If they did not enter a name, make the default name "Player 1". Else, record the passed in value.
+		if (os.str() == "") { 
+			server.SetPlayerName(0, "Player 1"); 
+		}
+		else{ 
+			server.SetPlayerName(0, os.str());
+		}
+
+		// To ensure the server is keeping track of the names, ask the server for 
+		//the name of player one to print out to the console and send it to the client.
+		std::cout << server.GetPlayerName(clientID, 0) << " has joined the game as Player 1." << std::endl;
+		server.wsSend(clientID, "Welcome " + server.GetPlayerName(clientID, 0) + " to the game.");
+
 	}
+
 	if (command == "setp2name") { 
-		server.SetPlayerName(1, os.str()); 
+
+		// If they did not enter a name, make the default name "Player 2". Else, record the passed in value.
+		if (os.str() == "") {
+			server.SetPlayerName(1, "Player 2");
+		}
+		else {
+			server.SetPlayerName(1, os.str());
+		}
+		// To ensure the server is keeping track of the names, ask the server for 
+		//the name of player 2 to print out to the console and send it to the client.
+		std::cout << server.GetPlayerName(clientID, 1) << " has joined the game as Player 2." << std::endl;
+		server.wsSend(clientID, "Welcome " + server.GetPlayerName(clientID, 1) + " to the game.");
 	}
+
 	if (command == "getp1name") { 
 		server.GetPlayerName(clientID, 0); 
 	}
+
 	if (command == "getp2name") { 
 		server.GetPlayerName(clientID, 1); 
 	}
 
-	send(server.playerNames[0]);
+	if (command == "p1scored") {
+
+	}
+
 	//std::cout << os.str() << std::endl << std::endl;
 
 	//server.SetPlayerName(os.str());

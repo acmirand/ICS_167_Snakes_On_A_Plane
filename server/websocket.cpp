@@ -127,8 +127,8 @@ void webSocket::SetPlayerName(int playerID, std::string name) {
 	playerNames[playerID] = name;
 }
 
-void webSocket::GetPlayerName(int clientID, int playerID) {
-	wsSend(clientID, playerNames[playerID]);
+std::string webSocket::GetPlayerName(int clientID, int playerID) {
+	return playerNames[playerID];
 }
 
 void webSocket::wsCheckIdleClients(){
