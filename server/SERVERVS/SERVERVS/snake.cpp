@@ -6,11 +6,19 @@
 class Snake {
 private:
 	int currDir = 0; //0 - UP, 1 - DOWN, 2 = LEFT, 3 - RIGHT
-	std::vector<std::pair<int, int>> snakeArray;
+	int player; //possibly client ID
+	std::vector<std::pair<int, int>> snakeArray; //every x-y pair of each part of the snake
 	std::pair<int, int> head;
 	std::pair<int, int> tail;
 
 public:
+	void setPlayer(int p) {
+		player = p;
+	}
+
+	int getPlayer() {
+		return player;
+	}
 
 	void setHead(int x, int y) {
 		head = std::make_pair(x, y);
@@ -22,37 +30,48 @@ public:
 	}
 
 	//RETURNS SNAKE HEAD AND TAIL AS "x,y-x,y" (First pair is head, second pair is tail)
-	std::string getPos() {
+	std::string getPosString() {
 		std::string h = std::to_string(head.first) + "," + std::to_string(head.second);
 		std::string t = std::to_string(tail.first) + "," + std::to_string(tail.second);
 		return (h + "-" + t);
+	}
+
+	std::pair<int, int> getHead() {
+		return head;
+	}
+
+	std::pair<int, int> getTail() {
+		return tail;
 	}
 
 	void setDirection(int dir) {
 		currDir = dir;
 	}
 
-	std::string getDirection() {
+	std::string getDirString() {
 		return std::to_string(currDir);
 	}
 	
 };
 
-/*
+/****************
+ BOARD STATES
 	0 - free
 	1 - wall
 	2 - food
 	3 - snake
-*/
+*****************/
 class Board {
 private:
 	int board[20][20];
+	int row;
+	int col;
 	std::string boardLayout;
 
 	//constructor
 	Board() {
-		int row = 20;
-		int col = 20;
+		row = 20;
+		col = 20;
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
@@ -73,21 +92,41 @@ private:
 			for (int j = 0; j < col; ++j) {
 				boardLayout += std::to_string(board[i][j]);
 			}
-			if (i != row - 1) { //doesn't put an "n" at the end of the string
-				boardLayout += "n"; //adds an "n" at the end of every row
+			if (i != row - 1) {
+				boardLayout += "n"; //adds an "n" at the end of every row except last row
 			}
 		}
 	}
 public:
+	/*
+	// Translates boardLayout string into 2D array of 0 and 1.
+	// This code will prolly go on snake.js
+	void setBoard(std::string b) {
+		int j = 0;
+		for (int i = 0; i < b.length(); ++i) {
+			if (b[i] == 'n') { //increments row counter when loop reaches an "n"
+				++j;
+			}
+
+			if (b[i] == '0') {			//free space
+				board[i][j] = 0;
+			}
+			else if (b[i] == '1') {		//wall
+				board[i][j] = 1;
+			}
+		}
+	}
+	*/
+
 	int getValue(int x, int y) {
 		return board[x][y];
 	}
+
 	void setValue(int x, int y, int value) {
 		board[x][y] = value;
 	}
 
-
-	std::string getBoard() {
+	std::string getBoardString() {
 		return boardLayout;
 	}
 };
@@ -100,27 +139,49 @@ private:
 	std::pair<int, int> foodXY; //stores current food location
 
 public:
-	void setFood() {
-		foodXY = std::make_pair(rand() % 20, rand() % 20);
-		
-		board.setValue(foodXY.first, foodXY.second, 2); //2 for food
+	/****** BOARD STUFF ******/
+	Board getBoard() {
+		return board;
 	}
 
-	//RETURNS CURRENT FOOD LOCATION AS "x,y"
-	std::string getFood() {
+	/****** SNAKE STUFF ******/
+	Snake getSnake1() {
+		return snake1;
+	}
+
+	Snake getSnake2() {
+		return snake2;
+	}
+
+	/****** FOOD STUFF ******/
+	// Sets random food
+	void setFood() {
+		foodXY = std::make_pair(rand() % 20, rand() % 20);
+
+		board.setValue(foodXY.first, foodXY.second, 2); // 2 for food
+	}
+
+	// Returns current food location
+	std::pair<int, int> getFood() {
+		return foodXY;
+	}
+
+	// Returns string of current food location as "x,y"
+	std::string getFoodString() {
 		return (std::to_string(foodXY.first) + "," + std::to_string(foodXY.second));
 	}
 
-	bool checkWall(int x, int y) {
-		if (board.getValue(x, y) == 1) return true;
-
-		return false;
+	/****** COLLISION CHECKS ******/
+	bool isWall(int x, int y) {
+		return board.getValue(x, y) == 1;
 	}
 
-	bool checkFood(int x, int y) {
-		if (board.getValue(x, y) == 2) return true;
+	bool isFood(int x, int y) {
+		return board.getValue(x, y) == 2;
+	}
 
-		return false;
+	bool isSnake(int x, int y) {
+		return board.getValue(x, y) == 3;
 	}
 
 };
