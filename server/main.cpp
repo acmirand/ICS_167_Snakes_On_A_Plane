@@ -12,8 +12,23 @@ using namespace std;
 
 webSocket server;
 std::string PRINT = "print:";
+
+/*
+	COMMAND LIST
+*/
+//Scores
 std::string UPDATEP1SCORE = "updateP1Score:";
 std::string UPDATEP2SCORE = "updateP2Score:";
+
+//Game State commands
+std::string START = "start:";
+std::string END = "end:";
+std::string SENDFOOD = "sendFood:";
+
+//Board values (A-
+std::string S1LOC = "sendLocation1:";
+std::string S2LOC = "sendLocation2:";
+
 
 /* called when a client connects */
 void openHandler(int clientID){
