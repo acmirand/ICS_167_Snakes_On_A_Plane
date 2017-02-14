@@ -130,7 +130,7 @@ var img_snake_head2 = document.getElementById("snake_head2");
 function init() { //initializes the entire game board
 
     // TELL THE SERVER TO RESET THE SCORE
-    send(RESETGAME);
+  send(RESETGAME);
   game_state.init(free_space,wall_space,col,row); //calls the game_state init() method.
   var p1_start = {x:col-3, y:row-2}; //specifies where the coordinate positions the snakes will start in the array.
   var p2_start = {x:col-5, y:row-5};

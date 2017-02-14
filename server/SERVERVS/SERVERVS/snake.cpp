@@ -42,6 +42,7 @@ private:
 	Board() {
 		int row = 20;
 		int col = 20;
+		std::string boardLayout;
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
@@ -54,6 +55,13 @@ private:
 				else {
 					board[i][j] = 0;
 				}
+			}
+		}
+
+		// CREATE THE STRING TO BE SENT OUT TO THE CLIENTS FOR BOARD DRAWING
+		for (int i = 0; i < row; ++i) {
+			for (int j = 0; j < col; ++j) {
+				boardLayout += board[i][j];
 			}
 		}
 	}

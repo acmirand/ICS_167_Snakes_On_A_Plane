@@ -17,17 +17,33 @@ std::string PRINT = "print:";
 	COMMAND LIST
 */
 //Scores
-std::string UPDATEP1SCORE = "updateP1Score:";
-std::string UPDATEP2SCORE = "updateP2Score:";
+std::string UPDATEP1SCORE = "UPDATEP1SCORE:";
+std::string UPDATEP2SCORE = "UPDATEP2SCORE:";
 
+
+/*
+TEMPLATE
+DRAWBOARD:111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111
+POSSIBLY HAVE THE CLIENT SAVE THIS STRING AND USE IT WHEN IT RECEIVES RESETBOARD
+*/
 //Game State commands
-std::string START = "start:";
-std::string END = "end:";
-std::string SENDFOOD = "sendFood:";
+std::string DRAWBOARD = "DRAWBOARD:";
+std::string RESETBOARD = "RESETBOARD:";
 
-//Board values (A-
-std::string S1LOC = "sendLocation1:";
-std::string S2LOC = "sendLocation2:";
+/*
+TEMPLATE PROTOCOL
+sendFood:23,14
+*/
+std::string SENDFOOD = "SENDFOOD:";
+
+/*
+TEMPLATE PROTOCOL
+FIRST X-Y PAIR IS THE HEAD AND THE SECOND IS THE TAIL
+P1POSUPDATE:23,14-23,13
+*/
+std::string P1POSUPDATE = "P1POSUPDATE:";
+std::string P2POSUPDATE = "P2POSUPDATE:";
+
 
 
 /* called when a client connects */
@@ -126,6 +142,8 @@ void messageHandler(int clientID, string message){
 
 	if (command == "p1scored") {
 		server.UpdateScore(0);
+
+		// THIS IS WHERE WE SEND A COMMAND BACK TO THE CLIENT
 		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0) );
 		std::cout << "Player 1 scored. Total score is: " << server.GetPlayerScore(0) << std::endl;
 	}
