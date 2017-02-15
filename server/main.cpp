@@ -196,8 +196,8 @@ void periodicHandler(){
 int main(int argc, char *argv[]){
     int port;
 
-    cout << "Please set server port: ";
-    cin >> port;
+    cout << "Starting on port 8000..." << endl << endl;
+    //cin >> port;
 
     /* set event handler */
     server.setOpenHandler(openHandler);
@@ -206,7 +206,7 @@ int main(int argc, char *argv[]){
     //server.setPeriodicHandler(periodicHandler);
 
     /* start the chatroom server, listen to ip '127.0.0.1' and port '8000' */
-    server.startServer(port);
+    server.startServer(8000);
 
     return 1;
 }
