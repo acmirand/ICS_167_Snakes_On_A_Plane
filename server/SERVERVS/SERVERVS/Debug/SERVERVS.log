@@ -1,3 +1,6 @@
-﻿  snake.cpp
-  SERVERVS.vcxproj -> C:\Users\Nerianne\Desktop\Git Projects\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
-  SERVERVS.vcxproj -> C:\Users\Nerianne\Desktop\Git Projects\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.pdb (Full PDB)
+﻿  main.cpp
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(56): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(69): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(188): warning C4018: '<': signed/unsigned mismatch
+  SERVERVS.vcxproj -> C:\Users\Zachary\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
+  SERVERVS.vcxproj -> C:\Users\Zachary\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.pdb (Full PDB)

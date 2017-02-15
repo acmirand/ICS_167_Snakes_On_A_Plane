@@ -291,8 +291,8 @@ function main() {
   });
 
   startBtn.addEventListener('click', function() {
-    var page1 = document.getElementById('connectPage'); /*variable for dean's page*/
-    var page2 = document.getElementById('snakePage'); /*variable for ney's page*/
+    var page1 = document.getElementById('connectPage');
+    var page2 = document.getElementById('snakePage');
 
     page1.style.display = "none";
     page2.style.display = "block";

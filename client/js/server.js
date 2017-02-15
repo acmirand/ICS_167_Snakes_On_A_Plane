@@ -114,6 +114,14 @@ function connect() {
         else if (command == "updateP2Score") {
             p2_score = parseInt(message);
         }
+        else if (command == "drawboard"){
+                      console.log("here it is");
+            drawBoard(message);
+        }
+        else if (command == "resetboard") {
+
+        }
+
 
     });
 

@@ -93,6 +93,11 @@ void messageHandler(int clientID, string message){
 	command = message.substr(0, cmdCutOff);
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
+	if (command == "startgame") {
+		std::string board = "111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111";
+		server.wsSend(clientID, DRAWBOARD + board);
+	}
+
 	if (command == "resetgame") {
 		server.ResetGame();
 		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0));

@@ -98,26 +98,6 @@ private:
 		}
 	}
 public:
-	/*
-	// Translates boardLayout string into 2D array of 0 and 1.
-	// This code will prolly go on snake.js
-	void setBoard(std::string b) {
-		int j = 0;
-		for (int i = 0; i < b.length(); ++i) {
-			if (b[i] == 'n') { //increments row counter when loop reaches an "n"
-				++j;
-			}
-
-			if (b[i] == '0') {			//free space
-				board[i][j] = 0;
-			}
-			else if (b[i] == '1') {		//wall
-				board[i][j] = 1;
-			}
-		}
-	}
-	*/
-
 	int getValue(int x, int y) {
 		return board[x][y];
 	}
