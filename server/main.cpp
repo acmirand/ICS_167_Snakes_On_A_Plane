@@ -94,8 +94,8 @@ void messageHandler(int clientID, string message){
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
 	if (command == "startgame") {
-		os << "111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111";
-		std::cout << os.str() << std::endl;
+		//os << "111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111";
+		os << "20x20";
 		server.wsSend(clientID, DRAWBOARD + os.str());
 	}
 

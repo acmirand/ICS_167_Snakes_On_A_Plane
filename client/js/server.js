@@ -105,8 +105,6 @@ function connect() {
         command.toLowerCase();
         var message = payload.substring(cmdCutOff + 1);
 
-        console.log(message);
-
         if (command == "print") {
             log(message);
         }
@@ -116,9 +114,9 @@ function connect() {
         else if (command == "updateP2Score") {
             p2_score = parseInt(message);
         }
-        else if (command == "drawboard"){
-                      console.log("here it is");
-            drawBoard(message);
+        else if (command == "drawboard") {
+            InitializeBoardArray(message);
+            drawBoard();
         }
         else if (command == "resetboard") {
 
