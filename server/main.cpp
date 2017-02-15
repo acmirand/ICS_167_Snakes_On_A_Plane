@@ -27,7 +27,7 @@ DRAWBOARD:111111111111n100000000001n100000000001n100000000001n100000000001n10000
 POSSIBLY HAVE THE CLIENT SAVE THIS STRING AND USE IT WHEN IT RECEIVES RESETBOARD
 */
 //Game State commands
-std::string DRAWBOARD = "DRAWBOARD:";
+std::string DRAWBOARD = "drawboard:";
 std::string RESETBOARD = "RESETBOARD:";
 
 /*
@@ -94,8 +94,9 @@ void messageHandler(int clientID, string message){
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
 	if (command == "startgame") {
-		std::string board = "111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111";
-		server.wsSend(clientID, DRAWBOARD + board);
+		os << "111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111";
+		std::cout << os.str() << std::endl;
+		server.wsSend(clientID, DRAWBOARD + os.str());
 	}
 
 	if (command == "resetgame") {

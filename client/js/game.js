@@ -17,8 +17,10 @@ console.log("shut up");
       c++;
     }
   }
+
   var j = 0;
-	for (var i = 0; i < boardString.length; ++i) {
+  board.push([]);
+  for (var i = 0; i < boardString.length; ++i) {
 		if (boardString[i] == 'n') { //increments row counter when loop reaches an "n"
 			++j;
 		}
@@ -75,6 +77,8 @@ function main() {
 
    page1.style.display = "none";
    page2.style.display = "block";
+
+   send("startgame:");
  });
 }
 

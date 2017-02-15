@@ -105,6 +105,8 @@ function connect() {
         command.toLowerCase();
         var message = payload.substring(cmdCutOff + 1);
 
+        console.log(message);
+
         if (command == "print") {
             log(message);
         }
