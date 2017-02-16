@@ -15,13 +15,14 @@ var move_up = 38; //up-key
 var move_down = 40; //down-key
 
 //Snake Game
-var r = 0;
-var c = 0;
+var r = 20;
+var c = 20;
 
 var img_snake_head1 = document.getElementById("snake_head1"); //puts the snake image into the canvas.
 var img_snake_head2 = document.getElementById("snake_head2");
 
 function InitializeBoardArray(dimensions) {
+
     // THIS CODE WORKS; THIS IS OUR BACKUP PLAN
     var cmdCutOff;
     for (var i = 0; i < dimensions.length; ++i) {
@@ -47,6 +48,13 @@ function InitializeBoardArray(dimensions) {
             }
         }
     }
+    canvas = document.createElement("canvas");
+    canvas.width = c*c;
+    canvas.height = r*r;
+    canvas.style = "position:absolute; left: 50%; width: 400px; margin-left: -200px;";
+    context = canvas.getContext("2d");
+    context.font = "20px Times New Roman";
+    document.body.appendChild(canvas);
 
     //var colSet = false;
     //// READ IN THE STRING WHICH IS THE LEVEL
@@ -149,13 +157,6 @@ function update() {
 }
 
 function main() {
- canvas = document.createElement("canvas");
- canvas.width = c*c;
- canvas.height = r*r;
- canvas.style = "position:absolute; left: 50%; width: 400px; margin-left: -200px;";
- context = canvas.getContext("2d");
- context.font = "20px Times New Roman";
- document.body.appendChild(canvas);
 
  startBtn.addEventListener('click', function() {
    var page1 = document.getElementById('connectPage');
@@ -163,7 +164,7 @@ function main() {
 
    page1.style.display = 'none';
    page2.style.display = 'block';
-
+   console.log('hello');
    send("startgame:");
  });
 }
