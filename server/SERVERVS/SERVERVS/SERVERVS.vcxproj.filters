@@ -27,7 +27,7 @@
     <ClCompile Include="..\..\websocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="snake.cpp">
+    <ClCompile Include="..\..\snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

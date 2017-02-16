@@ -145,8 +145,8 @@
     <ClCompile Include="..\..\base64.cpp" />
     <ClCompile Include="..\..\main.cpp" />
     <ClCompile Include="..\..\sha1.cpp" />
+    <ClCompile Include="..\..\snake.cpp" />
     <ClCompile Include="..\..\websocket.cpp" />
-    <ClCompile Include="snake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\base64.h" />

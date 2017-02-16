@@ -1,7 +1,34 @@
-﻿  main.cpp
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(56): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(69): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(189): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(197): warning C4101: 'port': unreferenced local variable
-  SERVERVS.vcxproj -> D:\Users\Daniel\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
-  SERVERVS.vcxproj -> D:\Users\Daniel\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.pdb (Full PDB)
+﻿  websocket.cpp
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(91): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'LPVOID'
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(114): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(151): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(174): warning C4018: '>=': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(187): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(211): warning C4267: '=': conversion from 'size_t' to 'char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(220): warning C4267: '=': conversion from 'size_t' to 'char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(221): warning C4267: '=': conversion from 'size_t' to 'char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(235): warning C4267: '=': conversion from 'size_t' to 'char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(236): warning C4267: '=': conversion from 'size_t' to 'char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(237): warning C4267: '=': conversion from 'size_t' to 'char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(433): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(632): warning C4018: '>=': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(659): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(673): warning C4018: '>=': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(789): warning C4018: '<': signed/unsigned mismatch
+  snake.cpp
+  sha1.cpp
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(226): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(233): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(264): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
+  main.cpp
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(57): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(70): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(206): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(214): warning C4101: 'port': unreferenced local variable
+  base64.cpp
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\base64.cpp(96): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\base64.cpp(113): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
+  Generating Code...
+  LINK : C:\Users\Zachary\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe not found or not built by the last incremental link; performing full link
+  SERVERVS.vcxproj -> C:\Users\Zachary\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
+  SERVERVS.vcxproj -> C:\Users\Zachary\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.pdb (Full PDB)
