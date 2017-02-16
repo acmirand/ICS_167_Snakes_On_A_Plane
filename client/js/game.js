@@ -8,6 +8,12 @@ var wall = 1;
 var free = 0;
 var boardInitialized = false;
 
+//Controls
+var move_left = 37; //left-key
+var move_right = 39; //right-key
+var move_up = 38; //up-key
+var move_down = 40; //down-key
+
 //Snake Game
 var r = 0;
 var c = 0;
@@ -133,6 +139,13 @@ function drawBoard() {
   //context.fillText("P2 Score: " + p2_score, canvas.width - 150, canvas.height - 50);
 
   //window.requestAnimationFrame(drawBoard,canvas);
+}
+
+function update() {
+    if (keystate[move_left]) send(makeDirMessage(2));
+    if (keystate[move_right]) send(makeDirMessage(3));
+    if (keystate[move_up]) send(makeDirMessage(0));
+    if (keystate[move_down]) send(makeDirMessage(1));
 }
 
 function main() {
