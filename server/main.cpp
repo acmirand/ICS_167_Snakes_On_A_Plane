@@ -7,6 +7,7 @@
 #include <time.h>
 #include <algorithm>
 #include "websocket.h"
+#include "snake.cpp"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ std::string UPDATEP2SCORE = "UPDATEP2SCORE:";
 
 /*
 TEMPLATE
-DRAWBOARD:111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111
+DRAWBOARD:20x20
 POSSIBLY HAVE THE CLIENT SAVE THIS STRING AND USE IT WHEN IT RECEIVES RESETBOARD
 */
 //Game State commands
@@ -109,21 +110,21 @@ void messageHandler(int clientID, string message){
 	if (command == "setp1name") {
 
 		// If they did not enter a name, make the default name "Player 1". Else, record the passed in value.
-		if (os.str() == "") { 
-			server.SetPlayerName(0, "Player 1"); 
+		if (os.str() == "") {
+			server.SetPlayerName(0, "Player 1");
 		}
-		else{ 
+		else{
 			server.SetPlayerName(0, os.str());
 		}
 
-		// To ensure the server is keeping track of the names, ask the server for 
+		// To ensure the server is keeping track of the names, ask the server for
 		//the name of player one to print out to the console and send it to the client.
 		std::cout << server.GetPlayerName(clientID, 0) << " has joined the game as Player 1." << std::endl;
 		server.wsSend(clientID, PRINT + "Welcome " + server.GetPlayerName(clientID, 0) + " to the game.");
 		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0));
 	}
 
-	if (command == "setp2name") { 
+	if (command == "setp2name") {
 
 		// If they did not enter a name, make the default name "Player 2". Else, record the passed in value.
 		if (os.str() == "") {
@@ -132,19 +133,19 @@ void messageHandler(int clientID, string message){
 		else {
 			server.SetPlayerName(1, os.str());
 		}
-		// To ensure the server is keeping track of the names, ask the server for 
+		// To ensure the server is keeping track of the names, ask the server for
 		//the name of player 2 to print out to the console and send it to the client.
 		std::cout << server.GetPlayerName(clientID, 1) << " has joined the game as Player 2." << std::endl;
 		server.wsSend(clientID, PRINT + "Welcome " + server.GetPlayerName(clientID, 1) + " to the game.");
 		server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
 	}
 
-	if (command == "getp1name") { 
-		server.GetPlayerName(clientID, 0); 
+	if (command == "getp1name") {
+		server.GetPlayerName(clientID, 0);
 	}
 
-	if (command == "getp2name") { 
-		server.GetPlayerName(clientID, 1); 
+	if (command == "getp2name") {
+		server.GetPlayerName(clientID, 1);
 	}
 
 	if (command == "p1scored") {
@@ -161,6 +162,16 @@ void messageHandler(int clientID, string message){
 		std::cout << "Player 2 scored. Total score is: " << server.GetPlayerScore(1) << std::endl;
 	}
 
+	//INCOMING CLIENT COMMANDS
+	//Change direction commands
+	if (command == "changedirp1") {
+
+	}
+	if (command == "changedirp2") {
+
+	}
+	
+
 	//std::cout << os.str() << std::endl << std::endl;
 
 	//server.SetPlayerName(os.str());
@@ -173,6 +184,12 @@ void messageHandler(int clientID, string message){
     //    if (clientIDs[i] != clientID)
     //        server.wsSend(clientIDs[i], os.str());
     //}
+}
+
+
+//The internal game loop
+void mainLoop() {
+
 }
 
 /* called once per select() loop */

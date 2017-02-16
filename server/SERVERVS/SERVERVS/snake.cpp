@@ -51,7 +51,27 @@ public:
 	std::string getDirString() {
 		return std::to_string(currDir);
 	}
-	
+
+	void update() {
+		switch (currDir) {
+		case 0:
+			//go up
+			head.second--;
+			break;
+		case 1:
+			//go down
+			head.second++;
+			break;
+		case 2:
+			//go left
+			head.first--;
+			break;
+		case 3:
+			//go right
+			head.first++;
+			break;
+		}
+	}
 };
 
 /****************
@@ -66,7 +86,7 @@ private:
 	int board[20][20];
 	int row;
 	int col;
-	std::string boardLayout;
+	//std::string boardLayout;
 
 	//constructor
 	Board() {
@@ -88,14 +108,14 @@ private:
 		}
 
 		// CREATE THE STRING TO BE SENT OUT TO THE CLIENTS FOR BOARD DRAWING
-		for (int i = 0; i < row; ++i) {
-			for (int j = 0; j < col; ++j) {
-				boardLayout += std::to_string(board[i][j]);
-			}
-			if (i != row - 1) {
-				boardLayout += "n"; //adds an "n" at the end of every row except last row
-			}
-		}
+		//for (int i = 0; i < row; ++i) {
+		//	for (int j = 0; j < col; ++j) {
+		//		boardLayout += std::to_string(board[i][j]);
+		//	}
+		//	if (i != row - 1) {
+		//		boardLayout += "n"; //adds an "n" at the end of every row except last row
+		//	}
+		//}
 	}
 public:
 	int getValue(int x, int y) {
@@ -106,9 +126,9 @@ public:
 		board[x][y] = value;
 	}
 
-	std::string getBoardString() {
+	/*std::string getBoardString() {
 		return boardLayout;
-	}
+	}*/
 };
 
 class GameState {
