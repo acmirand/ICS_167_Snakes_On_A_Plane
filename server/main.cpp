@@ -7,18 +7,21 @@
 #include <time.h>
 #include <algorithm>
 #include "websocket.h"
+#include "snake.cpp"
 
 using namespace std;
 
 webSocket server;
+GameState gameState;
+
 std::string PRINT = "print:";
 
 /*
 	COMMAND LIST
 */
 //Scores
-std::string UPDATEP1SCORE = "UPDATEP1SCORE:";
-std::string UPDATEP2SCORE = "UPDATEP2SCORE:";
+std::string UPDATEP1SCORE = "updatep1score:";
+std::string UPDATEP2SCORE = "updatep2score:";
 
 
 /*
@@ -34,7 +37,7 @@ std::string RESETBOARD = "RESETBOARD:";
 TEMPLATE PROTOCOL
 sendFood:23,14
 */
-std::string SENDFOOD = "SENDFOOD:";
+std::string SENDFOOD = "sendfood:";
 
 /*
 TEMPLATE PROTOCOL
@@ -42,8 +45,8 @@ FIRST X-Y PAIR IS THE HEAD AND THE SECOND IS THE TAIL
 P1POSUPDATE:23,14-23,13
 */
 //-----NOTE: Would also need to send direction
-std::string P1POSUPDATE = "P1POSUPDATE:";
-std::string P2POSUPDATE = "P2POSUPDATE:";
+std::string P1POSUPDATE = "p1posupdate:";
+std::string P2POSUPDATE = "p2posupdate:";
 
 
 
@@ -94,9 +97,28 @@ void messageHandler(int clientID, string message){
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
 	if (command == "startgame") {
-		//os << "111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111";
+
+		// SEND THE BOARD LAYOUT
 		os << "20x20";
 		server.wsSend(clientID, DRAWBOARD + os.str());
+
+		// SEND THE STARTING POSITION FOR PLAYER 1
+		os.str(std::string());
+		os.clear();
+		os << "3,2-3,2";
+		server.wsSend(clientID, P1POSUPDATE + os.str() );
+
+		// SEND THE STARTING POSITION FOR PLAYER 2 
+		os.str(std::string());
+		os.clear();
+		os << "5,5-5,5";
+		server.wsSend(clientID, P2POSUPDATE + os.str());
+
+		// SEND THE STARTING FOOD POSITION
+		os.str(std::string());
+		os.clear();
+		os << gameState.getFoodString();
+		server.wsSend(clientID, SENDFOOD + os.str());
 	}
 
 	if (command == "resetgame") {

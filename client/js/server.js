@@ -127,6 +127,15 @@ function connect() {
         else if (command == "resetboard") {
 
         }
+        else if (command == "p1posupdate") {
+            P1PosUpdate(message);
+        }
+        else if (command == "p2posupdate") {
+            P2PosUpdate(message);
+        }
+        else if (command == "sendfood") {
+            SetFood(message);
+        }
 
 
     });

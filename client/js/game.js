@@ -6,6 +6,9 @@ var boardName;
 var board;
 var wall = 1;
 var free = 0;
+var snake1_space = 2;
+var snake2_space = 3;
+var food_space = 4;
 var boardInitialized = false;
 
 //Controls
@@ -55,70 +58,14 @@ function InitializeBoardArray(dimensions) {
     context = canvas.getContext("2d");
     context.font = "20px Times New Roman";
     document.body.appendChild(canvas);
-
-    //var colSet = false;
-    //// READ IN THE STRING WHICH IS THE LEVEL
-    //for (var i = 0; i < boardName.length; ++i) {
-    //    if (boardName[i] == 'n') {
-    //        r++;
-    //        colSet = true;
-    //    }
-    //    if (colSet == false) {
-    //        ++c;
-    //    }
-
-    //}
-
-    //board = [];
-    //for (var x = 0; x < c; x++) {
-    //    board.push([]);
-    //    for (var y = 0; y < r; y++) {
-    //        if (x === 0 || x === r - 1) {
-    //            board[x].push(free);
-    //        }
-    //        else if (y === 0 || y === c - 1) {
-    //            board[x].push(free);
-    //        }
-    //        else {
-    //            board[x].push(free);
-    //        }
-    //    }
-    //}
-
-    ////INITIALIZE THE ARRAY
-    //board = new Array(c);
-    //for (var i = 0; i < c; ++i) {
-    //    board[i] = new Array(r);
-    //}
-
-    ////INITIALIZE THE 2D PART OF THE ARRAY
-    //for (var i = 0; i < c; ++i) {
-    //    for (var j = 0; j < r; ++j) {
-    //        board[i][j] = 0;
-    //    }
-    //}
 }
 
 function drawBoard() {
 
-  //   //RUN THROUGH THE ENTIRE STRING USING INDEX
-  //   //THEN USE A DOULBE FOR LOOP TO ASSIGN EACH POSITION ON THE BOARD
-  //   //THE APPROPRIATE DESGINATION.
-  //var index = 0;
-  //for (var i = 0; i < c; ++i){
-  //  for (var j = 0; j < r; ++j){
-  //      if (boardName[index] == '0') {			//free space
-  //          board[i][j] = free;
-  //    }
-  //      else if (boardName[index] == '1') {		//wall
-  //          board[i][j] = wall;
-  //    }
-  //    ++index;
-  //  }
-  //}
-
   var width = r;
   var height = c;
+  var snake1_pat = context.createPattern(snake_head1, "repeat"); //needs to have repeat for the image.
+  var snake2_pat = context.createPattern(snake_head2, "repeat");
   for (var x =0; x < width; x++){ //loops through the game board array and fills each space accordingly.
       for (var y = 0; y < height; y++) {
 
@@ -126,27 +73,108 @@ function drawBoard() {
         case free:
             context.fillStyle = "#fff";
           break;
-        // case snake1_space:
-        //   context.fillStyle = snake1_pat;
-        //   break;
-        // case snake2_space:
-        //   context.fillStyle = snake2_pat;
-        //   break;
-        // case food_space:
-        //   context.fillStyle = "#f00";
-        //   break;
+         case snake1_space:
+           context.fillStyle = snake1_pat;
+           break;
+         case snake2_space:
+           context.fillStyle = snake2_pat;
+           break;
+         case food_space:
+           context.fillStyle = "#f00";
+           break;
         case wall:
             context.fillStyle = "#000";
           break;
       }
       context.fillRect(x*width, y*height, width, height); //fills the canvas rectangle style.
+        }
     }
-  }
-  context.fillStyle = "#000"; //white background.
+    context.fillStyle = "#000"; //white background.
   //context.fillText("P1 Score: " + p1_score, 50, canvas.height - 50); //for the score.
   //context.fillText("P2 Score: " + p2_score, canvas.width - 150, canvas.height - 50);
 
-  //window.requestAnimationFrame(drawBoard,canvas);
+    window.requestAnimationFrame(drawBoard,canvas);
+}
+
+function SetFood(pos) {
+
+    console.log(pos);
+
+    var cmdCutOff;
+    for (var i = 0; i < pos.length; ++i) {
+        if (pos[i] == ',') {
+            cmdCutOff = i; break;
+        }
+    }
+
+    var xFood = pos.substring(0, cmdCutOff);
+    var yFood = pos.substring(cmdCutOff + 1);
+
+    board[xFood][yFood] = food_space;
+}
+
+function P1PosUpdate(pos) {
+
+    var cmdCutOff;
+    for (var i = 0; i < pos.length; ++i) {
+        if (pos[i] == '-') {
+            cmdCutOff = i; break;
+        }
+    }
+
+    var HeadPos = pos.substring(0, cmdCutOff);
+    var TailPos = pos.substring(cmdCutOff + 1);
+
+    for (var i = 0; i < HeadPos.length; ++i) {
+        if (HeadPos[i] == ',') {
+            cmdCutOff = i; break;
+        }
+    }
+    var xHead = parseInt(HeadPos.substring(0, cmdCutOff));
+    var yHead = parseInt(HeadPos.substring(cmdCutOff + 1));
+
+    for (var i = 0; i < TailPos.length; ++i) {
+        if (TailPos[i] == ',') {
+            cmdCutOff = i; break;
+        }
+    }
+    var xTail = parseInt(TailPos.substring(0, cmdCutOff));
+    var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
+
+    board[xHead][yHead] = snake1_space;
+    board[xTail][yTail] = snake1_space;
+}
+
+function P2PosUpdate(pos) {
+
+    var cmdCutOff;
+    for (var i = 0; i < pos.length; ++i) {
+        if (pos[i] == '-') {
+            cmdCutOff = i; break;
+        }
+    }
+
+    var HeadPos = pos.substring(0, cmdCutOff);
+    var TailPos = pos.substring(cmdCutOff + 1);
+
+    for (var i = 0; i < HeadPos.length; ++i) {
+        if (HeadPos[i] == ',') {
+            cmdCutOff = i; break;
+        }
+    }
+    var xHead = parseInt(HeadPos.substring(0, cmdCutOff));
+    var yHead = parseInt(HeadPos.substring(cmdCutOff + 1));
+
+    for (var i = 0; i < TailPos.length; ++i) {
+        if (TailPos[i] == ',') {
+            cmdCutOff = i; break;
+        }
+    }
+    var xTail = parseInt(TailPos.substring(0, cmdCutOff));
+    var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
+
+    board[xHead][yHead] = snake2_space;
+    board[xTail][yTail] = snake2_space;
 }
 
 function update() {
@@ -164,7 +192,7 @@ function main() {
 
    page1.style.display = 'none';
    page2.style.display = 'block';
-   console.log('hello');
+
    send("startgame:");
  });
 }

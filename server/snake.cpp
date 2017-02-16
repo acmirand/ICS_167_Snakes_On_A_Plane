@@ -2,6 +2,8 @@
 #include <string>
 #include <utility>
 #include "stdlib.h"
+#include "time.h"
+#include <ctime>
 
 class Snake {
 private:
@@ -26,7 +28,6 @@ public:
 
 	void setTail(int x, int y) {
 		tail = std::make_pair(x, y);
-
 	}
 
 	//RETURNS SNAKE HEAD AND TAIL AS "x,y-x,y" (First pair is head, second pair is tail)
@@ -58,8 +59,9 @@ public:
  BOARD STATES
 	0 - free
 	1 - wall
-	2 - food
-	3 - snake
+	2 - snake 1
+	3 - snake 2
+	4 - food
 *****************/
 class Board {
 private:
@@ -67,6 +69,7 @@ private:
 	int row;
 	int col;
 	std::string boardLayout;
+public:
 
 	//constructor
 	Board() {
@@ -86,18 +89,8 @@ private:
 				}
 			}
 		}
-
-		// CREATE THE STRING TO BE SENT OUT TO THE CLIENTS FOR BOARD DRAWING
-		for (int i = 0; i < row; ++i) {
-			for (int j = 0; j < col; ++j) {
-				boardLayout += std::to_string(board[i][j]);
-			}
-			if (i != row - 1) {
-				boardLayout += "n"; //adds an "n" at the end of every row except last row
-			}
-		}
 	}
-public:
+
 	int getValue(int x, int y) {
 		return board[x][y];
 	}
@@ -119,6 +112,11 @@ private:
 	std::pair<int, int> foodXY; //stores current food location
 
 public:
+
+	GameState() {
+		setFood();
+	}
+
 	/****** BOARD STUFF ******/
 	Board getBoard() {
 		return board;
@@ -136,9 +134,19 @@ public:
 	/****** FOOD STUFF ******/
 	// Sets random food
 	void setFood() {
-		foodXY = std::make_pair(rand() % 20, rand() % 20);
 
-		board.setValue(foodXY.first, foodXY.second, 2); // 2 for food
+		srand(time(0));
+
+		while (true) {
+			int randX = floor(rand() % 20);
+			int randY = floor(rand() % 20);
+
+			if (board.getValue(randX, randY) == 0) {
+				board.setValue(randX, randY, 4);
+				foodXY = std::make_pair(randX, randY);
+				break;
+			}
+		}
 	}
 
 	// Returns current food location
