@@ -170,7 +170,7 @@ void messageHandler(int clientID, string message){
 	if (command == "changedirp2") {
 
 	}
-	
+
 
 	//std::cout << os.str() << std::endl << std::endl;
 
