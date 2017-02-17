@@ -152,7 +152,7 @@ function P1PosUpdate(pos) {
     }
 
     var HeadPos = pos.substring(0, cmdCutOff);
-    var TailPos = pos.substring(cmdCutOff + 1);
+    //var TailPos = pos.substring(cmdCutOff + 1);
 
     for (var i = 0; i < HeadPos.length; ++i) {
         if (HeadPos[i] == ',') {
@@ -162,16 +162,16 @@ function P1PosUpdate(pos) {
     var xHead = parseInt(HeadPos.substring(0, cmdCutOff));
     var yHead = parseInt(HeadPos.substring(cmdCutOff + 1));
 
-    for (var i = 0; i < TailPos.length; ++i) {
-        if (TailPos[i] == ',') {
-            cmdCutOff = i; break;
-        }
-    }
-    var xTail = parseInt(TailPos.substring(0, cmdCutOff));
-    var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
+    //for (var i = 0; i < TailPos.length; ++i) {
+    //    if (TailPos[i] == ',') {
+    //        cmdCutOff = i; break;
+    //    }
+    //}
+    //var xTail = parseInt(TailPos.substring(0, cmdCutOff));
+    //var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
 
     board[xHead][yHead] = snake1_space;
-    board[xTail][yTail] = snake1_space;
+    //board[xTail][yTail] = snake1_space;
 }
 
 function ClearP1Tail(pos) {
@@ -197,7 +197,7 @@ function P2PosUpdate(pos) {
     }
 
     var HeadPos = pos.substring(0, cmdCutOff);
-    var TailPos = pos.substring(cmdCutOff + 1);
+    //var TailPos = pos.substring(cmdCutOff + 1);
 
     for (var i = 0; i < HeadPos.length; ++i) {
         if (HeadPos[i] == ',') {
@@ -207,16 +207,16 @@ function P2PosUpdate(pos) {
     var xHead = parseInt(HeadPos.substring(0, cmdCutOff));
     var yHead = parseInt(HeadPos.substring(cmdCutOff + 1));
 
-    for (var i = 0; i < TailPos.length; ++i) {
-        if (TailPos[i] == ',') {
-            cmdCutOff = i; break;
-        }
-    }
-    var xTail = parseInt(TailPos.substring(0, cmdCutOff));
-    var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
+    //for (var i = 0; i < TailPos.length; ++i) {
+    //    if (TailPos[i] == ',') {
+    //        cmdCutOff = i; break;
+    //    }
+    //}
+    //var xTail = parseInt(TailPos.substring(0, cmdCutOff));
+    //var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
 
     board[xHead][yHead] = snake2_space;
-    board[xTail][yTail] = snake2_space;
+   // board[xTail][yTail] = snake2_space;
 }
 
 function ClearP2Tail(pos) {

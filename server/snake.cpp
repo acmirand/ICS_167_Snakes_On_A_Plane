@@ -1,4 +1,4 @@
-#include <vector>
+#include <deque>
 #include <string>
 #include <sstream>
 #include <utility>
@@ -67,9 +67,8 @@ class Snake {
 private:
 	int currDir = 1; //0 - UP, 1 - DOWN, 2 = LEFT, 3 - RIGHT
 	int player; //possibly client ID
-	std::vector<std::pair<int, int>> snakeArray; //every x-y pair of each part of the snake
+	std::deque<std::pair<int, int>> snakeArray; //every x-y pair of each part of the snake
 	std::pair<int, int> head;
-	std::pair<int, int> tail;
 
 public:
 	void setPlayer(int p) {
@@ -80,26 +79,44 @@ public:
 		return player;
 	}
 
-	void setHead(int x, int y) {
-		head = std::make_pair(x, y);
+	// Set the Head and Tail in the Snake Array
+	// Clear the contents of the array so games do not carry over into each other.
+	// Pusht the head to the back and then the tail.
+	// This will push the head of the snake to position 0 and tail to the last element.
+	void InitializeSnake(int xH, int yH) {
+		snakeArray.clear();
+		snakeArray.push_back(std::make_pair(xH, yH));
 	}
 
-	void setTail(int x, int y) {
-		tail = std::make_pair(x, y);
+	void setHead(int x, int y) {
+		snakeArray[0] = std::make_pair(x, y);
 	}
 
 	//RETURNS SNAKE HEAD AND TAIL AS "x,y-x,y" (First pair is head, second pair is tail)
 	std::string getPosString() {
-		std::string h = std::to_string(head.first) + "," + std::to_string(head.second);
-		std::string t = std::to_string(tail.first) + "," + std::to_string(tail.second);
-		return (h + "-" + t);
+		std::string h = std::to_string(snakeArray.front().first) + "," + std::to_string(snakeArray.front().second);
+		return (h);
 	}
 
+	// Access the first element in the snake array.
 	std::pair<int, int> getHead() {
-		return head;
+		return snakeArray.front();
 	}
 
+	// Access the last element in the snake array.
 	std::pair<int, int> getTail() {
+		return snakeArray.back();
+	}
+
+	void Insert(int x, int y) {
+		snakeArray.push_front(std::make_pair(x, y));
+		head = snakeArray[0];
+	}
+
+	// Return the last element in the array and then pop it from the array.
+	std::pair<int, int> RemoveTail() {
+		std::pair<int, int> tail = getTail();
+		snakeArray.pop_back();
 		return tail;
 	}
 
@@ -233,20 +250,77 @@ private:
 	std::vector<int> clientIDs;
 	ostringstream os;
 
+	std::pair<int, int> oldTail_1;
+	std::pair<int, int> oldTail_2;
+
 public:
 
 	GameState(webSocket* server) {
 		serverRef = server;
 	}
 
+	void Init() {
+		/***********************
+		Server Game State
+		***********************/
+		//reset score
+		snake1score = 0;
+		snake2score = 0;
+
+		//reset board
+		board.ResetBoard();
+		setFood();
+		snake1.InitializeSnake(3, 2);
+		snake2.InitializeSnake(5, 5);
+
+		board.setValue(snake1.getHead().first, snake1.getHead().second, 2);
+		board.setValue(snake2.getHead().first, snake2.getHead().second, 3);
+
+		//reset snake direction
+		snake1.resetDirection();
+		snake2.resetDirection();
+
+		/***********************
+		Client Updates
+		***********************/
+		for (int i = 0; i < clientIDs.size(); ++i) {
+
+			// SEND THE BOARD LAYOUT
+			os.str(std::string());
+			os.clear();
+			os << "20x20";
+			serverRef->wsSend(clientIDs[i], "drawboard:" + os.str());
+
+			// SEND THE STARTING POSITION FOR PLAYER 1
+			serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
+
+			// SEND THE STARTING POSITION FOR PLAYER 2 
+			serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
+
+			serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score));
+			serverRef->wsSend(clientIDs[i], "updateP2Score:" + std::to_string(snake2score));
+
+			// SEND THE STARTING FOOD POSITION
+			os.str(std::string());
+			os.clear();
+			os << getFoodString();
+			serverRef->wsSend(clientIDs[i], "sendfood:" + os.str());
+		}
+
+		UpdateLoop();
+	}
+
 	void UpdateLoop() {
-		std::time_t startTime = std::time(0);
-		std::pair<int, int> snake1_tail;
-		std::pair<int, int> snake2_tail;
+
+		bool snake1Ate = false;
+		bool snake2Ate = false;
+
+		//std::pair<int, int> snake1_tail;
+		//std::pair<int, int> snake2_tail;
 
 		while (true) {
-			snake1_tail = snake1.getTail();
-			snake2_tail = snake2.getTail();
+			//snake1_tail = snake1.getTail();
+			//snake2_tail = snake2.getTail();
 
 			//Keypress listener
 			//Would need to make this work for 2 clients
@@ -263,19 +337,27 @@ public:
 				snake1.setDirection(3);
 				snake2.setDirection(3);
 			}
-			//if (!UpdateSnake1()) break;
-			//if (!UpdateSnake2()) break;
-			UpdateSnake1();
-			UpdateSnake2();
+
+			snake1Ate = UpdateSnake1();
+			snake2Ate = UpdateSnake2();
 
 			for (int i = 0; i < clientIDs.size(); ++i) {
+
 				serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
 				serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
-				serverRef->wsSend(clientIDs[i], "clearp1tail:" + std::to_string(snake1_tail.first) + "," + std::to_string(snake1_tail.second));
-				serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(snake2_tail.first) + "," + std::to_string(snake2_tail.second));
+
+				if (snake1Ate || snake2Ate) {
+
+					serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score));
+					serverRef->wsSend(clientIDs[i], "updateP2Score:" + std::to_string(snake2score));
+					serverRef->wsSend(clientIDs[i], "sendfood:" + os.str());
+				}
+
+				serverRef->wsSend(clientIDs[i], "clearp1tail:" + std::to_string(oldTail_1.first) + "," + std::to_string(oldTail_1.second));
+				serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(oldTail_2.first) + "," + std::to_string(oldTail_2.second));
 			}
 			
-			std::this_thread::sleep_for(std::chrono::milliseconds(750));
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
 	}
 
@@ -286,61 +368,6 @@ public:
 	/****** BOARD STUFF ******/
 	Board getBoard() {
 		return board;
-	}
-
-	void Init() {
-		/***********************
-			Server Game State
-		***********************/
-		//reset score
-		snake1score = 0;
-		snake2score = 0;
-
-		//reset board
-		board.ResetBoard();
-		setFood();
-		board.setValue(snake1.getHead().first, snake1.getHead().second, 2);
-		board.setValue(snake1.getTail().first, snake1.getTail().second, 2);
-		board.setValue(snake2.getHead().first, snake2.getHead().second, 3);
-		board.setValue(snake2.getTail().first, snake2.getTail().second, 3);
-
-		//reset snake direction
-		snake1.resetDirection();
-		snake2.resetDirection();
-
-		/***********************
-			Client Updates
-		***********************/
-		for (int i = 0; i < clientIDs.size(); ++i) {
-
-			// SEND THE BOARD LAYOUT
-			os << "20x20";
-			serverRef->wsSend(clientIDs[i], "drawboard:" + os.str());
-
-			// SEND THE STARTING POSITION FOR PLAYER 1
-			os.str(std::string());
-			//os.clear();
-			//os << "3,2-3,2";
-			SetSnake1Position(3, 2, 3, 2);
-			serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
-			//gameState.getBoard().setValue(3, 2, 3); //sets snake 1 position on board
-
-			// SEND THE STARTING POSITION FOR PLAYER 2 
-			os.str(std::string());
-			//os.clear();
-			//os << "5,5-5,5";
-			SetSnake2Position(5, 5, 5, 5);
-			serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
-			//gameState.getBoard().setValue(5, 5, 4); //sets snake 1 position on board
-
-			// SEND THE STARTING FOOD POSITION
-			os.str(std::string());
-			os.clear();
-			os << getFoodString();
-			serverRef->wsSend(clientIDs[i], "sendfood:" + os.str());
-		}
-
-		UpdateLoop();
 	}
 
 	/****** SNAKE STUFF ******/
@@ -355,6 +382,8 @@ public:
 	bool UpdateSnake1() {
 		int nextX = snake1.getHead().first;
 		int nextY = snake1.getHead().second;
+
+		bool snakeAte = false;
 
 		switch (snake1.GetDir()) {
 		case 0:
@@ -371,35 +400,42 @@ public:
 			break;
 		}
 
+		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
+			Init(); //resets the game
+			return false;
+		}
+
 		if (isFood(nextX, nextY)) {
+
+			oldTail_1.first = nextX;
+			oldTail_1.second = nextY;
+
 			snake1score++;
-			serverRef->wsSend(0, "updateP1Score:" + std::to_string(snake1score));
-			std::cout << "S1 score: " << snake1score << std::endl;
 			setFood();
 
 			os.str(std::string());
 			os.clear();
 			os << getFoodString();
-			//serverRef->wsSend(clientIDs[0], "sendfood:" + os.str());
-			serverRef->wsSend(0, "sendfood:" + os.str());
-		}
 
-		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
-			Init(); //resets the game
-			return false;
+			snakeAte = true;
 		}
 		else {
-			board.setValue(snake1.getTail().first, snake1.getTail().second, 0);
-			snake1.setHead(nextX, nextY);
-			snake1.setTail(nextX, nextY);
-			board.setValue(snake1.getHead().first, snake1.getHead().second, 2);
-			return true;
+			oldTail_1 = snake1.RemoveTail();
+			board.setValue(oldTail_1.first, oldTail_1.second, 0);
+			snakeAte = false;
 		}
+
+		snake1.Insert(nextX, nextY);
+		board.setValue(snake1.getHead().first, snake1.getHead().second, 2);
+
+		return snakeAte;
 	}
 
 	bool UpdateSnake2() {
 		int nextX = snake2.getHead().first;
 		int nextY = snake2.getHead().second;
+
+		bool snakeAte = false;
 
 		switch (snake2.GetDir()) {
 		case 0:
@@ -416,40 +452,35 @@ public:
 			break;
 		}
 
-		if (isFood(nextX, nextY)) {
-			snake2score++;
-			serverRef->wsSend(0, "updateP2Score:" + std::to_string(snake2score));
-			std::cout << "S2 score: " << snake2score << std::endl;
-			setFood();
-
-			os.str(std::string());
-			os.clear();
-			os << getFoodString();
-			//serverRef->wsSend(clientIDs[1], "sendfood:" + os.str());
-			serverRef->wsSend(0, "sendfood:" + os.str());
-		}
-
 		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
 			Init(); //resets the game
 			return false;
 		}
-		else {
-			board.setValue(snake2.getTail().first, snake2.getTail().second, 0);
-			snake2.setHead(nextX, nextY);
-			snake2.setTail(nextX, nextY);
-			board.setValue(snake2.getHead().first, snake2.getHead().second, 3);
-			return true;
+
+		if (isFood(nextX, nextY)) {
+
+			oldTail_2.first = nextX;
+			oldTail_2.second = nextY;
+
+			snake2score++;
+
+			setFood();
+			os.str(std::string());
+			os.clear();
+			os << getFoodString();
+
+			snakeAte = true;
 		}
-	}
+		else {
+			oldTail_2 = snake2.RemoveTail();
+			board.setValue(oldTail_2.first, oldTail_2.second, 0);
+			snakeAte = false;
+		}
 
-	void SetSnake1Position(int xHead, int yHead, int xTail, int yTail) {
-		snake1.setHead(xHead, yHead);
-		snake1.setTail(xTail, yTail);
-	}
+		snake2.Insert(nextX, nextY);
+		board.setValue(snake2.getHead().first, snake2.getHead().second, 3);
 
-	void SetSnake2Position(int xHead, int yHead, int xTail, int yTail) {
-		snake2.setHead(xHead, yHead);
-		snake2.setTail(xTail, yTail);
+		return snakeAte;
 	}
 
 	void setSnake1Dir(int dir) {
