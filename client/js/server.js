@@ -21,7 +21,9 @@ var snakeGame = document.getElementById('snake');
 var SETP1NAME = "setp1name:";
 var SETP2NAME = "setp2name:";
 var GETP1NAME = "getp1name:";
-var GETP2NAME = "getp2name:";
+var STARTGAME = "startgame:";
+var SETNAME = "setname:";
+//var GETP2NAME = "getp2name:";
 
 //SCORES
 var P1SCORED = "p1scored:";
@@ -51,7 +53,7 @@ function send(text) {
 
 function connect() {
     p1id = document.getElementById('p1id').value; //get p1 id from text field
-    p2id = document.getElementById('p2id').value; //get p2 id from text field
+    //p2id = document.getElementById('p2id').value; //get p2 id from text field
     log('Connecting...');
 
     Server = new FancyWebSocket('ws://' + document.getElementById('ip').value + ':' + document.getElementById('port').value);
@@ -70,21 +72,14 @@ function connect() {
         document.getElementById("cntBtn").disabled = true;
         log("Connected.");
 
-        setTimeout(function () {
-            var page1 = document.getElementById('connectPage');
-            var page2 = document.getElementById('snakePage');
-
-            connectBtn.style.visibility = 'hidden';
-            startBtn.style.visibility = "visible";
-        }, 300);
-
         // Once a connection to the server has been established, send over the names
         // of the players.
-        send(SETP1NAME + p1id);
-        send(SETP2NAME + p2id);
+        //send(SETP1NAME + p1id);
+        //send(SETP2NAME + p2id);
+        send(SETNAME + p1id);
 
         //log('Welcome to snakes ' + p1id + " and " + p2id + "!");
-        log("Click the Start Game button when you're ready to play.");
+        log("Waiting for player 2...");
 
         var textInput = document.getElementById('log').value.split('\n');
         var lastValue;
@@ -118,6 +113,24 @@ function connect() {
 
         if (command == "print") {
             log(message);
+        } else if (command == "ready") {
+            console.log("starting game!" + " message: " + message);
+            if (message == "2") {
+
+                setTimeout(function () {
+                    var page1 = document.getElementById('connectPage');
+                    var page2 = document.getElementById('snakePage');
+
+                    connectBtn.style.visibility = 'hidden';
+                    startBtn.style.visibility = "visible";
+                }, 300);
+            }
+        } else if (command == "begin") {
+            var page1 = document.getElementById('connectPage');
+            var page2 = document.getElementById('snakePage');
+
+            page1.style.display = 'none';
+            page2.style.display = 'block';
         }
         else if (command == "updateP1Score") {
             p1_score = parseInt(message);
@@ -130,7 +143,7 @@ function connect() {
             drawBoard();
         }
         else if (command == "resetboard") {
-
+          
         }
         else if (command == "p1posupdate") {
             P1PosUpdate(message);

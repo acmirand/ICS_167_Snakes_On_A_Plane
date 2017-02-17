@@ -17,14 +17,17 @@ GameState gameState(&server);
 /* called when a client connects */
 void openHandler(int clientID){
     ostringstream os;
-    os << "Stranger " << clientID << " has joined.";
+    os << "Player 2 has joined.";
 
     vector<int> clientIDs = server.getClientIDs();
     for (int i = 0; i < clientIDs.size(); i++){
         if (clientIDs[i] != clientID)
-            server.wsSend(clientIDs[i], os.str());
+            server.wsSend(clientIDs[i], "print:" + os.str());
+
+		if (server.numOfActiveConnections == 2) {
+			server.wsSend(clientIDs[i], "ready:2");
+		}
     }
-    server.wsSend(clientID, "");
 }
 
 /* called when a client disconnects */
@@ -61,7 +64,10 @@ void messageHandler(int clientID, string message){
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
 	if (command == "startgame") {
-
+		vector<int> clientIDs = server.getClientIDs();
+		for (int i = 0; i < clientIDs.size(); i++) {
+			server.wsSend(clientIDs[i], "begin:");
+		}
 		gameState.SetClientIDs(server.getClientIDs());
 
 		gameState.Init();
@@ -102,6 +108,14 @@ void messageHandler(int clientID, string message){
 	//	server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
 	//}
 
+	if (command == "setname") {
+		if (os.str() == "") {
+			server.SetPlayerName(clientID, "Player " + clientID+1);
+		}
+		else {
+			server.SetPlayerName(clientID, os.str());
+		}
+	}
 	//// Commands to process incoming messages.
 	//if (command == "setp1name") {
 

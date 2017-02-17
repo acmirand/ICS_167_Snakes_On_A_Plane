@@ -748,13 +748,13 @@ void webSocket::startServer(int port){
                     if (i == listenfd){
                         socklen_t addrlen = sizeof(cli_addr);
                         int newfd = accept(listenfd, (struct sockaddr*)&cli_addr, &addrlen);
-                        if (newfd != -1 && wsClients.size() < 1){
+                        if (newfd != -1 && wsClients.size() < 2){
                             /* add new client */
                             wsAddClient(newfd, cli_addr.sin_addr);
                             printf("New connection from %s on socket %d\n", inet_ntoa(cli_addr.sin_addr), newfd);
 							++numOfActiveConnections;
                         }
-						else if (wsClients.size() >= 1) {
+						else if (wsClients.size() >= 2) {
 							printf("Server at maximum capacity. New Connection Blocked.");
 						}
                     }

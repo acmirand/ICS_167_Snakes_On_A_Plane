@@ -1,3 +1,5 @@
+var numPlayers = 0;
+
 var canvas;
 var context;
 
@@ -248,18 +250,13 @@ function main() {
   document.getElementById("port").value = "8000";
 
  startBtn.addEventListener('click', function() {
-   var page1 = document.getElementById('connectPage');
-   var page2 = document.getElementById('snakePage');
-
-   page1.style.display = 'none';
-   page2.style.display = 'block';
-
    send("startgame:");
  });
 
  keystate = {};
  document.addEventListener("keydown", function (evt) {
      keystate[evt.keyCode] = true;
+     getInput();
  });
 
  document.addEventListener("keyup", function (evt) {
