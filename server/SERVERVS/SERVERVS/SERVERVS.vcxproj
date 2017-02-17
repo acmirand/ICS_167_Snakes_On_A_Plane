@@ -154,6 +154,11 @@
     <ClInclude Include="..\..\websocket.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\client\index.html" />
+    <None Include="..\..\..\client\js\fancywebsocket.js" />
+    <None Include="..\..\..\client\js\game.js" />
+    <None Include="..\..\..\client\js\server.js" />
+    <None Include="..\..\..\client\js\snake.js" />
     <None Include="..\..\Makefile" />
     <None Include="..\..\README" />
   </ItemGroup>
