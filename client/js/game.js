@@ -91,6 +91,7 @@ function drawBoard() {
   var height = c;
   var snake1_pat = context.createPattern(snake_head1, "repeat"); //needs to have repeat for the image.
   var snake2_pat = context.createPattern(snake_head2, "repeat");
+  var breadstick_pat = context.createPattern(breadstick, "repeat");
   for (var x =0; x < width; x++){ //loops through the game board array and fills each space accordingly.
       for (var y = 0; y < height; y++) {
 
@@ -105,7 +106,7 @@ function drawBoard() {
            context.fillStyle = snake2_pat;
            break;
          case food_space:
-           context.fillStyle = "#f00";
+           context.fillStyle = breadstick_pat;
            break;
         case wall:
             context.fillStyle = "#000";
@@ -238,6 +239,10 @@ function getInput() {
 
 
 function main() {
+
+  //for testing purposes
+  document.getElementById("ip").value = "127.0.0.1";
+  document.getElementById("port").value = "8000";
 
  startBtn.addEventListener('click', function() {
    var page1 = document.getElementById('connectPage');

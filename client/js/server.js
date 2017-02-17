@@ -76,7 +76,7 @@ function connect() {
 
             connectBtn.style.visibility = 'hidden';
             startBtn.style.visibility = "visible";
-        }, 1000);
+        }, 300);
 
         // Once a connection to the server has been established, send over the names
         // of the players.
