@@ -16,21 +16,21 @@ c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\websocke
 c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\websocket.cpp(673): warning C4018: '>=': signed/unsigned mismatch
 c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\websocket.cpp(789): warning C4018: '<': signed/unsigned mismatch
   snake.cpp
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(269): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(300): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(430): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(433): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(434): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(271): warning C4018: '<': signed/unsigned mismatch
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(314): warning C4018: '<': signed/unsigned mismatch
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(467): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(470): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(471): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   sha1.cpp
 c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\sha1.cpp(226): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
 c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\sha1.cpp(233): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
 c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\sha1.cpp(264): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
   main.cpp
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(269): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(300): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(430): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(433): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(434): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(271): warning C4018: '<': signed/unsigned mismatch
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(314): warning C4018: '<': signed/unsigned mismatch
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(467): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(470): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(471): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(23): warning C4018: '<': signed/unsigned mismatch
 c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(36): warning C4018: '<': signed/unsigned mismatch
 c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(211): warning C4018: '<': signed/unsigned mismatch

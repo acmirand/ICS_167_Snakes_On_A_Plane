@@ -18,6 +18,8 @@ var move_up = 38; //up-key
 var move_down = 40; //down-key
 
 //Snake Game
+var p1_score = 0;
+var p2_score = 0;
 var r = 20;
 var c = 20;
 
@@ -66,11 +68,12 @@ function InitializeBoardArray(dimensions) {
     }
     else {
         ClearBoard();
+        p1_score = 0;
+        p2_score = 0;
     }
 }
 
 function ClearBoard() {
-
     for (var x = 0; x < c; x++) {
         for (var y = 0; y < r; y++) {
             if (x === 0 || x === r - 1) {
@@ -116,8 +119,8 @@ function drawBoard() {
         }
     }
     context.fillStyle = "#000"; //white background.
-  //context.fillText("P1 Score: " + p1_score, 50, canvas.height - 50); //for the score.
-  //context.fillText("P2 Score: " + p2_score, canvas.width - 150, canvas.height - 50);
+    context.fillText("P1 Score: " + p1_score, 20, canvas.height - 21); //for the score.
+    context.fillText("P2 Score: " + p2_score, canvas.width - 120, canvas.height - 21);
 
     window.requestAnimationFrame(drawBoard, canvas);
 }

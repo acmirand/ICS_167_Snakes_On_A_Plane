@@ -114,6 +114,9 @@ public:
 			currDir = dir;
 	}
 
+	void resetDirection() {
+		currDir = 1;
+	}
 	//void update() {
 
 	//	int nextX = head.first;
@@ -219,6 +222,8 @@ private:
 	Board board;
 	Snake snake1; //p1 snake instance
 	Snake snake2; //p2 snake instance
+	int snake1score = 0;
+	int snake2score = 0;
 	std::pair<int, int> foodXY; //stores current food location
 
 	int frames = 0;
@@ -246,19 +251,15 @@ public:
 			//Keypress listener
 			//Would need to make this work for 2 clients
 			if (GetAsyncKeyState(VK_UP)) {
-				std::cout << "Pressed UP" << std::endl;
 				snake1.setDirection(0);
 				snake2.setDirection(0);
 			} else if (GetAsyncKeyState(VK_DOWN)) {
-				std::cout << "Pressed DOWN" << std::endl;
 				snake1.setDirection(1);
 				snake2.setDirection(1);
 			} else if (GetAsyncKeyState(VK_LEFT)) {
-				std::cout << "Pressed LEFT" << std::endl;
 				snake1.setDirection(2);
 				snake2.setDirection(2);
 			} else if (GetAsyncKeyState(VK_RIGHT)) {
-				std::cout << "Pressed RIGHT" << std::endl;
 				snake1.setDirection(3);
 				snake2.setDirection(3);
 			}
@@ -288,8 +289,14 @@ public:
 	}
 
 	void Init() {
+		/***********************
+			Server Game State
+		***********************/
+		//reset score
+		snake1score = 0;
+		snake2score = 0;
 
-		// Server Game State
+		//reset board
 		board.ResetBoard();
 		setFood();
 		board.setValue(snake1.getHead().first, snake1.getHead().second, 2);
@@ -297,7 +304,13 @@ public:
 		board.setValue(snake2.getHead().first, snake2.getHead().second, 3);
 		board.setValue(snake2.getTail().first, snake2.getTail().second, 3);
 
-		// Client Updates
+		//reset snake direction
+		snake1.resetDirection();
+		snake2.resetDirection();
+
+		/***********************
+			Client Updates
+		***********************/
 		for (int i = 0; i < clientIDs.size(); ++i) {
 
 			// SEND THE BOARD LAYOUT
@@ -340,8 +353,6 @@ public:
 	}
 
 	bool UpdateSnake1() {
-		std::cout << "S1 CurrDir: " << snake1.GetDir() << std::endl;
-
 		int nextX = snake1.getHead().first;
 		int nextY = snake1.getHead().second;
 
@@ -360,8 +371,21 @@ public:
 			break;
 		}
 
+		if (isFood(nextX, nextY)) {
+			snake1score++;
+			serverRef->wsSend(0, "updateP1Score:" + std::to_string(snake1score));
+			std::cout << "S1 score: " << snake1score << std::endl;
+			setFood();
+
+			os.str(std::string());
+			os.clear();
+			os << getFoodString();
+			//serverRef->wsSend(clientIDs[0], "sendfood:" + os.str());
+			serverRef->wsSend(0, "sendfood:" + os.str());
+		}
+
 		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
-			Init();
+			Init(); //resets the game
 			return false;
 		}
 		else {
@@ -374,7 +398,6 @@ public:
 	}
 
 	bool UpdateSnake2() {
-
 		int nextX = snake2.getHead().first;
 		int nextY = snake2.getHead().second;
 
@@ -393,8 +416,21 @@ public:
 			break;
 		}
 
+		if (isFood(nextX, nextY)) {
+			snake2score++;
+			serverRef->wsSend(0, "updateP2Score:" + std::to_string(snake2score));
+			std::cout << "S2 score: " << snake2score << std::endl;
+			setFood();
+
+			os.str(std::string());
+			os.clear();
+			os << getFoodString();
+			//serverRef->wsSend(clientIDs[1], "sendfood:" + os.str());
+			serverRef->wsSend(0, "sendfood:" + os.str());
+		}
+
 		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
-			Init();
+			Init(); //resets the game
 			return false;
 		}
 		else {
