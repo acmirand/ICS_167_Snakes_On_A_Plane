@@ -6,9 +6,16 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <conio.h>
+//#include <windows.h>
 #include "stdlib.h"
 #include "time.h"
 #include "websocket.h"
+
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
 
 //std::string PRINT = "print:";
 //
@@ -228,15 +235,33 @@ public:
 	}
 
 	void UpdateLoop() {
-
 		std::time_t startTime = std::time(0);
 		std::pair<int, int> snake1_tail;
 		std::pair<int, int> snake2_tail;
 
 		while (true) {
-
 			snake1_tail = snake1.getTail();
 			snake2_tail = snake2.getTail();
+
+			//Keypress listener
+			//Would need to make this work for 2 clients
+			if (GetAsyncKeyState(VK_UP)) {
+				std::cout << "Pressed UP" << std::endl;
+				snake1.setDirection(0);
+				snake2.setDirection(0);
+			} else if (GetAsyncKeyState(VK_DOWN)) {
+				std::cout << "Pressed DOWN" << std::endl;
+				snake1.setDirection(1);
+				snake2.setDirection(1);
+			} else if (GetAsyncKeyState(VK_LEFT)) {
+				std::cout << "Pressed LEFT" << std::endl;
+				snake1.setDirection(2);
+				snake2.setDirection(2);
+			} else if (GetAsyncKeyState(VK_RIGHT)) {
+				std::cout << "Pressed RIGHT" << std::endl;
+				snake1.setDirection(3);
+				snake2.setDirection(3);
+			}
 			//if (!UpdateSnake1()) break;
 			//if (!UpdateSnake2()) break;
 			UpdateSnake1();
@@ -315,6 +340,7 @@ public:
 	}
 
 	bool UpdateSnake1() {
+		std::cout << "S1 CurrDir: " << snake1.GetDir() << std::endl;
 
 		int nextX = snake1.getHead().first;
 		int nextY = snake1.getHead().second;
