@@ -12,7 +12,7 @@
 using namespace std;
 
 webSocket server;
-GameState gameState;
+GameState gameState(&server);
 
 std::string PRINT = "print:";
 
@@ -26,7 +26,6 @@ std::string UPDATEP2SCORE = "updatep2score:";
 
 /*
 TEMPLATE
-DRAWBOARD:111111111111n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n100000000001n111111111111
 POSSIBLY HAVE THE CLIENT SAVE THIS STRING AND USE IT WHEN IT RECEIVES RESETBOARD
 */
 //Game State commands
@@ -108,16 +107,18 @@ void messageHandler(int clientID, string message){
 
 		// SEND THE STARTING POSITION FOR PLAYER 1
 		os.str(std::string());
-		os.clear();
-		os << "3,2-3,2";
-		server.wsSend(clientID, P1POSUPDATE + os.str() );
+		//os.clear();
+		//os << "3,2-3,2";
+		gameState.SetSnake1Position(3, 2, 3, 2);
+		server.wsSend(clientID, P1POSUPDATE + gameState.getSnake1().getPosString());
 		//gameState.getBoard().setValue(3, 2, 3); //sets snake 1 position on board
 
 		// SEND THE STARTING POSITION FOR PLAYER 2 
 		os.str(std::string());
-		os.clear();
-		os << "5,5-5,5";
-		server.wsSend(clientID, P2POSUPDATE + os.str());
+		//os.clear();
+		//os << "5,5-5,5";
+		gameState.SetSnake2Position(5, 5, 5, 5);
+		server.wsSend(clientID, P2POSUPDATE + gameState.getSnake2().getPosString());
 		//gameState.getBoard().setValue(5, 5, 4); //sets snake 1 position on board
 
 		// SEND THE STARTING FOOD POSITION
@@ -125,6 +126,9 @@ void messageHandler(int clientID, string message){
 		os.clear();
 		os << gameState.getFoodString();
 		server.wsSend(clientID, SENDFOOD + os.str());
+
+		gameState.SetClientIDs(server.getClientIDs());
+		gameState.UpdateLoop();
 	}
 
 	if (command == "resetgame") {

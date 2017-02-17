@@ -1,9 +1,13 @@
 #include <vector>
 #include <string>
 #include <utility>
+#include <ctime>
+#include <iostream>
+#include <chrono>
+#include <thread>
 #include "stdlib.h"
 #include "time.h"
-#include <ctime>
+#include "websocket.h"
 
 /****************
 DIRECTIONS
@@ -31,6 +35,7 @@ public:
 
 	void setHead(int x, int y) {
 		head = std::make_pair(x, y);
+		std::cout << head.first << " " << head.second << std::endl;
 	}
 
 	void setTail(int x, int y) {
@@ -143,10 +148,51 @@ private:
 	Snake snake2; //p2 snake instance
 	std::pair<int, int> foodXY; //stores current food location
 
+	int frames = 0;
+	double frameSpeed = 60;
+
+	webSocket* serverRef;
+	std::vector<int> clientIDs;
+
 public:
 
-	GameState() {
+	GameState(webSocket* server) {
+		serverRef = server;
 		setFood();
+	}
+
+	void UpdateLoop() {
+
+		std::time_t startTime = std::time(0);
+
+		while (true) {
+
+			std::cout << int(std::difftime(std::time(0), startTime)) << std::endl;
+			snake1.update();
+			snake2.update();
+
+			for (int i = 0; i < clientIDs.size(); ++i) {
+				serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
+				serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
+			}
+			
+			std::this_thread::sleep_for(std::chrono::milliseconds(750));
+
+			//if (int(std::difftime(std::time(0), startTime)) % 100 == 0) {
+			//	std::cout << int(std::difftime(std::time(0), startTime)) << std::endl;
+			//	snake1.update();
+			//	snake2.update();
+
+			//	for (int i = 0; i < clientIDs.size(); ++i) {
+			//		serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
+			//		serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
+			//	}
+			//}
+		}
+	}
+
+	void SetClientIDs(std::vector<int> ClientIDs) {
+		clientIDs = ClientIDs;
 	}
 
 	/****** BOARD STUFF ******/
@@ -161,6 +207,16 @@ public:
 
 	Snake getSnake2() {
 		return snake2;
+	}
+
+	void SetSnake1Position(int xHead, int yHead, int xTail, int yTail) {
+		snake1.setHead(xHead, yHead);
+		snake1.setTail(xTail, yTail);
+	}
+
+	void SetSnake2Position(int xHead, int yHead, int xTail, int yTail) {
+		snake2.setHead(xHead, yHead);
+		snake2.setTail(xTail, yTail);
 	}
 
 	void setSnake1Dir(int dir) {
