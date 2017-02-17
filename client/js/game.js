@@ -21,43 +21,69 @@ var move_down = 40; //down-key
 var r = 20;
 var c = 20;
 
+var boardInitialized = false;
+
 var img_snake_head1 = document.getElementById("snake_head1"); //puts the snake image into the canvas.
 var img_snake_head2 = document.getElementById("snake_head2");
 
 function InitializeBoardArray(dimensions) {
 
-    // THIS CODE WORKS; THIS IS OUR BACKUP PLAN
-    var cmdCutOff;
-    for (var i = 0; i < dimensions.length; ++i) {
-        if (dimensions[i] == 'x') {
-            cmdCutOff = i; break;
+    if (!boardInitialized) {
+        // THIS CODE WORKS; THIS IS OUR BACKUP PLAN
+        var cmdCutOff;
+        for (var i = 0; i < dimensions.length; ++i) {
+            if (dimensions[i] == 'x') {
+                cmdCutOff = i; break;
+            }
         }
-    }
-    r = parseInt(dimensions.substring(0, cmdCutOff));
-    c = parseInt(dimensions.substring(cmdCutOff + 1));
+        r = parseInt(dimensions.substring(0, cmdCutOff));
+        c = parseInt(dimensions.substring(cmdCutOff + 1));
 
-    board = [];
+        board = [];
+        for (var x = 0; x < c; x++) {
+            board.push([]);
+            for (var y = 0; y < r; y++) {
+                if (x === 0 || x === r - 1) {
+                    board[x].push(wall);
+                }
+                else if (y === 0 || y === c - 1) {
+                    board[x].push(wall);
+                }
+                else {
+                    board[x].push(free);
+                }
+            }
+        }
+        canvas = document.createElement("canvas");
+        canvas.width = c * c;
+        canvas.height = r * r;
+        canvas.style = "position:absolute; left: 50%; width: 400px; margin-left: -200px;";
+        context = canvas.getContext("2d");
+        context.font = "20px Times New Roman";
+        document.body.appendChild(canvas);
+
+        boardInitialized = true;
+    }
+    else {
+        ClearBoard();
+    }
+}
+
+function ClearBoard() {
+
     for (var x = 0; x < c; x++) {
-        board.push([]);
         for (var y = 0; y < r; y++) {
             if (x === 0 || x === r - 1) {
-                board[x].push(wall);
+                board[x][y] = wall;
             }
             else if (y === 0 || y === c - 1) {
-                board[x].push(wall);
+                board[x][y] = wall;
             }
             else {
-                board[x].push(free);
+                board[x][y] = free;
             }
         }
     }
-    canvas = document.createElement("canvas");
-    canvas.width = c*c;
-    canvas.height = r*r;
-    canvas.style = "position:absolute; left: 50%; width: 400px; margin-left: -200px;";
-    context = canvas.getContext("2d");
-    context.font = "20px Times New Roman";
-    document.body.appendChild(canvas);
 }
 
 function drawBoard() {
@@ -92,7 +118,7 @@ function drawBoard() {
   //context.fillText("P1 Score: " + p1_score, 50, canvas.height - 50); //for the score.
   //context.fillText("P2 Score: " + p2_score, canvas.width - 150, canvas.height - 50);
 
-    window.requestAnimationFrame(drawBoard,canvas);
+    window.requestAnimationFrame(drawBoard, canvas);
 }
 
 function SetFood(pos) {
@@ -144,6 +170,20 @@ function P1PosUpdate(pos) {
     board[xTail][yTail] = snake1_space;
 }
 
+function ClearP1Tail(pos) {
+    var cmdCutOff;
+    for (var i = 0; i < pos.length; ++i) {
+        if (pos[i] == ',') {
+            cmdCutOff = i; break;
+        }
+    }
+
+    var x = parseInt(pos.substring(0, cmdCutOff));
+    var y = parseInt(pos.substring(cmdCutOff + 1));
+
+    board[x][y] = free;
+}
+
 function P2PosUpdate(pos) {
     var cmdCutOff;
     for (var i = 0; i < pos.length; ++i) {
@@ -175,6 +215,20 @@ function P2PosUpdate(pos) {
     board[xTail][yTail] = snake2_space;
 }
 
+function ClearP2Tail(pos) {
+    var cmdCutOff;
+    for (var i = 0; i < pos.length; ++i) {
+        if (pos[i] == ',') {
+            cmdCutOff = i; break;
+        }
+    }
+
+    var x = parseInt(pos.substring(0, cmdCutOff));
+    var y = parseInt(pos.substring(cmdCutOff + 1));
+
+    board[x][y] = free;
+}
+
 function getInput() {
     if (keystate[move_left]) send(makeDirMessage(2));
     if (keystate[move_right]) send(makeDirMessage(3));
@@ -182,11 +236,6 @@ function getInput() {
     if (keystate[move_down]) send(makeDirMessage(1));
 }
 
-function loop() {
-    P1PosUpdate();
-    P2PosUpdate();
-    drawBoard();
-}
 
 function main() {
 

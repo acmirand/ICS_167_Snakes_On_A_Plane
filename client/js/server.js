@@ -135,6 +135,12 @@ function connect() {
         else if (command == "p1posupdate") {
             P1PosUpdate(message);
         }
+        else if (command == "clearp1tail") {
+            ClearP1Tail(message);
+        }
+        else if (command == "clearp2tail") {
+            ClearP2Tail(message);
+        }
         else if (command == "p2posupdate") {
             P2PosUpdate(message);
         }

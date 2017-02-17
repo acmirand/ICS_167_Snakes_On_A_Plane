@@ -1,57 +1,18 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <stdlib.h>
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <time.h>
+//#include <stdlib.h>
+//#include <iostream>
+//#include <string>
+//#include <sstream>
+//#include <time.h>
 #include <algorithm>
-#include "websocket.h"
+//#include "websocket.h"
 #include "snake.cpp"
 
 using namespace std;
 
 webSocket server;
 GameState gameState(&server);
-
-std::string PRINT = "print:";
-
-/*
-	COMMAND LIST
-*/
-//Scores
-std::string UPDATEP1SCORE = "updatep1score:";
-std::string UPDATEP2SCORE = "updatep2score:";
-
-
-/*
-TEMPLATE
-POSSIBLY HAVE THE CLIENT SAVE THIS STRING AND USE IT WHEN IT RECEIVES RESETBOARD
-*/
-//Game State commands
-std::string DRAWBOARD = "drawboard:";
-std::string RESETBOARD = "RESETBOARD:";
-
-/*
-TEMPLATE PROTOCOL
-sendFood:23,14
-*/
-std::string SENDFOOD = "sendfood:";
-
-/*
-TEMPLATE PROTOCOL
-FIRST X-Y PAIR IS THE HEAD AND THE SECOND IS THE TAIL
-P1POSUPDATE:23,14-23,13
-*/
-std::string P1POSUPDATE = "p1posupdate:";
-std::string P2POSUPDATE = "p2posupdate:";
-
-/*
-TEMPLATE PROTOCOL
-The client will send a command that is like this.
-setdir:1
-*/
-std::string  SETDIR = "setdir:";
 
 /* called when a client connects */
 void openHandler(int clientID){
@@ -101,75 +62,79 @@ void messageHandler(int clientID, string message){
 
 	if (command == "startgame") {
 
-		// SEND THE BOARD LAYOUT
-		os << "20x20";
-		server.wsSend(clientID, DRAWBOARD + os.str());
-
-		// SEND THE STARTING POSITION FOR PLAYER 1
-		os.str(std::string());
-		//os.clear();
-		//os << "3,2-3,2";
-		gameState.SetSnake1Position(3, 2, 3, 2);
-		server.wsSend(clientID, P1POSUPDATE + gameState.getSnake1().getPosString());
-		//gameState.getBoard().setValue(3, 2, 3); //sets snake 1 position on board
-
-		// SEND THE STARTING POSITION FOR PLAYER 2 
-		os.str(std::string());
-		//os.clear();
-		//os << "5,5-5,5";
-		gameState.SetSnake2Position(5, 5, 5, 5);
-		server.wsSend(clientID, P2POSUPDATE + gameState.getSnake2().getPosString());
-		//gameState.getBoard().setValue(5, 5, 4); //sets snake 1 position on board
-
-		// SEND THE STARTING FOOD POSITION
-		os.str(std::string());
-		os.clear();
-		os << gameState.getFoodString();
-		server.wsSend(clientID, SENDFOOD + os.str());
-
 		gameState.SetClientIDs(server.getClientIDs());
-		gameState.UpdateLoop();
+
+		gameState.Init();
+
+		//// SEND THE BOARD LAYOUT
+		//os << "20x20";
+		//server.wsSend(clientID, DRAWBOARD + os.str());
+
+		//// SEND THE STARTING POSITION FOR PLAYER 1
+		//os.str(std::string());
+		////os.clear();
+		////os << "3,2-3,2";
+		//gameState.SetSnake1Position(3, 2, 3, 2);
+		//server.wsSend(clientID, P1POSUPDATE + gameState.getSnake1().getPosString());
+		////gameState.getBoard().setValue(3, 2, 3); //sets snake 1 position on board
+
+		//// SEND THE STARTING POSITION FOR PLAYER 2 
+		//os.str(std::string());
+		////os.clear();
+		////os << "5,5-5,5";
+		//gameState.SetSnake2Position(5, 5, 5, 5);
+		//server.wsSend(clientID, P2POSUPDATE + gameState.getSnake2().getPosString());
+		////gameState.getBoard().setValue(5, 5, 4); //sets snake 1 position on board
+
+		//// SEND THE STARTING FOOD POSITION
+		//os.str(std::string());
+		//os.clear();
+		//os << gameState.getFoodString();
+		//server.wsSend(clientID, SENDFOOD + os.str());
+
+		//gameState.SetClientIDs(server.getClientIDs());
+		//gameState.UpdateLoop();
 	}
 
-	if (command == "resetgame") {
-		server.ResetGame();
-		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0));
-		server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
-	}
+	//if (command == "resetgame") {
+	//	server.ResetGame();
+	//	server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0));
+	//	server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
+	//}
 
-	// Commands to process incoming messages.
-	if (command == "setp1name") {
+	//// Commands to process incoming messages.
+	//if (command == "setp1name") {
 
-		// If they did not enter a name, make the default name "Player 1". Else, record the passed in value.
-		if (os.str() == "") { 
-			server.SetPlayerName(0, "Player 1"); 
-		}
-		else{ 
-			server.SetPlayerName(0, os.str());
-		}
+	//	// If they did not enter a name, make the default name "Player 1". Else, record the passed in value.
+	//	if (os.str() == "") { 
+	//		server.SetPlayerName(0, "Player 1"); 
+	//	}
+	//	else{ 
+	//		server.SetPlayerName(0, os.str());
+	//	}
 
-		// To ensure the server is keeping track of the names, ask the server for 
-		//the name of player one to print out to the console and send it to the client.
-		std::cout << server.GetPlayerName(clientID, 0) << " has joined the game as Player 1." << std::endl;
-		server.wsSend(clientID, PRINT + "Welcome " + server.GetPlayerName(clientID, 0) + " to the game.");
-		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0));
-	}
+	//	// To ensure the server is keeping track of the names, ask the server for 
+	//	//the name of player one to print out to the console and send it to the client.
+	//	std::cout << server.GetPlayerName(clientID, 0) << " has joined the game as Player 1." << std::endl;
+	//	server.wsSend(clientID, PRINT + "Welcome " + server.GetPlayerName(clientID, 0) + " to the game.");
+	//	server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0));
+	//}
 
-	if (command == "setp2name") { 
+	//if (command == "setp2name") { 
 
-		// If they did not enter a name, make the default name "Player 2". Else, record the passed in value.
-		if (os.str() == "") {
-			server.SetPlayerName(1, "Player 2");
-		}
-		else {
-			server.SetPlayerName(1, os.str());
-		}
-		// To ensure the server is keeping track of the names, ask the server for 
-		//the name of player 2 to print out to the console and send it to the client.
-		std::cout << server.GetPlayerName(clientID, 1) << " has joined the game as Player 2." << std::endl;
-		server.wsSend(clientID, PRINT + "Welcome " + server.GetPlayerName(clientID, 1) + " to the game.");
-		server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
-	}
+	//	// If they did not enter a name, make the default name "Player 2". Else, record the passed in value.
+	//	if (os.str() == "") {
+	//		server.SetPlayerName(1, "Player 2");
+	//	}
+	//	else {
+	//		server.SetPlayerName(1, os.str());
+	//	}
+	//	// To ensure the server is keeping track of the names, ask the server for 
+	//	//the name of player 2 to print out to the console and send it to the client.
+	//	std::cout << server.GetPlayerName(clientID, 1) << " has joined the game as Player 2." << std::endl;
+	//	server.wsSend(clientID, PRINT + "Welcome " + server.GetPlayerName(clientID, 1) + " to the game.");
+	//	server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
+	//}
 
 	if (command == "getp1name") { 
 		server.GetPlayerName(clientID, 0); 
@@ -179,19 +144,19 @@ void messageHandler(int clientID, string message){
 		server.GetPlayerName(clientID, 1); 
 	}
 
-	if (command == "p1scored") {
-		server.UpdateScore(0);
+	//if (command == "p1scored") {
+	//	server.UpdateScore(0);
 
-		// THIS IS WHERE WE SEND A COMMAND BACK TO THE CLIENT
-		server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0) );
-		std::cout << "Player 1 scored. Total score is: " << server.GetPlayerScore(0) << std::endl;
-	}
+	//	// THIS IS WHERE WE SEND A COMMAND BACK TO THE CLIENT
+	//	server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0) );
+	//	std::cout << "Player 1 scored. Total score is: " << server.GetPlayerScore(0) << std::endl;
+	//}
 
-	if (command == "p2scored") {
-		server.UpdateScore(1);
-		server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
-		std::cout << "Player 2 scored. Total score is: " << server.GetPlayerScore(1) << std::endl;
-	}
+	//if (command == "p2scored") {
+	//	server.UpdateScore(1);
+	//	server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
+	//	std::cout << "Player 2 scored. Total score is: " << server.GetPlayerScore(1) << std::endl;
+	//}
 
 	if (command == "setdir") {
 		int dirNumber = stoi(os.str()); //Convert the number in string form to an int
@@ -211,11 +176,11 @@ void messageHandler(int clientID, string message){
 	}
 
 	if (command == "p1posupdate") {
-		server.wsSend(clientID, P1POSUPDATE + gameState.getSnake1().getPosString());
+		server.wsSend(clientID, "p1posupdate:" + gameState.getSnake1().getPosString());
 	}
 
 	if (command == "p2posupdate") {
-		server.wsSend(clientID, P1POSUPDATE + gameState.getSnake2().getPosString());
+		server.wsSend(clientID, "p2posupdate:" + gameState.getSnake2().getPosString());
 	}
 
 	//std::cout << os.str() << std::endl << std::endl;
