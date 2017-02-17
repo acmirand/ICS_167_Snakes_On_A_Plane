@@ -17,12 +17,17 @@ var p2_score;
 var snakeGame = document.getElementById('snake');
 
 //COMMANDS TO SEND TO THE SERVER
+//PLAYERS
 var SETP1NAME = "setp1name:";
 var SETP2NAME = "setp2name:";
 var GETP1NAME = "getp1name:";
 var GETP2NAME = "getp2name:";
+
+//SCORES
 var P1SCORED = "p1scored:";
 var P2SCORED = "p2scored:";
+
+//GAME STATE
 var RESETGAME = "resetgame:";
 var DIR = "setdir:"; //In this variable, you will add an int to be the direction, followed by a ':'
 

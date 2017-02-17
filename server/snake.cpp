@@ -5,6 +5,13 @@
 #include "time.h"
 #include <ctime>
 
+/****************
+DIRECTIONS
+0 - up
+1 - down
+2 - left
+3 - right
+*****************/
 class Snake {
 private:
 	int currDir = 0; //0 - UP, 1 - DOWN, 2 = LEFT, 3 - RIGHT
@@ -46,7 +53,31 @@ public:
 	}
 
 	void setDirection(int dir) {
-		currDir = dir;
+		//Bool checks to see if it is a legal move
+		bool LeftOK = (dir == 2 && currDir != 3);
+		bool RightOK = (dir == 3 && currDir != 2);
+		bool UpOK = (dir == 0 && currDir != 1);
+		bool DownOK = (dir == 1 && currDir != 0);
+
+		if (LeftOK || RightOK || UpOK || DownOK)
+			currDir = dir;
+	}
+
+	void update() {
+		switch (currDir) {
+		case 0:
+			head.first--;
+			break;
+		case 1:
+			head.first++;
+			break;
+		case 2:
+			head.second--;
+			break;
+		case 3:
+			head.second++;
+			break;
+		}
 	}
 
 	std::string getDirString() {
@@ -95,6 +126,7 @@ public:
 		return board[x][y];
 	}
 
+	// 0 - Free, 1 - Wall, 2 - Snake1, 3 - Snake2, 4 - Food
 	void setValue(int x, int y, int value) {
 		board[x][y] = value;
 	}
@@ -131,6 +163,14 @@ public:
 		return snake2;
 	}
 
+	void setSnake1Dir(int dir) {
+		snake1.setDirection(dir);
+	}
+
+	void setSnake2Dir(int dir) {
+		snake2.setDirection(dir);
+	}
+
 	/****** FOOD STUFF ******/
 	// Sets random food
 	void setFood() {
@@ -157,14 +197,6 @@ public:
 	// Returns string of current food location as "x,y"
 	std::string getFoodString() {
 		return (std::to_string(foodXY.first) + "," + std::to_string(foodXY.second));
-	}
-
-	void setSnake1Dir(int dir) {
-		snake1.setDirection(dir);
-	}
-	
-	void setSnake2Dir(int dir) {
-		snake2.setDirection(dir);
 	}
 	
 	/****** COLLISION CHECKS ******/

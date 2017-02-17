@@ -61,7 +61,6 @@ function InitializeBoardArray(dimensions) {
 }
 
 function drawBoard() {
-
   var width = r;
   var height = c;
   var snake1_pat = context.createPattern(snake_head1, "repeat"); //needs to have repeat for the image.
@@ -113,8 +112,8 @@ function SetFood(pos) {
     board[xFood][yFood] = food_space;
 }
 
+// x,y-x,y
 function P1PosUpdate(pos) {
-
     var cmdCutOff;
     for (var i = 0; i < pos.length; ++i) {
         if (pos[i] == '-') {
@@ -146,7 +145,6 @@ function P1PosUpdate(pos) {
 }
 
 function P2PosUpdate(pos) {
-
     var cmdCutOff;
     for (var i = 0; i < pos.length; ++i) {
         if (pos[i] == '-') {
@@ -177,11 +175,17 @@ function P2PosUpdate(pos) {
     board[xTail][yTail] = snake2_space;
 }
 
-function update() {
+function getInput() {
     if (keystate[move_left]) send(makeDirMessage(2));
     if (keystate[move_right]) send(makeDirMessage(3));
     if (keystate[move_up]) send(makeDirMessage(0));
     if (keystate[move_down]) send(makeDirMessage(1));
+}
+
+function loop() {
+    P1PosUpdate();
+    P2PosUpdate();
+    drawBoard();
 }
 
 function main() {
@@ -195,6 +199,16 @@ function main() {
 
    send("startgame:");
  });
+
+ keystate = {};
+ document.addEventListener("keydown", function (evt) {
+     keystate[evt.keyCode] = true;
+ });
+
+ document.addEventListener("keyup", function (evt) {
+     delete keystate[evt.keyCode];
+ });
+
 }
 
 main();

@@ -44,7 +44,6 @@ TEMPLATE PROTOCOL
 FIRST X-Y PAIR IS THE HEAD AND THE SECOND IS THE TAIL
 P1POSUPDATE:23,14-23,13
 */
-//-----NOTE: Would also need to send direction
 std::string P1POSUPDATE = "p1posupdate:";
 std::string P2POSUPDATE = "p2posupdate:";
 
@@ -112,12 +111,14 @@ void messageHandler(int clientID, string message){
 		os.clear();
 		os << "3,2-3,2";
 		server.wsSend(clientID, P1POSUPDATE + os.str() );
+		//gameState.getBoard().setValue(3, 2, 3); //sets snake 1 position on board
 
 		// SEND THE STARTING POSITION FOR PLAYER 2 
 		os.str(std::string());
 		os.clear();
 		os << "5,5-5,5";
 		server.wsSend(clientID, P2POSUPDATE + os.str());
+		//gameState.getBoard().setValue(5, 5, 4); //sets snake 1 position on board
 
 		// SEND THE STARTING FOOD POSITION
 		os.str(std::string());
@@ -204,6 +205,15 @@ void messageHandler(int clientID, string message){
 			gameState.setSnake2Dir(dirNumber);
 		}
 	}
+
+	if (command == "p1posupdate") {
+		server.wsSend(clientID, P1POSUPDATE + gameState.getSnake1().getPosString());
+	}
+
+	if (command == "p2posupdate") {
+		server.wsSend(clientID, P1POSUPDATE + gameState.getSnake2().getPosString());
+	}
+
 	//std::cout << os.str() << std::endl << std::endl;
 
 	//server.SetPlayerName(os.str());
