@@ -24,11 +24,11 @@ var GETP2NAME = "getp2name:";
 var P1SCORED = "p1scored:";
 var P2SCORED = "p2scored:";
 var RESETGAME = "resetgame:";
-var DIR = "dir-"; //In this variable, you will add an int to be the direction, followed by a ':'
+var DIR = "setdir:"; //In this variable, you will add an int to be the direction, followed by a ':'
 
 //This helper function allows you to easily make a change direction message
 function makeDirMessage(directionInt) {
-    return DIR + String(directionInt) + ':';
+    return DIR + String(directionInt);
 }
 
 function log(text) {

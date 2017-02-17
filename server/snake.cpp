@@ -159,6 +159,14 @@ public:
 		return (std::to_string(foodXY.first) + "," + std::to_string(foodXY.second));
 	}
 
+	void setSnake1Dir(int dir) {
+		snake1.setDirection(dir);
+	}
+	
+	void setSnake2Dir(int dir) {
+		snake2.setDirection(dir);
+	}
+	
 	/****** COLLISION CHECKS ******/
 	bool isWall(int x, int y) {
 		return board.getValue(x, y) == 1;

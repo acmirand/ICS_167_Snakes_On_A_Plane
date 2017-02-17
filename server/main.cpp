@@ -48,7 +48,12 @@ P1POSUPDATE:23,14-23,13
 std::string P1POSUPDATE = "p1posupdate:";
 std::string P2POSUPDATE = "p2posupdate:";
 
-
+/*
+TEMPLATE PROTOCOL
+The client will send a command that is like this.
+setdir:1
+*/
+std::string  SETDIR = "setdir:";
 
 /* called when a client connects */
 void openHandler(int clientID){
@@ -183,6 +188,22 @@ void messageHandler(int clientID, string message){
 		std::cout << "Player 2 scored. Total score is: " << server.GetPlayerScore(1) << std::endl;
 	}
 
+	if (command == "setdir") {
+		int dirNumber = stoi(os.str()); //Convert the number in string form to an int
+		/*vector<int> clientIDs = server.getClientIDs();
+		int i = 0;
+		for (; i < clientIDs.size(); ++i) {
+			if (clientIDs.at(i) == clientID) {
+				break;
+			}
+		}*/
+		if (clientID == 0) {
+			gameState.setSnake1Dir(dirNumber);
+		}
+		if (clientID == 1) {
+			gameState.setSnake2Dir(dirNumber);
+		}
+	}
 	//std::cout << os.str() << std::endl << std::endl;
 
 	//server.SetPlayerName(os.str());
