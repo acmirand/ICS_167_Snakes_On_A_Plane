@@ -39,9 +39,8 @@ void openHandler(int clientID){
 /* called when a client disconnects */
 void closeHandler(int clientID){
     ostringstream os;
-    os << "Player " << clientID << " has left.";
-	//std::cout << "No. of Connections: " <<server.numOfActiveConnections << std::endl;
-	playing = false;
+    os << "Stranger " << clientID << " has left.";
+
     vector<int> clientIDs = server.getClientIDs();
     for (int i = 0; i < clientIDs.size(); i++){
         if (clientIDs[i] != clientID)
@@ -150,7 +149,7 @@ void messageHandler(int clientID, string message){
     //}
 	if (playing) {
 		gameState.UpdateLoop();
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		if (gameState.isGameOver()) {
 			playing = false;
 		}

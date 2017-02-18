@@ -763,10 +763,8 @@ void webSocket::startServer(int port){
                         if (socketIDmap.find(i) != socketIDmap.end()){
                             if (nbytes < 0)
                                 wsSendClientClose(socketIDmap[i], WS_STATUS_PROTOCOL_ERROR);
-                            else if (nbytes == 0) {
+                            else if (nbytes == 0)
                                 wsRemoveClient(socketIDmap[i]);
-								--numOfActiveConnections;
-							}
                             else {
                                 if (!wsProcessClient(socketIDmap[i], buf, nbytes))
                                     wsSendClientClose(socketIDmap[i], WS_STATUS_PROTOCOL_ERROR);
