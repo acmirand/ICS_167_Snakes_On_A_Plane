@@ -246,6 +246,8 @@ private:
 	int frames = 0;
 	double frameSpeed = 60;
 
+	bool gameOver = false;
+
 	webSocket* serverRef;
 	std::vector<int> clientIDs;
 	ostringstream os;
@@ -307,7 +309,7 @@ public:
 			serverRef->wsSend(clientIDs[i], "sendfood:" + os.str());
 		}
 
-		UpdateLoop();
+		//UpdateLoop();
 	}
 
 	void UpdateLoop() {
@@ -315,11 +317,11 @@ public:
 		bool snake1Ate = false;
 		bool snake2Ate = false;
 
-		while (true) {
+		//while (true) {
 
 			//Keypress listener
 			//Would need to make this work for 2 clients
-			if (GetAsyncKeyState(VK_UP)) {
+			/*if (GetAsyncKeyState(VK_UP)) {
 				snake1.setDirection(0);
 				snake2.setDirection(0);
 			}
@@ -334,7 +336,7 @@ public:
 			else if (GetAsyncKeyState(VK_RIGHT)) {
 				snake1.setDirection(3);
 				snake2.setDirection(3);
-			}
+			}*/
 
 			snake1Ate = UpdateSnake1();
 			snake2Ate = UpdateSnake2();
@@ -355,8 +357,8 @@ public:
 				serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(oldTail_2.first) + "," + std::to_string(oldTail_2.second));
 			}
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		}
+			//std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		//}
 	}
 
 	void SetClientIDs(std::vector<int> ClientIDs) {
@@ -399,7 +401,8 @@ public:
 		}
 
 		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
-			Init(); //resets the game
+			//Init(); //resets the game
+			gameOver = true;
 			return false;
 		}
 
@@ -451,7 +454,8 @@ public:
 		}
 
 		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
-			Init(); //resets the game
+			//Init(); //resets the game
+			gameOver = true;
 			return false;
 		}
 
@@ -528,5 +532,9 @@ public:
 
 	bool isFood(int x, int y) {
 		return board.getValue(x, y) == 4;
+	}
+
+	bool isGameOver() {
+		return gameOver;
 	}
 };

@@ -14,6 +14,7 @@ using namespace std;
 webSocket server;
 GameState gameState(&server);
 std::thread first;
+bool playing = false;
 
 void CallInit() {
 	gameState.Init();
@@ -76,6 +77,9 @@ void messageHandler(int clientID, string message){
 
 		gameState.SetClientIDs(server.getClientIDs());
 		gameState.Init();
+		if (clientIDs.size() == 2) {
+			playing = true;
+		}
 	}
 
 	if (command == "setname") {
@@ -111,10 +115,10 @@ void messageHandler(int clientID, string message){
 	//}
 
 	if (command == "setdir") {
-		std::cout << "print something" << std::endl;
+		
 
 		int dirNumber = stoi(os.str()); //Convert the number in string form to an int
-
+		std::cout << "clientID: " << clientID << " dirNumber: " << dirNumber << std::endl;
 		if (clientID == 0) {
 			gameState.setSnake1Dir(dirNumber);
 		}
@@ -143,6 +147,13 @@ void messageHandler(int clientID, string message){
     //    if (clientIDs[i] != clientID)
     //        server.wsSend(clientIDs[i], os.str());
     //}
+	if (playing) {
+		gameState.UpdateLoop();
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		if (gameState.isGameOver()) {
+			playing = false;
+		}
+	}
 }
 
 /* called once per select() loop */
