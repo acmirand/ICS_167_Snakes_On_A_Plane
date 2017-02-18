@@ -6,18 +6,14 @@
 //#include <sstream>
 //#include <time.h>
 #include <algorithm>
-#include <thread>
 #include "snake.cpp"
 
 using namespace std;
 
 webSocket server;
 GameState gameState(&server);
-std::thread first;
+bool gameInSession = false;
 
-void CallInit() {
-	gameState.Init();
-}
 
 /* called when a client connects */
 void openHandler(int clientID){
@@ -45,6 +41,8 @@ void closeHandler(int clientID){
         if (clientIDs[i] != clientID)
             server.wsSend(clientIDs[i], os.str());
     }
+
+	gameInSession = false;
 }
 
 /* called when a client sends a message to the server */
@@ -76,42 +74,22 @@ void messageHandler(int clientID, string message){
 
 		gameState.SetClientIDs(server.getClientIDs());
 		gameState.Init();
+		gameInSession = true;
 	}
 
 	if (command == "setname") {
+
 		if (os.str() == "") {
 			// If they did not enter a name, make the default name "Player #". Else, record the passed in value.
-			server.SetPlayerName(clientID, "Player " + clientID+1);
+			gameState.SetPlayerName(clientID, "P" + std::to_string( clientID + 1));
 		}
 		else {
-			server.SetPlayerName(clientID, os.str());
+			gameState.SetPlayerName(clientID, os.str());
 		}
 	}
 
-	if (command == "getp1name") { 
-		server.GetPlayerName(clientID, 0); 
-	}
-
-	if (command == "getp2name") { 
-		server.GetPlayerName(clientID, 1); 
-	}
-
-	//if (command == "p1scored") {
-	//	server.UpdateScore(0);
-
-	//	// THIS IS WHERE WE SEND A COMMAND BACK TO THE CLIENT
-	//	server.wsSend(clientID, UPDATEP1SCORE + server.GetPlayerScore(0) );
-	//	std::cout << "Player 1 scored. Total score is: " << server.GetPlayerScore(0) << std::endl;
-	//}
-
-	//if (command == "p2scored") {
-	//	server.UpdateScore(1);
-	//	server.wsSend(clientID, UPDATEP2SCORE + server.GetPlayerScore(1));
-	//	std::cout << "Player 2 scored. Total score is: " << server.GetPlayerScore(1) << std::endl;
-	//}
 
 	if (command == "setdir") {
-		std::cout << "print something" << std::endl;
 
 		int dirNumber = stoi(os.str()); //Convert the number in string form to an int
 
@@ -147,19 +125,23 @@ void messageHandler(int clientID, string message){
 
 /* called once per select() loop */
 void periodicHandler(){
-    static time_t next = time(NULL) + 10;
-    time_t current = time(NULL);
-    if (current >= next){
+	double offset = 1;
+    static time_t next = time(0) + offset;
+    time_t current = time(0);
+    if (/*current >= next &&*/ gameInSession){
+
         ostringstream os;
         string timestring = ctime(&current);
         timestring = timestring.substr(0, timestring.size() - 1);
         os << timestring;
 
+		gameState.UpdateLoop();
+
         vector<int> clientIDs = server.getClientIDs();
         for (int i = 0; i < clientIDs.size(); i++)
             server.wsSend(clientIDs[i], os.str());
 
-        next = time(NULL) + 10;
+        next = time(0) + offset;
     }
 }
 
@@ -171,6 +153,7 @@ int main(int argc, char *argv[]){
 	server.setOpenHandler(openHandler);
 	server.setCloseHandler(closeHandler);
 	server.setMessageHandler(messageHandler);
+	server.setPeriodicHandler(periodicHandler);
 
 	server.startServer(8000);
 

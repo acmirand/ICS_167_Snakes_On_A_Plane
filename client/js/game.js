@@ -125,8 +125,8 @@ function drawBoard() {
         }
     }
     context.fillStyle = "#000"; //white background.
-    context.fillText("P1 Score: " + p1_score, 20, canvas.height - 21); //for the score.
-    context.fillText("P2 Score: " + p2_score, canvas.width - 120, canvas.height - 21);
+    context.fillText(p1id + " Score: " + p1_score, 20, canvas.height - 21); //for the score.
+    context.fillText(p2id + " Score: " + p2_score, canvas.width - 120, canvas.height - 21);
 
     window.requestAnimationFrame(drawBoard, canvas);
 }

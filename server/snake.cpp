@@ -86,6 +86,7 @@ public:
 	void InitializeSnake(int xH, int yH) {
 		snakeArray.clear();
 		snakeArray.push_back(std::make_pair(xH, yH));
+		head = snakeArray[0];
 	}
 
 	void setHead(int x, int y) {
@@ -239,6 +240,8 @@ private:
 	Board board;
 	Snake snake1; //p1 snake instance
 	Snake snake2; //p2 snake instance
+	std::string player1Name;
+	std::string player2Name;
 	int snake1score = 0;
 	int snake2score = 0;
 	std::pair<int, int> foodXY; //stores current food location
@@ -291,6 +294,20 @@ public:
 			os << "20x20";
 			serverRef->wsSend(clientIDs[i], "drawboard:" + os.str());
 
+			vector<int> clientIDs = serverRef->getClientIDs();
+			for (int i = 0; i < clientIDs.size(); i++) {
+				os.str(std::string());
+				os.clear();
+				os << "player1name:" + player1Name;
+				std::cout << os.str() << std::endl;
+				serverRef->wsSend(clientIDs[i], os.str());
+				os.str(std::string());
+				os.clear();
+				os << "player2name:" + player2Name;
+				std::cout << os.str() << std::endl;
+				serverRef->wsSend(clientIDs[i], os.str());
+			}
+
 			// SEND THE STARTING POSITION FOR PLAYER 1
 			serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
 
@@ -306,8 +323,6 @@ public:
 			os << getFoodString();
 			serverRef->wsSend(clientIDs[i], "sendfood:" + os.str());
 		}
-
-		UpdateLoop();
 	}
 
 	void UpdateLoop() {
@@ -315,48 +330,26 @@ public:
 		bool snake1Ate = false;
 		bool snake2Ate = false;
 
-		while (true) {
+		snake1Ate = UpdateSnake1();
+		snake2Ate = UpdateSnake2();
 
-			//Keypress listener
-			//Would need to make this work for 2 clients
-			if (GetAsyncKeyState(VK_UP)) {
-				snake1.setDirection(0);
-				snake2.setDirection(0);
-			}
-			else if (GetAsyncKeyState(VK_DOWN)) {
-				snake1.setDirection(1);
-				snake2.setDirection(1);
-			}
-			else if (GetAsyncKeyState(VK_LEFT)) {
-				snake1.setDirection(2);
-				snake2.setDirection(2);
-			}
-			else if (GetAsyncKeyState(VK_RIGHT)) {
-				snake1.setDirection(3);
-				snake2.setDirection(3);
+		for (int i = 0; i < clientIDs.size(); ++i) {
+
+			serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
+			serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
+
+			if (snake1Ate || snake2Ate) {
+
+				serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score));
+				serverRef->wsSend(clientIDs[i], "updateP2Score:" + std::to_string(snake2score));
+				serverRef->wsSend(clientIDs[i], "sendfood:" + os.str());
 			}
 
-			snake1Ate = UpdateSnake1();
-			snake2Ate = UpdateSnake2();
-
-			for (int i = 0; i < clientIDs.size(); ++i) {
-
-				serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
-				serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
-
-				if (snake1Ate || snake2Ate) {
-
-					serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score));
-					serverRef->wsSend(clientIDs[i], "updateP2Score:" + std::to_string(snake2score));
-					serverRef->wsSend(clientIDs[i], "sendfood:" + os.str());
-				}
-
-				serverRef->wsSend(clientIDs[i], "clearp1tail:" + std::to_string(oldTail_1.first) + "," + std::to_string(oldTail_1.second));
-				serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(oldTail_2.first) + "," + std::to_string(oldTail_2.second));
-			}
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			serverRef->wsSend(clientIDs[i], "clearp1tail:" + std::to_string(oldTail_1.first) + "," + std::to_string(oldTail_1.second));
+			serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(oldTail_2.first) + "," + std::to_string(oldTail_2.second));
 		}
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 
 	void SetClientIDs(std::vector<int> ClientIDs) {
@@ -375,6 +368,20 @@ public:
 
 	Snake getSnake2() {
 		return snake2;
+	}
+
+	void SetPlayerName(int clientID, std::string name) {
+
+		if (clientID == 0) {
+			player1Name = name;
+		}
+		else if (clientID == 1) {
+			player2Name = name;
+		}
+	}
+
+	std::string GetPlayerName(int clientID) {
+		return clientID == 0 ? player1Name : player2Name;
 	}
 
 	bool UpdateSnake1() {

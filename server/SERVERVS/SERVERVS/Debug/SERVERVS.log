@@ -16,26 +16,30 @@ d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(
 d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(673): warning C4018: '>=': signed/unsigned mismatch
 d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\websocket.cpp(789): warning C4018: '<': signed/unsigned mismatch
   snake.cpp
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(286): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(342): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(496): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(499): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(500): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(289): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(298): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(336): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(503): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(506): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(507): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   sha1.cpp
 d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(226): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
 d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(233): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
 d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(264): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
   main.cpp
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(286): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(342): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(496): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(499): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(500): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(28): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(44): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(73): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(162): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(170): warning C4101: 'port': unreferenced local variable
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(289): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(298): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(336): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(503): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(506): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(507): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(24): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(40): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(71): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(129): warning C4244: 'initializing': conversion from 'double' to 'time_t', possible loss of data
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(141): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(144): warning C4244: '=': conversion from 'double' to 'time_t', possible loss of data
+d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(149): warning C4101: 'port': unreferenced local variable
   base64.cpp
 d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\base64.cpp(96): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
 d:\users\daniel\documents\github\ics_167_snakes_on_a_plane\server\base64.cpp(113): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data

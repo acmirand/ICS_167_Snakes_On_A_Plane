@@ -8,6 +8,7 @@ connectBtn.addEventListener('click', function () {
 
 // Start of server
 var Server;
+var playerID;
 var p1id;
 var p2id;
 var p1_score;
@@ -52,7 +53,7 @@ function send(text) {
 }
 
 function connect() {
-    p1id = document.getElementById('p1id').value; //get p1 id from text field
+    playerID = document.getElementById('p1id').value; //get p1 id from text field
     //p2id = document.getElementById('p2id').value; //get p2 id from text field
     log('Connecting...');
 
@@ -76,7 +77,7 @@ function connect() {
         // of the players.
         //send(SETP1NAME + p1id);
         //send(SETP2NAME + p2id);
-        send(SETNAME + p1id);
+        send(SETNAME + playerID);
 
         //log('Welcome to snakes ' + p1id + " and " + p2id + "!");
         log("Waiting for player 2...");
@@ -159,6 +160,12 @@ function connect() {
         }
         else if (command == "sendfood") {
             SetFood(message);
+        }
+        else if (command == "player1name") {
+            p1id = message;
+        }
+        else if (command == "player2name") {
+            p2id = message;
         }
 
 
