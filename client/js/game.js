@@ -258,8 +258,8 @@ function getInput() {
 function main() {
 
   //for testing purposes
-  //document.getElementById("ip").value = "127.0.0.1";
-  //document.getElementById("port").value = "8000";
+  document.getElementById("ip").value = "127.0.0.1";
+  document.getElementById("port").value = "8000";
 
  startBtn.addEventListener('click', function() {
    send("startgame:");
