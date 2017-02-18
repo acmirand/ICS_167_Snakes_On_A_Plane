@@ -315,25 +315,23 @@ public:
 		bool snake1Ate = false;
 		bool snake2Ate = false;
 
-		//std::pair<int, int> snake1_tail;
-		//std::pair<int, int> snake2_tail;
-
 		while (true) {
-			//snake1_tail = snake1.getTail();
-			//snake2_tail = snake2.getTail();
 
 			//Keypress listener
 			//Would need to make this work for 2 clients
 			if (GetAsyncKeyState(VK_UP)) {
 				snake1.setDirection(0);
 				snake2.setDirection(0);
-			} else if (GetAsyncKeyState(VK_DOWN)) {
+			}
+			else if (GetAsyncKeyState(VK_DOWN)) {
 				snake1.setDirection(1);
 				snake2.setDirection(1);
-			} else if (GetAsyncKeyState(VK_LEFT)) {
+			}
+			else if (GetAsyncKeyState(VK_LEFT)) {
 				snake1.setDirection(2);
 				snake2.setDirection(2);
-			} else if (GetAsyncKeyState(VK_RIGHT)) {
+			}
+			else if (GetAsyncKeyState(VK_RIGHT)) {
 				snake1.setDirection(3);
 				snake2.setDirection(3);
 			}
@@ -356,7 +354,7 @@ public:
 				serverRef->wsSend(clientIDs[i], "clearp1tail:" + std::to_string(oldTail_1.first) + "," + std::to_string(oldTail_1.second));
 				serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(oldTail_2.first) + "," + std::to_string(oldTail_2.second));
 			}
-			
+
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
 	}

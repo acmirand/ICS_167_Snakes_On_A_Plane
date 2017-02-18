@@ -14,6 +14,7 @@ var food_space = 4;
 var boardInitialized = false;
 
 //Controls
+var keystate;
 var move_left = 37; //left-key
 var move_right = 39; //right-key
 var move_up = 38; //up-key
@@ -92,6 +93,9 @@ function ClearBoard() {
 }
 
 function drawBoard() {
+
+    getInput();
+
   var width = r;
   var height = c;
   var snake1_pat = context.createPattern(snake_head1, "repeat"); //needs to have repeat for the image.
@@ -236,10 +240,18 @@ function ClearP2Tail(pos) {
 }
 
 function getInput() {
-    if (keystate[move_left]) send(makeDirMessage(2));
-    if (keystate[move_right]) send(makeDirMessage(3));
-    if (keystate[move_up]) send(makeDirMessage(0));
-    if (keystate[move_down]) send(makeDirMessage(1));
+    if (keystate[move_left]) {
+        send("setdir:2");
+    }
+    if (keystate[move_right]) {
+        send("setdir:3");
+    }
+    if (keystate[move_up]) {
+        send("setdir:0");
+    }
+    if (keystate[move_down]) {
+        send("setdir:1");
+    }
 }
 
 
@@ -256,7 +268,6 @@ function main() {
  keystate = {};
  document.addEventListener("keydown", function (evt) {
      keystate[evt.keyCode] = true;
-     getInput();
  });
 
  document.addEventListener("keyup", function (evt) {

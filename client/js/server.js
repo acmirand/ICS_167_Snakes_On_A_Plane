@@ -35,7 +35,7 @@ var DIR = "setdir:"; //In this variable, you will add an int to be the direction
 
 //This helper function allows you to easily make a change direction message
 function makeDirMessage(directionInt) {
-    return DIR + String(directionInt);
+    return DIR + directionInt.toString();
 }
 
 function log(text) {
