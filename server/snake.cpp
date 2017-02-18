@@ -1,3 +1,11 @@
+/*
+Group Members:
+Ney Congjuico     ncongjui@uci.edu    12432102
+Zachary Hart      zhhart@uci.edu      70953123
+Daniel Lara       larad@uci.edu       49651280
+Avelino Miranda   acmirand@uci.edu    16732033
+*/
+
 #include <deque>
 #include <string>
 #include <sstream>
@@ -7,7 +15,6 @@
 #include <chrono>
 #include <thread>
 #include <conio.h>
-//#include <windows.h>
 #include "stdlib.h"
 #include "time.h"
 #include "websocket.h"
@@ -166,7 +173,7 @@ public:
 	int GetDir() {
 		return currDir;
 	}
-	
+
 };
 
 /****************
@@ -311,7 +318,7 @@ public:
 			// SEND THE STARTING POSITION FOR PLAYER 1
 			serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
 
-			// SEND THE STARTING POSITION FOR PLAYER 2 
+			// SEND THE STARTING POSITION FOR PLAYER 2
 			serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
 
 			serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score));
@@ -523,7 +530,7 @@ public:
 	std::string getFoodString() {
 		return (std::to_string(foodXY.first) + "," + std::to_string(foodXY.second));
 	}
-	
+
 	/****** COLLISION CHECKS ******/
 	bool isWall(int x, int y) {
 		return board.getValue(x, y) == 1;

@@ -1,3 +1,11 @@
+/*
+Group Members:
+Ney Congjuico     ncongjui@uci.edu    12432102
+Zachary Hart      zhhart@uci.edu      70953123
+Daniel Lara       larad@uci.edu       49651280
+Avelino Miranda   acmirand@uci.edu    16732033
+*/
+
 var connectBtn = document.getElementById('cntBtn');
 var startBtn = document.getElementById('startBtn');
 
@@ -144,7 +152,7 @@ function connect() {
             drawBoard();
         }
         else if (command == "resetboard") {
-          
+
         }
         else if (command == "p1posupdate") {
             P1PosUpdate(message);

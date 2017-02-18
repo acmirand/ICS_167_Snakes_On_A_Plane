@@ -1,3 +1,11 @@
+/*
+Group Members:
+Ney Congjuico     ncongjui@uci.edu    12432102
+Zachary Hart      zhhart@uci.edu      70953123
+Daniel Lara       larad@uci.edu       49651280
+Avelino Miranda   acmirand@uci.edu    16732033
+*/
+
 #define _CRT_SECURE_NO_WARNINGS
 
 //#include <stdlib.h>
