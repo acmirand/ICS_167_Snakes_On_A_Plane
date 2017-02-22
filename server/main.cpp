@@ -15,6 +15,8 @@ Avelino Miranda   acmirand@uci.edu    16732033
 //#include <time.h>
 #include <algorithm>
 #include "snake.cpp"
+#include <queue>
+#include <random>
 
 using namespace std;
 
@@ -55,80 +57,100 @@ void closeHandler(int clientID){
 
 /* called when a client sends a message to the server */
 void messageHandler(int clientID, string message){
-
+	queue<std::string> requestQueue;
     ostringstream os;
 	int cmdCutOff = 0;
 
-	// Parse the string until it reaches a ":". This will mark the command being passed in.
-	// Everything after that point will be consider data to be dealt with.
-	std::string command;
-	for (int i = 0; message.length(); ++i) {
-		if (message[i] == 58) {
-			cmdCutOff = i;
-			break;
+	/*
+		1. One message comes in, put into queue
+		2. While queue is not empty, process requests inside queue
+		2. Put slight delay on serving requests
+	*/
+
+	requestQueue.push(message);
+
+	while (requestQueue.size() != 0) {
+		// Parse the string until it reaches a ":". This will mark the command being passed in.
+		// Everything after that point will be consider data to be dealt with.
+		std::string request = requestQueue.front();
+		requestQueue.pop();
+
+		std::string command;
+		for (int i = 0; message.length(); ++i) {
+			if (message[i] == 58) {
+				cmdCutOff = i;
+				break;
+			}
 		}
-	}
 
-	// Parse the info for processing.
-	os << message.substr(cmdCutOff + 1);
-	command = message.substr(0, cmdCutOff);
-	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+		// Parse the info for processing.
+		os << request.substr(cmdCutOff + 1);
+		command = request.substr(0, cmdCutOff);
+		std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
-	if (command == "startgame") {
-		vector<int> clientIDs = server.getClientIDs();
-		for (int i = 0; i < clientIDs.size(); i++) {
-			server.wsSend(clientIDs[i], "begin:");
+		if (command == "startgame") {
+			vector<int> clientIDs = server.getClientIDs();
+			for (int i = 0; i < clientIDs.size(); i++) {
+				server.wsSend(clientIDs[i], "begin:");
+			}
+
+			gameState.SetClientIDs(server.getClientIDs());
+			gameState.Init();
+			gameInSession = true;
 		}
 
-		gameState.SetClientIDs(server.getClientIDs());
-		gameState.Init();
-		gameInSession = true;
-	}
+		if (command == "setname") {
 
-	if (command == "setname") {
-
-		if (os.str() == "") {
-			// If they did not enter a name, make the default name "Player #". Else, record the passed in value.
-			gameState.SetPlayerName(clientID, "P" + std::to_string( clientID + 1));
+			if (os.str() == "") {
+				// If they did not enter a name, make the default name "Player #". Else, record the passed in value.
+				gameState.SetPlayerName(clientID, "P" + std::to_string(clientID + 1));
+			}
+			else {
+				gameState.SetPlayerName(clientID, os.str());
+			}
 		}
-		else {
-			gameState.SetPlayerName(clientID, os.str());
+
+
+		if (command == "setdir") {
+
+			int dirNumber = stoi(os.str()); //Convert the number in string form to an int
+
+			if (clientID == 0) {
+				gameState.setSnake1Dir(dirNumber);
+			}
+			if (clientID == 1) {
+				gameState.setSnake2Dir(dirNumber);
+			}
 		}
-	}
 
-
-	if (command == "setdir") {
-
-		int dirNumber = stoi(os.str()); //Convert the number in string form to an int
-
-		if (clientID == 0) {
-			gameState.setSnake1Dir(dirNumber);
+		if (command == "p1posupdate") {
+			server.wsSend(clientID, "p1posupdate:" + gameState.getSnake1().getPosString());
 		}
-		if (clientID == 1) {
-			gameState.setSnake2Dir(dirNumber);
+
+		if (command == "p2posupdate") {
+			server.wsSend(clientID, "p2posupdate:" + gameState.getSnake2().getPosString());
 		}
+
+		//std::cout << os.str() << std::endl << std::endl;
+
+		//server.SetPlayerName(os.str());
+		//server.GetPlayerNames(clientID);
+
+		//os << "Stranger " << clientID << " says: " << message;
+
+		//vector<int> clientIDs = server.getClientIDs();
+		//for (int i = 0; i < clientIDs.size(); i++){
+		//    if (clientIDs[i] != clientID)
+		//        server.wsSend(clientIDs[i], os.str());
+		//}
 	}
+}
 
-	if (command == "p1posupdate") {
-		server.wsSend(clientID, "p1posupdate:" + gameState.getSnake1().getPosString());
-	}
-
-	if (command == "p2posupdate") {
-		server.wsSend(clientID, "p2posupdate:" + gameState.getSnake2().getPosString());
-	}
-
-	//std::cout << os.str() << std::endl << std::endl;
-
-	//server.SetPlayerName(os.str());
-	//server.GetPlayerNames(clientID);
-
-    //os << "Stranger " << clientID << " says: " << message;
-
-    //vector<int> clientIDs = server.getClientIDs();
-    //for (int i = 0; i < clientIDs.size(); i++){
-    //    if (clientIDs[i] != clientID)
-    //        server.wsSend(clientIDs[i], os.str());
-    //}
+int randomInt(int min, int max) {
+	std::default_random_engine generator;
+	std::uniform_int_distribution<int> distribution(min, max);
+	return distribution(generator);
+	//return rand() % (max - min + 1) + min;
 }
 
 /* called once per select() loop */
@@ -143,6 +165,7 @@ void periodicHandler(){
         timestring = timestring.substr(0, timestring.size() - 1);
         os << timestring;
 
+		std::this_thread::sleep_for(std::chrono::milliseconds(randomInt(100,700)));
 		gameState.UpdateLoop();
 
         vector<int> clientIDs = server.getClientIDs();
