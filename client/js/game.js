@@ -269,6 +269,9 @@ function getInput() {
     }
 }
 
+function sendTime() {
+    send("clienttime:" + secondsSinceStart.toString());
+}
 
 function main() {
 

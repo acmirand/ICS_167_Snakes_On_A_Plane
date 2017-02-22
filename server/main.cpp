@@ -134,6 +134,10 @@ void messageHandler(int clientID, string message){
 			server.wsSend(clientID, "p2posupdate:" + gameState.getSnake2().getPosString());
 		}
 
+		if (command == "clienttime") {
+			//Do calculations here
+		}
+
 		//std::cout << os.str() << std::endl << std::endl;
 
 		//server.SetPlayerName(os.str());

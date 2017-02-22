@@ -62,6 +62,11 @@ Avelino Miranda   acmirand@uci.edu    16732033
 //setdir:1
 //*/
 //std::string  SETDIR = "setdir:";
+//TEMPLATE PROTOCOL
+//The server will receive time like this.
+//clienttime:435
+//The server will send back time like this.
+//servertime:234
 
 /****************
 DIRECTIONS

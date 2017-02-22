@@ -42,6 +42,9 @@ var P2SCORED = "p2scored:";
 var RESETGAME = "resetgame:";
 var DIR = "setdir:"; //In this variable, you will add an int to be the direction, followed by a ':'
 
+//TIME COMMANDS
+var CLIENTTIME = "clienttime:";
+
 //This helper function allows you to easily make a change direction message
 function makeDirMessage(directionInt) {
     return DIR + directionInt.toString();
@@ -175,6 +178,9 @@ function connect() {
         }
         else if (command == "player2name") {
             p2id = message;
+        }
+        else if (command == "servertime") {
+            //Do time calculation here
         }
 
 
