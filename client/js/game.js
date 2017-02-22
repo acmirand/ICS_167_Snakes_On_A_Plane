@@ -39,6 +39,14 @@ var boardInitialized = false;
 var img_snake_head1 = document.getElementById("snake_head1"); //puts the snake image into the canvas.
 var img_snake_head2 = document.getElementById("snake_head2");
 
+//Time tracking
+var secondsSinceStart = 0; //Used for tracking time
+var gameStarted = false; //Used for tracking whether or not to send time
+
+function incTime() {
+    secondsSinceStart++;
+}
+
 function InitializeBoardArray(dimensions) {
 
     if (!boardInitialized) {
@@ -101,35 +109,34 @@ function ClearBoard() {
 }
 
 function drawBoard() {
-
     getInput();
 
-  var width = r;
-  var height = c;
-  var snake1_pat = context.createPattern(snake_head1, "repeat"); //needs to have repeat for the image.
-  var snake2_pat = context.createPattern(snake_head2, "repeat");
-  var breadstick_pat = context.createPattern(breadstick, "repeat");
-  for (var x =0; x < width; x++){ //loops through the game board array and fills each space accordingly.
-      for (var y = 0; y < height; y++) {
+    var width = r;
+    var height = c;
+    var snake1_pat = context.createPattern(snake_head1, "repeat"); //needs to have repeat for the image.
+    var snake2_pat = context.createPattern(snake_head2, "repeat");
+    var breadstick_pat = context.createPattern(breadstick, "repeat");
+    for (var x = 0; x < width; x++) { //loops through the game board array and fills each space accordingly.
+        for (var y = 0; y < height; y++) {
 
-          switch (board[x][y]) {
-        case free:
-            context.fillStyle = "#fff";
-          break;
-         case snake1_space:
-           context.fillStyle = snake1_pat;
-           break;
-         case snake2_space:
-           context.fillStyle = snake2_pat;
-           break;
-         case food_space:
-           context.fillStyle = breadstick_pat;
-           break;
-        case wall:
-            context.fillStyle = "#000";
-          break;
-      }
-      context.fillRect(x*width, y*height, width, height); //fills the canvas rectangle style.
+            switch (board[x][y]) {
+                case free:
+                    context.fillStyle = "#fff";
+                    break;
+                case snake1_space:
+                    context.fillStyle = snake1_pat;
+                    break;
+                case snake2_space:
+                    context.fillStyle = snake2_pat;
+                    break;
+                case food_space:
+                    context.fillStyle = breadstick_pat;
+                    break;
+                case wall:
+                    context.fillStyle = "#000";
+                    break;
+            }
+            context.fillRect(x * width, y * height, width, height); //fills the canvas rectangle style.
         }
     }
     context.fillStyle = "#000"; //white background.
@@ -230,7 +237,7 @@ function P2PosUpdate(pos) {
     //var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
 
     board[xHead][yHead] = snake2_space;
-   // board[xTail][yTail] = snake2_space;
+    // board[xTail][yTail] = snake2_space;
 }
 
 function ClearP2Tail(pos) {
@@ -265,22 +272,22 @@ function getInput() {
 
 function main() {
 
-  //for testing purposes
-  document.getElementById("ip").value = "127.0.0.1";
-  document.getElementById("port").value = "8000";
+    //for testing purposes
+    document.getElementById("ip").value = "127.0.0.1";
+    document.getElementById("port").value = "8000";
 
- startBtn.addEventListener('click', function() {
-   send("startgame:");
- });
+    startBtn.addEventListener('click', function () {
+        send("startgame:");
+    });
+    setInterval(incTime, 1000); // starts the timer
+    keystate = {};
+    document.addEventListener("keydown", function (evt) {
+        keystate[evt.keyCode] = true;
+    });
 
- keystate = {};
- document.addEventListener("keydown", function (evt) {
-     keystate[evt.keyCode] = true;
- });
-
- document.addEventListener("keyup", function (evt) {
-     delete keystate[evt.keyCode];
- });
+    document.addEventListener("keyup", function (evt) {
+        delete keystate[evt.keyCode];
+    });
 
 }
 

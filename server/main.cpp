@@ -17,12 +17,14 @@ Avelino Miranda   acmirand@uci.edu    16732033
 #include "snake.cpp"
 #include <queue>
 #include <random>
+#include <time.h>
 
 using namespace std;
 
 webSocket server;
 GameState gameState(&server);
 bool gameInSession = false;
+time_t gameStart;
 
 
 /* called when a client connects */
@@ -89,6 +91,7 @@ void messageHandler(int clientID, string message){
 		std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
 		if (command == "startgame") {
+			gameStart = time(0); //Start timer and keep track of time since this exact moment
 			vector<int> clientIDs = server.getClientIDs();
 			for (int i = 0; i < clientIDs.size(); i++) {
 				server.wsSend(clientIDs[i], "begin:");

@@ -111,7 +111,7 @@ function connect() {
     Server.bind('message', function (payload) {
 
         var cmdCutOff;
-        for (var i = 0; i < payload.length; ++i){
+        for (var i = 0; i < payload.length; ++i) {
             if (payload[i] == ':') {
                 cmdCutOff = i; break;
             }
@@ -135,6 +135,7 @@ function connect() {
                 }, 300);
             }
         } else if (command == "begin") {
+            gameStarted = true;
             var page1 = document.getElementById('connectPage');
             var page2 = document.getElementById('snakePage');
 

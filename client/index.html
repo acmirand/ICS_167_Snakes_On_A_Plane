@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 Group Members:
 Ney Congjuico     ncongjui@uci.edu    12432102
 Zachary Hart      zhhart@uci.edu      70953123
@@ -9,43 +9,43 @@ Avelino Miranda   acmirand@uci.edu    16732033
 <!doctype html>
 <html>
 <head>
-	<meta charset='UTF-8' />
-	<link rel="stylesheet" href="css/styles.css" type="text/css" />
+    <meta charset='UTF-8' />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
 </head>
 
 <!-- Player IDS are in server.js as p1id and p2id -->
 <body>
-	<img src="images/logo.png" id="logo">
-	<section id='connectPage' style='text-align: center;'>
-		<table align="center">
-				<tr>
-					<td>Player ID:</td>
-					<td><input type='text' id='p1id' name='p1id'></td>
-				</tr>
-				<tr>
-					<td>Server ip:</td>
-					<td><input type='text' id='ip' name='ip'></td>
-				</tr>
-				<tr>
-					<td>Server port:</td>
-					<td><input type='text' id='port' name='port'></td>
-				</tr>
-			</table>
-      <button type="button" id='cntBtn'>Connect</button><br/>
-			<button type='button' id='startBtn' style="visibility:hidden; ">Start Game</button><br/>
-			<textarea id='log' name='log' readonly='readonly'></textarea><br/>
-	</section>
+    <img src="images/logo.png" id="logo">
+    <section id='connectPage' style='text-align: center;'>
+        <table align="center">
+            <tr>
+                <td>Player ID:</td>
+                <td><input type='text' id='p1id' name='p1id'></td>
+            </tr>
+            <tr>
+                <td>Server ip:</td>
+                <td><input type='text' id='ip' name='ip'></td>
+            </tr>
+            <tr>
+                <td>Server port:</td>
+                <td><input type='text' id='port' name='port'></td>
+            </tr>
+        </table>
+        <button type="button" id='cntBtn'>Connect</button><br />
+        <button type='button' id='startBtn' style="visibility:hidden; ">Start Game</button><br />
+        <textarea id='log' name='log' readonly='readonly'></textarea><br />
+    </section>
 
-	<section id='snakePage'>
-		<img class="snakes" src="images/snake1.png" id="snake_head1" width="1" height="1">
-		<img class="snakes" src="images/snake2.png" id="snake_head2" width="1" height="1">
-		<img class="snakes" src="images/breadstick.png" id="breadstick" width="1" height="1"><br/>
-	</section>
+    <section id='snakePage'>
+        <img class="snakes" src="images/snake1.png" id="snake_head1" width="1" height="1">
+        <img class="snakes" src="images/snake2.png" id="snake_head2" width="1" height="1">
+        <img class="snakes" src="images/breadstick.png" id="breadstick" width="1" height="1"><br />
+    </section>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="js/fancywebsocket.js"></script>
-	<script src="js/game.js"></script>
-	<script src="js/server.js"></script>
-	<!-- <script src="js/snake.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="js/fancywebsocket.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/server.js"></script>
+    <!-- <script src="js/snake.js"></script> -->
 </body>
 </html>
