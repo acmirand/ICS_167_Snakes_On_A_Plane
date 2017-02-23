@@ -265,6 +265,7 @@ function sendTime() {
 }
 
 function calculateServerTime(timeB, message) {
+    console.log("Message: " + message);
     var clientTimeIndex;
     var serverTime1Index;
     for (var i = 0; i < message.length; ++i) {
@@ -281,9 +282,10 @@ function calculateServerTime(timeB, message) {
     var timeX = parseInt(message.substring(clientTimeIndex + 1, serverTime1Index));
     var timeY = parseInt(message.substring(serverTime1Index + 1));
 
-    var latency = timeY + (((timeB - timeA) - (timeY - timeX)) / 2);
+    var realTime = timeY + (((timeB - timeA) - (timeY - timeX)) / 2);
     console.log("Time A: " + timeA + " Time B: " + timeB + " Time X: " + timeX+ " Time Y: " + timeY);
-    console.log("Correct Clock time: " + latency.toString());
+    console.log("Real Clock time: " + realTime.toString());
+    console.log("What's this value???  " + (realTime - timeA));
 }
 
 function main() {

@@ -28,48 +28,49 @@ time_t gameStart;
 
 
 /* called when a client connects */
-void openHandler(int clientID){
-    ostringstream os;
-    os << "Player 2 has joined.";
+void openHandler(int clientID) {
+	ostringstream os;
+	os << "Player 2 has joined.";
 
-    vector<int> clientIDs = server.getClientIDs();
-    for (int i = 0; i < clientIDs.size(); i++){
-        if (clientIDs[i] != clientID)
-            server.wsSend(clientIDs[i], "print:" + os.str());
+	vector<int> clientIDs = server.getClientIDs();
+	for (int i = 0; i < clientIDs.size(); i++) {
+		if (clientIDs[i] != clientID)
+			server.wsSend(clientIDs[i], "print:" + os.str());
 
 		if (server.numOfActiveConnections == 2) {
 			server.wsSend(clientIDs[i], "ready:2");
 		}
-    }
+	}
 }
 
 /* called when a client disconnects */
-void closeHandler(int clientID){
-    ostringstream os;
-    os << "Stranger " << clientID << " has left.";
+void closeHandler(int clientID) {
+	ostringstream os;
+	os << "Stranger " << clientID << " has left.";
 
-    vector<int> clientIDs = server.getClientIDs();
-    for (int i = 0; i < clientIDs.size(); i++){
-        if (clientIDs[i] != clientID)
-            server.wsSend(clientIDs[i], os.str());
-    }
+	vector<int> clientIDs = server.getClientIDs();
+	for (int i = 0; i < clientIDs.size(); i++) {
+		if (clientIDs[i] != clientID)
+			server.wsSend(clientIDs[i], os.str());
+	}
 
 	gameInSession = false;
 }
 
 /* called when a client sends a message to the server */
-void messageHandler(int clientID, string message){
+void messageHandler(int clientID, string message) {
 	queue<std::string> requestQueue;
-    ostringstream os;
+	ostringstream os;
 	int cmdCutOff = 0;
-	
+
 
 	/*
 		1. One message comes in, put into queue
 		2. While queue is not empty, process requests inside queue
 		2. Put slight delay on serving requests
 	*/
-	time_t received = time(0);
+	//time_t received = time(0);
+	std::chrono::milliseconds received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 	requestQueue.push(message);
 
 	while (requestQueue.size() != 0) {
@@ -140,7 +141,10 @@ void messageHandler(int clientID, string message){
 			//  Client's A time
 			//	Time that clienttime was received
 			//	time the server sends servertime
-			server.wsSend(clientID, "servertime:" + clientAtime + "," + std::to_string(received) + "," + std::to_string(time(0)));
+			std::cout << received.count() << std::endl;
+			std::cout << std::to_string(received.count()) << std::endl;
+			server.wsSend(clientID, "servertime:" + clientAtime + "," + std::to_string(received.count()) + "," + 
+				std::to_string((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count())));
 		}
 
 		//std::cout << os.str() << std::endl << std::endl;
@@ -166,32 +170,32 @@ int randomInt(int min, int max) {
 }
 
 /* called once per select() loop */
-void periodicHandler(){
+void periodicHandler() {
 	double offset = 1;
-    static time_t next = time(0) + offset;
-    time_t current = time(0);
-    if (/*current >= next &&*/ gameInSession){
+	static time_t next = time(0) + offset;
+	time_t current = time(0);
+	if (/*current >= next &&*/ gameInSession) {
 
-        ostringstream os;
-        string timestring = ctime(&current);
-        timestring = timestring.substr(0, timestring.size() - 1);
-        os << timestring;
+		ostringstream os;
+		string timestring = ctime(&current);
+		timestring = timestring.substr(0, timestring.size() - 1);
+		os << timestring;
 
 		//std::this_thread::sleep_for(std::chrono::milliseconds(randomInt(100,700)));
 		gameState.UpdateLoop();
 
-        vector<int> clientIDs = server.getClientIDs();
-        for (int i = 0; i < clientIDs.size(); i++)
-            server.wsSend(clientIDs[i], os.str());
+		vector<int> clientIDs = server.getClientIDs();
+		for (int i = 0; i < clientIDs.size(); i++)
+			server.wsSend(clientIDs[i], os.str());
 
-        next = time(0) + offset;
-    }
+		next = time(0) + offset;
+	}
 }
 
-int main(int argc, char *argv[]){
-    int port;
+int main(int argc, char *argv[]) {
+	int port;
 
-    cout << "Starting on port 8000..." << endl << endl;
+	cout << "Starting on port 8000..." << endl << endl;
 
 	server.setOpenHandler(openHandler);
 	server.setCloseHandler(closeHandler);
@@ -200,5 +204,5 @@ int main(int argc, char *argv[]){
 
 	server.startServer(8000);
 
-    return 1;
+	return 1;
 }

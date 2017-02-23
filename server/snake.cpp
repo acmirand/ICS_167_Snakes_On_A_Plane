@@ -311,12 +311,12 @@ public:
 				os.str(std::string());
 				os.clear();
 				os << "player1name:" + player1Name;
-				std::cout << os.str() << std::endl;
+				//std::cout << os.str() << std::endl;
 				serverRef->wsSend(clientIDs[i], os.str());
 				os.str(std::string());
 				os.clear();
 				os << "player2name:" + player2Name;
-				std::cout << os.str() << std::endl;
+				//std::cout << os.str() << std::endl;
 				serverRef->wsSend(clientIDs[i], os.str());
 			}
 
