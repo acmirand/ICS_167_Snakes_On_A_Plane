@@ -66,7 +66,7 @@ Avelino Miranda   acmirand@uci.edu    16732033
 //The server will receive time like this.
 //clienttime:435
 //The server will send back time like this.
-//servertime:234
+//servertime:435,234,235
 
 /****************
 DIRECTIONS

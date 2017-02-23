@@ -181,6 +181,7 @@ function connect() {
         }
         else if (command == "servertime") {
             //Do time calculation here
+            calculateServerTime(Date.now(), message);
         }
 
 

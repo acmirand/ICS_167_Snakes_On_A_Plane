@@ -1,2 +1,24 @@
-﻿  SERVERVS.vcxproj -> C:\Users\Zachary\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
+﻿  snake.cpp
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(301): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(310): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(348): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(515): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(518): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(519): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  main.cpp
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(301): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(310): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(348): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(515): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(518): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(519): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(36): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(52): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(96): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(171): warning C4244: 'initializing': conversion from 'double' to 'time_t', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(184): warning C4018: '<': signed/unsigned mismatch
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(187): warning C4244: '=': conversion from 'double' to 'time_t', possible loss of data
+c:\users\zachary\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(192): warning C4101: 'port': unreferenced local variable
+  Generating Code...
+  SERVERVS.vcxproj -> C:\Users\Zachary\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
   SERVERVS.vcxproj -> C:\Users\Zachary\Documents\GitHub\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.pdb (Full PDB)

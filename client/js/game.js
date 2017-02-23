@@ -39,16 +39,8 @@ var boardInitialized = false;
 var img_snake_head1 = document.getElementById("snake_head1"); //puts the snake image into the canvas.
 var img_snake_head2 = document.getElementById("snake_head2");
 
-//Time tracking
-var secondsSinceStart = 0; //Used for tracking time
-var gameStarted = false; //Used for tracking whether or not to send time
-
-function incTime() {
-    secondsSinceStart++;
-}
-
 function InitializeBoardArray(dimensions) {
-
+    
     if (!boardInitialized) {
         // THIS CODE WORKS; THIS IS OUR BACKUP PLAN
         var cmdCutOff;
@@ -82,7 +74,7 @@ function InitializeBoardArray(dimensions) {
         context = canvas.getContext("2d");
         context.font = "20px Times New Roman";
         document.body.appendChild(canvas);
-
+        setInterval(sendTime(), 1000);
         boardInitialized = true;
     }
     else {
@@ -110,6 +102,7 @@ function ClearBoard() {
 
 function drawBoard() {
     getInput();
+    //console.log(timeSinceStart);
 
     var width = r;
     var height = c;
@@ -147,8 +140,6 @@ function drawBoard() {
 }
 
 function SetFood(pos) {
-
-    console.log(pos);
 
     var cmdCutOff;
     for (var i = 0; i < pos.length; ++i) {
@@ -270,7 +261,29 @@ function getInput() {
 }
 
 function sendTime() {
-    send("clienttime:" + secondsSinceStart.toString());
+    send("clienttime:" + Date.now().toString());
+}
+
+function calculateServerTime(timeB, message) {
+    var clientTimeIndex;
+    var serverTime1Index;
+    for (var i = 0; i < message.length; ++i) {
+        if (message[i] == ',') {
+            clientTimeIndex = i; break;
+        }
+    }
+    for (var i = clientTimeIndex + 1; i < message.length; ++i) {
+        if (message[i] == ',') {
+            serverTime1Index = i; break;
+        }
+    }
+    var timeA = parseInt(message.substring(0, clientTimeIndex));
+    var timeX = parseInt(message.substring(clientTimeIndex + 1, serverTime1Index));
+    var timeY = parseInt(message.substring(serverTime1Index + 1));
+
+    var latency = timeY + (((timeB - timeA) - (timeY - timeX)) / 2);
+    console.log("Time A: " + timeA + " Time B: " + timeB + " Time X: " + timeX+ " Time Y: " + timeY);
+    console.log("Correct Clock time: " + latency.toString());
 }
 
 function main() {
@@ -282,7 +295,6 @@ function main() {
     startBtn.addEventListener('click', function () {
         send("startgame:");
     });
-    setInterval(incTime, 1000); // starts the timer
     keystate = {};
     document.addEventListener("keydown", function (evt) {
         keystate[evt.keyCode] = true;

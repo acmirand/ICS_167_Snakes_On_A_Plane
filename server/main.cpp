@@ -62,13 +62,14 @@ void messageHandler(int clientID, string message){
 	queue<std::string> requestQueue;
     ostringstream os;
 	int cmdCutOff = 0;
+	
 
 	/*
 		1. One message comes in, put into queue
 		2. While queue is not empty, process requests inside queue
 		2. Put slight delay on serving requests
 	*/
-
+	time_t received = time(0);
 	requestQueue.push(message);
 
 	while (requestQueue.size() != 0) {
@@ -91,7 +92,6 @@ void messageHandler(int clientID, string message){
 		std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
 		if (command == "startgame") {
-			gameStart = time(0); //Start timer and keep track of time since this exact moment
 			vector<int> clientIDs = server.getClientIDs();
 			for (int i = 0; i < clientIDs.size(); i++) {
 				server.wsSend(clientIDs[i], "begin:");
@@ -135,7 +135,12 @@ void messageHandler(int clientID, string message){
 		}
 
 		if (command == "clienttime") {
-			//Do calculations here
+			std::string clientAtime = os.str();
+			//Send back the following
+			//  Client's A time
+			//	Time that clienttime was received
+			//	time the server sends servertime
+			server.wsSend(clientID, "servertime:" + clientAtime + "," + std::to_string(received) + "," + std::to_string(time(0)));
 		}
 
 		//std::cout << os.str() << std::endl << std::endl;
@@ -172,7 +177,7 @@ void periodicHandler(){
         timestring = timestring.substr(0, timestring.size() - 1);
         os << timestring;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(randomInt(100,700)));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(randomInt(100,700)));
 		gameState.UpdateLoop();
 
         vector<int> clientIDs = server.getClientIDs();
