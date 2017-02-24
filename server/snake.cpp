@@ -6,15 +6,26 @@ Daniel Lara       larad@uci.edu       49651280
 Avelino Miranda   acmirand@uci.edu    16732033
 */
 
+// QUEUE
 #include <deque>
+#include <queue>
+
+// MESSAGES
 #include <string>
 #include <sstream>
 #include <utility>
 #include <ctime>
 #include <iostream>
+
+// LATENCY
 #include <chrono>
 #include <thread>
 #include <conio.h>
+#include <random>
+#include <time.h>
+#include <algorithm>
+
+// OTHER HEADERS
 #include "stdlib.h"
 #include "time.h"
 #include "websocket.h"
@@ -24,7 +35,6 @@ Avelino Miranda   acmirand@uci.edu    16732033
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 
-std::chrono::milliseconds received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 //std::string PRINT = "print:";
 //
 ///*
@@ -297,7 +307,7 @@ public:
 		snake2.resetDirection();
 
 		//reset server start time
-		received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+		//received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 
 		/***********************
 		Client Updates

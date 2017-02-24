@@ -8,16 +8,7 @@ Avelino Miranda   acmirand@uci.edu    16732033
 
 #define _CRT_SECURE_NO_WARNINGS
 
-//#include <stdlib.h>
-//#include <iostream>
-//#include <string>
-//#include <sstream>
-//#include <time.h>
-#include <algorithm>
 #include "snake.cpp"
-#include <queue>
-#include <random>
-#include <time.h>
 
 using namespace std;
 
@@ -69,7 +60,7 @@ void messageHandler(int clientID, string message) {
 		2. Put slight delay on serving requests
 	*/
 	//time_t received = time(0);
-	//std::chrono::milliseconds received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+	std::chrono::milliseconds received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 	requestQueue.push(message);
 
 	while (requestQueue.size() != 0) {
@@ -140,8 +131,8 @@ void messageHandler(int clientID, string message) {
 			//  Client's A time
 			//	Time that clienttime was received
 			//	time the server sends servertime
-			std::cout << received.count() << std::endl;
-			std::cout << std::to_string(received.count()) << std::endl;
+			//std::cout << received.count() << std::endl;
+			//std::cout << std::to_string(received.count()) << std::endl;
 			server.wsSend(clientID, "servertime:" + clientAtime + "," + std::to_string(received.count()) + "," + 
 				std::to_string((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count())));
 		}
@@ -163,7 +154,7 @@ void messageHandler(int clientID, string message) {
 
 double randomNum() {
 	std::default_random_engine generator;
-	std::uniform_real_distribution<double> distribution(1.0,5.0);
+	std::uniform_real_distribution<double> distribution(0,2.0);
 	return distribution(generator);
 	//return rand() % (max - min + 1) + min;
 }
