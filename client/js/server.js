@@ -180,7 +180,6 @@ function connect() {
             p2id = message;
         }
         else if (command == "servertime") {
-            //Do time calculation here
             calculateServerTime(Date.now(), message);
         }
 

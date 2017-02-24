@@ -24,6 +24,7 @@ Avelino Miranda   acmirand@uci.edu    16732033
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 
+std::chrono::milliseconds received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 //std::string PRINT = "print:";
 //
 ///*
@@ -294,6 +295,9 @@ public:
 		//reset snake direction
 		snake1.resetDirection();
 		snake2.resetDirection();
+
+		//reset server start time
+		received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 
 		/***********************
 		Client Updates

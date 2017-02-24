@@ -63,14 +63,13 @@ void messageHandler(int clientID, string message) {
 	ostringstream os;
 	int cmdCutOff = 0;
 
-
 	/*
 		1. One message comes in, put into queue
 		2. While queue is not empty, process requests inside queue
 		2. Put slight delay on serving requests
 	*/
 	//time_t received = time(0);
-	std::chrono::milliseconds received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+	//std::chrono::milliseconds received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 	requestQueue.push(message);
 
 	while (requestQueue.size() != 0) {
@@ -162,20 +161,19 @@ void messageHandler(int clientID, string message) {
 	}
 }
 
-int randomInt(int min, int max) {
+double randomNum() {
 	std::default_random_engine generator;
-	std::uniform_int_distribution<int> distribution(min, max);
+	std::uniform_real_distribution<double> distribution(1.0,5.0);
 	return distribution(generator);
 	//return rand() % (max - min + 1) + min;
 }
 
 /* called once per select() loop */
 void periodicHandler() {
-	double offset = 1;
+	double offset = randomNum();
 	static time_t next = time(0) + offset;
 	time_t current = time(0);
-	if (/*current >= next &&*/ gameInSession) {
-
+	if (current >= next && gameInSession) {
 		ostringstream os;
 		string timestring = ctime(&current);
 		timestring = timestring.substr(0, timestring.size() - 1);
