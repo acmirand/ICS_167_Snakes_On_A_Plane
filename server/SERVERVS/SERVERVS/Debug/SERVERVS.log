@@ -1,16 +1,2 @@
-﻿  main.cpp
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(315): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(324): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(362): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(529): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(532): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\snake.cpp(533): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(27): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(43): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(87): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(165): warning C4244: 'initializing': conversion from 'double' to 'time_t', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(177): warning C4018: '<': signed/unsigned mismatch
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(180): warning C4244: '=': conversion from 'double' to 'time_t', possible loss of data
-c:\users\nerianne\desktop\git projects\ics_167_snakes_on_a_plane\server\main.cpp(185): warning C4101: 'port': unreferenced local variable
-  SERVERVS.vcxproj -> C:\Users\Nerianne\Desktop\Git Projects\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
+﻿  SERVERVS.vcxproj -> C:\Users\Nerianne\Desktop\Git Projects\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.exe
   SERVERVS.vcxproj -> C:\Users\Nerianne\Desktop\Git Projects\ICS_167_Snakes_On_A_Plane\server\SERVERVS\Debug\SERVERVS.pdb (Full PDB)

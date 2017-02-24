@@ -81,6 +81,7 @@ function InitializeBoardArray(dimensions) {
         p1_score = 0;
         p2_score = 0;
     }
+    //setInterval(sendTime(), 1000); //update latency every second
 }
 
 function ClearBoard() {
@@ -135,8 +136,7 @@ function drawBoard() {
     context.fillText(p1id + " Score: " + p1_score, 20, canvas.height - 21); //for the score.
     context.fillText(p2id + " Score: " + p2_score, canvas.width - 120, canvas.height - 21);
 
-    //sendTime();
-    setInterval(sendTime(), 1000); //update latency every second
+    sendTime();
     window.requestAnimationFrame(drawBoard, canvas);
 }
 
@@ -284,9 +284,6 @@ function calculateServerTime(timeB, message) {
     var timeY = parseInt(message.substring(serverTime1Index + 1));
 
     var realTime = timeY + (((timeB - timeA) - (timeY - timeX)) / 2);
-    //console.log("Time A: " + timeA + " Time B: " + timeB + " Time X: " + timeX+ " Time Y: " + timeY);
-    //console.log("Real Clock time: " + realTime.toString());
-    //console.log("What's this value???  " + (realTime - timeA));
     document.getElementById("realTime").value = realTime - timeA;
 }
 

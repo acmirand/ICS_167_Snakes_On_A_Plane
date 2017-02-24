@@ -52,9 +52,6 @@
     <None Include="..\..\README">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\..\client\js\server.js">
-      <Filter>Client Files</Filter>
-    </None>
     <None Include="..\..\..\client\js\snake.js">
       <Filter>Client Files</Filter>
     </None>
@@ -65,6 +62,9 @@
       <Filter>Client Files</Filter>
     </None>
     <None Include="..\..\..\client\index.html">
+      <Filter>Client Files</Filter>
+    </None>
+    <None Include="..\..\..\client\js\client.js">
       <Filter>Client Files</Filter>
     </None>
   </ItemGroup>
