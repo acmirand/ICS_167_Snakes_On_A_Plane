@@ -28,6 +28,7 @@ struct MessageEntry {
 // Declare these functions to be used later
 double randomNum();
 void ProcessRequest(int clientID, std::string command, std::string message, long long timeReceived);
+std::default_random_engine generator;
 
 // this is our queue. there are many like it, but this mine.
 queue<MessageEntry> requestQueue;
@@ -116,8 +117,9 @@ void messageHandler(int clientID, string message) {
 }
 
 double randomNum() {
-	std::default_random_engine generator;
 	std::uniform_real_distribution<double> distribution(0,0.5);
+
+	//std::cout << distribution(generator);
 	return distribution(generator);
 	//return rand() % (max - min + 1) + min;
 }

@@ -35,6 +35,7 @@ var r = 20;
 var c = 20;
 
 var boardInitialized = false;
+var lagValue = 0;
 
 var img_snake_head1 = document.getElementById("snake_head1"); //puts the snake image into the canvas.
 var img_snake_head2 = document.getElementById("snake_head2");
@@ -104,6 +105,7 @@ var time = 0;
 
 function drawBoard() {
     getInput();
+    document.getElementById("realTime").value = lagValue;
 
     var width = r;
     var height = c;
@@ -137,8 +139,8 @@ function drawBoard() {
     context.fillText(p1id + " Score: " + p1_score, 20, canvas.height - 21); //for the score.
     context.fillText(p2id + " Score: " + p2_score, canvas.width - 120, canvas.height - 21);
 
-    if (time++ == 500) {
-        //sendTime();
+    if (time++ == 750) {
+        sendTime();
         time = 0;
     }
 
@@ -251,18 +253,32 @@ function ClearP2Tail(pos) {
     board[x][y] = free;
 }
 
+var prevKey2 = move_down;
+
 function getInput() {
     if (keystate[move_left]) {
-        send("setdir:2");
+        if (prevKey2 != move_left) {
+            prevKey2 = move_left;
+            send("setdir:2");
+        }
     }
     if (keystate[move_right]) {
-        send("setdir:3");
+        if (prevKey2 != move_right) {
+            prevKey2 = move_right;
+            send("setdir:3");
+        }
     }
     if (keystate[move_up]) {
-        send("setdir:0");
+        if (prevKey2 != move_up) {
+            prevKey2 = move_up;
+            send("setdir:0");
+        }
     }
     if (keystate[move_down]) {
-        send("setdir:1");
+        if (prevKey2 != move_down) {
+            prevKey2 = move_down;
+            send("setdir:1");
+        }
     }
 }
 
@@ -289,8 +305,7 @@ function calculateServerTime(timeB, message) {
     var timeY = parseInt(message.substring(serverTime1Index + 1));
 
     var realTime = timeY + (((timeB - timeA) - (timeY - timeX)) / 2);
-
-    document.getElementById("realTime").value = realTime - timeA;
+    lagValue = realTime - timeA;
 }
 
 var prevKey = null;
