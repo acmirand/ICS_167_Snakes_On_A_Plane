@@ -98,7 +98,7 @@ function connect() {
         //get last value of log/textArea
         for (var i = 0; i < textInput.length; ++i) {
             if (i == textInput.length - 1) {
-                console.log('Inside textArea: ' + textInput[i]);
+                //console.log('Inside textArea: ' + textInput[i]);
                 lastValue = textInput[i];
             }
         }
@@ -126,7 +126,7 @@ function connect() {
         if (command == "print") {
             log(message);
         } else if (command == "ready") {
-            console.log("starting game!" + " message: " + message);
+            //console.log("starting game!" + " message: " + message);
             if (message == "2") {
 
                 setTimeout(function () {

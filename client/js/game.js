@@ -100,9 +100,10 @@ function ClearBoard() {
     }
 }
 
+var time = 0;
+
 function drawBoard() {
     getInput();
-    //console.log(timeSinceStart);
 
     var width = r;
     var height = c;
@@ -136,7 +137,11 @@ function drawBoard() {
     context.fillText(p1id + " Score: " + p1_score, 20, canvas.height - 21); //for the score.
     context.fillText(p2id + " Score: " + p2_score, canvas.width - 120, canvas.height - 21);
 
-    sendTime();
+    if (time++ == 500) {
+        //sendTime();
+        time = 0;
+    }
+
     window.requestAnimationFrame(drawBoard, canvas);
 }
 
@@ -262,11 +267,11 @@ function getInput() {
 }
 
 function sendTime() {
-    send("clienttime:" + Date.now().toString());
+    timeAcheck = Date.now().toString();
+    send("clienttime:" + timeAcheck);
 }
 
 function calculateServerTime(timeB, message) {
-    console.log("Message: " + message);
     var clientTimeIndex;
     var serverTime1Index;
     for (var i = 0; i < message.length; ++i) {
@@ -284,8 +289,11 @@ function calculateServerTime(timeB, message) {
     var timeY = parseInt(message.substring(serverTime1Index + 1));
 
     var realTime = timeY + (((timeB - timeA) - (timeY - timeX)) / 2);
+
     document.getElementById("realTime").value = realTime - timeA;
 }
+
+var prevKey = null;
 
 function main() {
 
@@ -298,7 +306,10 @@ function main() {
     });
     keystate = {};
     document.addEventListener("keydown", function (evt) {
-        keystate[evt.keyCode] = true;
+        if (prevKey != evt.keyCode) {
+            keystate[evt.keyCode] = true;
+            prevKey = evt.keyCode;
+        }
     });
 
     document.addEventListener("keyup", function (evt) {
