@@ -22,11 +22,12 @@ struct MessageEntry {
 	std::string command;
 	std::string message;
 	long long timeReceived;
-	double delay;
+	long long timeToBeProcessed;
+	long long delay;
 };
 
 // Declare these functions to be used later
-double randomNum();
+long long randomNum();
 void ProcessRequest(int clientID, std::string command, std::string message, long long timeReceived);
 std::default_random_engine generator;
 
@@ -112,12 +113,13 @@ void messageHandler(int clientID, string message) {
 		}
 	}
 	else {
-		requestQueue.push(MessageEntry{ clientID, command, os.str(), received.count(), randomNum() });
+		long long delay = randomNum();
+		requestQueue.push(MessageEntry{ clientID, command, os.str(), received.count(), received.count() + delay, delay });
 	}
 }
 
-double randomNum() {
-	std::uniform_real_distribution<double> distribution(0,0.5);
+long long randomNum() {
+	std::uniform_int_distribution<long long> distribution(0, 500);
 
 	//std::cout << distribution(generator);
 	return distribution(generator);
@@ -143,18 +145,17 @@ void periodicHandler() {
 		// This is to simulate latency.
 		if (!requestQueue.empty()) {
 
-			MessageEntry message = { requestQueue.front().clientID, requestQueue.front().command,requestQueue.front().message,requestQueue.front().timeReceived, requestQueue.front().delay };
+			MessageEntry message = { requestQueue.front().clientID, requestQueue.front().command,requestQueue.front().message,requestQueue.front().timeReceived, requestQueue.front().timeToBeProcessed, requestQueue.front().delay };
 
 			//std::cout << message.clientID << " " << message.command << " " << message.message << " " << message.timeReceived << std::endl;
 
 			requestQueue.pop();
-			if (message.delay <= 0) {
+			if ((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - message.timeToBeProcessed >=  message.delay)) {
 				std::cout << message.timeReceived << " and the delay is = " << message.delay << std::endl;
 				ProcessRequest(message.clientID, message.command, message.message, message.timeReceived);
 			}
 			else {
-				std::cout << message.timeReceived << " and the delay is = " << message.delay << std::endl;
-				--message.delay;
+				std::cout << message.timeReceived  << "Re-Queued" << std::endl;
 				requestQueue.push(message);
 			}
 		}
