@@ -171,6 +171,7 @@ function p1_update() {
                 ny--;
                 break;
             case dir_down:
+
                 ny++;
                 break;
         }

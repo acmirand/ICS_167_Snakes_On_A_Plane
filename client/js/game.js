@@ -34,6 +34,9 @@ var p2_score = 0;
 var r = 20;
 var c = 20;
 
+//Client Side
+var cDir = 0;
+
 var boardInitialized = false;
 var lagValue = 0;
 
@@ -162,6 +165,26 @@ function SetFood(pos) {
     board[xFood][yFood] = food_space;
 }
 
+var cSnake =
+{
+    direction: null,
+    _snake_array: null,
+    last: null,
+
+    init: function (direction, x, y) { //specifies which direction snake is facing towards and creates an array that keeps track where the snake's coordinates (head and tail is)
+        this.direction = direction;
+        this._snake_array = [];
+        this.insert(x, y);
+    },
+    insert: function (x, y) { //not exactly sure what this does. the tutorial went through it real quick.
+        this._snake_array.unshift({ x: x, y: y }); //from my understanding this puts the x and y coordinate to the front of the array.
+        this.last = this._snake_array[0]; //by shifting the snake_array[0] to the front, this.last is set to the new last. (head of the snake)
+    },
+    remove: function () {
+        return this._snake_array.pop(); //removes the last set of coordinate in the array to be set into free space.
+    }
+}
+
 // x,y-x,y
 function P1PosUpdate(pos) {
     var cmdCutOff;
@@ -172,7 +195,6 @@ function P1PosUpdate(pos) {
     }
 
     var HeadPos = pos.substring(0, cmdCutOff);
-    //var TailPos = pos.substring(cmdCutOff + 1);
 
     for (var i = 0; i < HeadPos.length; ++i) {
         if (HeadPos[i] == ',') {
@@ -182,16 +204,7 @@ function P1PosUpdate(pos) {
     var xHead = parseInt(HeadPos.substring(0, cmdCutOff));
     var yHead = parseInt(HeadPos.substring(cmdCutOff + 1));
 
-    //for (var i = 0; i < TailPos.length; ++i) {
-    //    if (TailPos[i] == ',') {
-    //        cmdCutOff = i; break;
-    //    }
-    //}
-    //var xTail = parseInt(TailPos.substring(0, cmdCutOff));
-    //var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
-
     board[xHead][yHead] = snake1_space;
-    //board[xTail][yTail] = snake1_space;
 }
 
 function ClearP1Tail(pos) {
@@ -217,7 +230,6 @@ function P2PosUpdate(pos) {
     }
 
     var HeadPos = pos.substring(0, cmdCutOff);
-    //var TailPos = pos.substring(cmdCutOff + 1);
 
     for (var i = 0; i < HeadPos.length; ++i) {
         if (HeadPos[i] == ',') {
@@ -227,16 +239,7 @@ function P2PosUpdate(pos) {
     var xHead = parseInt(HeadPos.substring(0, cmdCutOff));
     var yHead = parseInt(HeadPos.substring(cmdCutOff + 1));
 
-    //for (var i = 0; i < TailPos.length; ++i) {
-    //    if (TailPos[i] == ',') {
-    //        cmdCutOff = i; break;
-    //    }
-    //}
-    //var xTail = parseInt(TailPos.substring(0, cmdCutOff));
-    //var yTail = parseInt(TailPos.substring(cmdCutOff + 1));
-
     board[xHead][yHead] = snake2_space;
-    // board[xTail][yTail] = snake2_space;
 }
 
 function ClearP2Tail(pos) {
@@ -259,24 +262,28 @@ function getInput() {
     if (keystate[move_left]) {
         if (prevKey2 != move_left) {
             prevKey2 = move_left;
+            cDir = 2;
             send("setdir:2");
         }
     }
     if (keystate[move_right]) {
         if (prevKey2 != move_right) {
             prevKey2 = move_right;
+            cDir = 3;
             send("setdir:3");
         }
     }
     if (keystate[move_up]) {
         if (prevKey2 != move_up) {
             prevKey2 = move_up;
+            cDir = 0;
             send("setdir:0");
         }
     }
     if (keystate[move_down]) {
         if (prevKey2 != move_down) {
             prevKey2 = move_down;
+            cDir = 1;
             send("setdir:1");
         }
     }
