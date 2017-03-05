@@ -10,6 +10,12 @@ Avelino Miranda   acmirand@uci.edu    16732033
 #include <deque>
 #include <queue>
 
+// SET
+#include <set>
+
+//MAP
+#include <map>
+
 // MESSAGES
 #include <string>
 #include <sstream>

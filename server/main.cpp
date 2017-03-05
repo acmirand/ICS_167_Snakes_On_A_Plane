@@ -24,15 +24,22 @@ struct MessageEntry {
 	long long timeReceived;
 	long long timeToBeProcessed;
 	long long delay;
+	long long timeA;
 };
+
+void printMessageEntry(MessageEntry toPrint) {
+	std::cout << "MESSAGE ENTRY - ClientID: " << toPrint.clientID << ", Command: " << toPrint.command << ", Message: " << toPrint.message << ", Time Received: " << toPrint.timeReceived << ", Time To Be Processed: " << toPrint.timeToBeProcessed << ", Delay: " << toPrint.delay << " , TimeA: " << toPrint.timeA << std::endl;
+}
 
 // Declare these functions to be used later
 long long randomNum();
-void ProcessRequest(int clientID, std::string command, std::string message, long long timeReceived);
+void ProcessRequest(int clientID, std::string command, std::string message, long long timeReceived, long long timeA);
 std::default_random_engine generator;
 
 // this is our queue. there are many like it, but this mine.
 queue<MessageEntry> requestQueue;
+set<long long> timeASet;
+std::map<long long, MessageEntry> buffer;
 
 /* called when a client connects */
 void openHandler(int clientID) {
@@ -91,7 +98,26 @@ void messageHandler(int clientID, string message) {
 	os << message.substr(cmdCutOff + 1);
 	command = message.substr(0, cmdCutOff);
 	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
-
+	long long timeA;
+	if (command == "setdir") {
+		
+		std::string remainingCommand = os.str();
+		for (int i = 0; i < remainingCommand.length(); ++i) {
+			if (remainingCommand[i] == ',') {
+				cmdCutOff = i;
+				break;
+			}
+		}
+		long long delay = randomNum();
+		std::string::size_type sz = 0;
+		timeA = std::stoll(remainingCommand.substr(cmdCutOff+1), &sz, 0);
+		MessageEntry toInsert = MessageEntry{ clientID, command, os.str().substr(0,cmdCutOff), received.count(), received.count() + delay, delay, timeA };
+		requestQueue.push(toInsert);
+		timeASet.insert(timeA);
+		buffer.insert(std::pair<long long, MessageEntry>(timeA, toInsert));
+		std::cout << "Key: " << timeA << " -> Value: " << std::endl;
+		printMessageEntry(buffer[timeA]);
+	}
 	if (command == "startgame") {
 		vector<int> clientIDs = server.getClientIDs();
 		for (int i = 0; i < clientIDs.size(); i++) {
@@ -111,10 +137,6 @@ void messageHandler(int clientID, string message) {
 		else {
 			gameState.SetPlayerName(clientID, os.str());
 		}
-	}
-	else {
-		long long delay = randomNum();
-		requestQueue.push(MessageEntry{ clientID, command, os.str(), received.count(), received.count() + delay, delay });
 	}
 }
 
@@ -143,24 +165,25 @@ void periodicHandler() {
 
 		// Keep going through the queue and determine if it should be processed or not.
 		// This is to simulate latency.
-		if (!requestQueue.empty()) {
+		while (!requestQueue.empty()) {
 
-			MessageEntry message = { requestQueue.front().clientID, requestQueue.front().command,requestQueue.front().message,requestQueue.front().timeReceived, requestQueue.front().timeToBeProcessed, requestQueue.front().delay };
+			MessageEntry message = { requestQueue.front().clientID, requestQueue.front().command,requestQueue.front().message,requestQueue.front().timeReceived, requestQueue.front().timeToBeProcessed, requestQueue.front().delay, requestQueue.front().timeA };
 
 			//std::cout << message.clientID << " " << message.command << " " << message.message << " " << message.timeReceived << std::endl;
 
 			requestQueue.pop();
 			if ((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - message.timeToBeProcessed >=  message.delay)) {
-				std::cout << message.timeReceived << " and the delay is = " << message.delay << std::endl;
-				ProcessRequest(message.clientID, message.command, message.message, message.timeReceived);
+				//std::cout << message.timeReceived << " and the delay is = " << message.delay << std::endl;
+				ProcessRequest(message.clientID, message.command, message.message, message.timeReceived, message.timeA);
 			}
 			else {
-				std::cout << message.timeReceived  << "Re-Queued" << std::endl;
+				//std::cout << message.timeReceived  << "Re-Queued" << std::endl;
 				requestQueue.push(message);
 			}
+			gameState.UpdateLoop();
 		}
 
-		//std::this_thread::sleep_for(std::chrono::milliseconds(randomInt(100,700)));
+		
 		gameState.UpdateLoop();
 
 		vector<int> clientIDs = server.getClientIDs();
@@ -171,8 +194,7 @@ void periodicHandler() {
 	}
 }
 
-void ProcessRequest(int clientID, std::string command, std::string message, long long timeReceived) {
-
+void ProcessRequest(int clientID, std::string command, std::string message, long long timeReceived, long long timeA) {
 	if (command == "setdir") {
 
 		int dirNumber = stoi(message); //Convert the number in string form to an int

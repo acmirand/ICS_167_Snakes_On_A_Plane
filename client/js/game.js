@@ -263,28 +263,28 @@ function getInput() {
         if (prevKey2 != move_left) {
             prevKey2 = move_left;
             cDir = 2;
-            send("setdir:2");
+            send("setdir:2," + Date.now().toString());
         }
     }
     if (keystate[move_right]) {
         if (prevKey2 != move_right) {
             prevKey2 = move_right;
             cDir = 3;
-            send("setdir:3");
+            send("setdir:3," + Date.now().toString());
         }
     }
     if (keystate[move_up]) {
         if (prevKey2 != move_up) {
             prevKey2 = move_up;
             cDir = 0;
-            send("setdir:0");
+            send("setdir:0," + Date.now().toString());
         }
     }
     if (keystate[move_down]) {
         if (prevKey2 != move_down) {
             prevKey2 = move_down;
             cDir = 1;
-            send("setdir:1");
+            send("setdir:1," + Date.now().toString());
         }
     }
 }
