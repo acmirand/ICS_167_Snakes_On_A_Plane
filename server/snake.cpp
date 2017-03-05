@@ -158,29 +158,6 @@ public:
 	void resetDirection() {
 		currDir = 1;
 	}
-	//void update() {
-
-	//	int nextX = head.first;
-	//	int nextY = head.second;
-
-	//	switch (currDir) {
-	//	case 0:
-	//		nextY--;
-	//		break;
-	//	case 1:
-	//		nextY++;
-	//		break;
-	//	case 2:
-	//		nextX--;
-	//		break;
-	//	case 3:
-	//		nextX++;
-	//		break;
-	//	}
-
-	//	tail.first = nextX;
-	//	tail.second = nextY;
-	//}
 
 	std::string getDirString() {
 		return std::to_string(currDir);
@@ -188,6 +165,10 @@ public:
 
 	int GetDir() {
 		return currDir;
+	}
+
+	std::string getSnakeString() {
+
 	}
 
 };
