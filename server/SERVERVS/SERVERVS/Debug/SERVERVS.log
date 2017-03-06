@@ -33,12 +33,12 @@ d:\github\ics_167_snakes_on_a_plane\server\snake.cpp(349): warning C4018: '<': s
 d:\github\ics_167_snakes_on_a_plane\server\snake.cpp(516): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 d:\github\ics_167_snakes_on_a_plane\server\snake.cpp(519): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 d:\github\ics_167_snakes_on_a_plane\server\snake.cpp(520): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\github\ics_167_snakes_on_a_plane\server\main.cpp(50): warning C4018: '<': signed/unsigned mismatch
 d:\github\ics_167_snakes_on_a_plane\server\main.cpp(66): warning C4018: '<': signed/unsigned mismatch
-d:\github\ics_167_snakes_on_a_plane\server\main.cpp(105): warning C4018: '<': signed/unsigned mismatch
-d:\github\ics_167_snakes_on_a_plane\server\main.cpp(123): warning C4018: '<': signed/unsigned mismatch
-d:\github\ics_167_snakes_on_a_plane\server\main.cpp(190): warning C4018: '<': signed/unsigned mismatch
-d:\github\ics_167_snakes_on_a_plane\server\main.cpp(232): warning C4101: 'port': unreferenced local variable
+d:\github\ics_167_snakes_on_a_plane\server\main.cpp(82): warning C4018: '<': signed/unsigned mismatch
+d:\github\ics_167_snakes_on_a_plane\server\main.cpp(121): warning C4018: '<': signed/unsigned mismatch
+d:\github\ics_167_snakes_on_a_plane\server\main.cpp(145): warning C4018: '<': signed/unsigned mismatch
+d:\github\ics_167_snakes_on_a_plane\server\main.cpp(243): warning C4018: '<': signed/unsigned mismatch
+d:\github\ics_167_snakes_on_a_plane\server\main.cpp(285): warning C4101: 'port': unreferenced local variable
   base64.cpp
 d:\github\ics_167_snakes_on_a_plane\server\base64.cpp(96): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
 d:\github\ics_167_snakes_on_a_plane\server\base64.cpp(113): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data

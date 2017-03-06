@@ -16,30 +16,46 @@ webSocket server;
 GameState gameState(&server);
 bool gameInSession = false;
 time_t gameStart;
+time_t timerz = 0;
 
 struct MessageEntry {
 	int clientID;
-	std::string command;
-	std::string message;
-	long long timeReceived;
-	long long timeToBeProcessed;
+	std::string command; // The command
+	std::string message; // The string associated with the command
+	long long timeReceived; // The time the message came in to the server
+	long long timeX; // 
 	long long delay;
 	long long timeA;
+	long long outgoingDelay;
+	long long timeY;
 };
 
+
+
 void printMessageEntry(MessageEntry toPrint) {
-	std::cout << "MESSAGE ENTRY - ClientID: " << toPrint.clientID << ", Command: " << toPrint.command << ", Message: " << toPrint.message << ", Time Received: " << toPrint.timeReceived << ", Time To Be Processed: " << toPrint.timeToBeProcessed << ", Delay: " << toPrint.delay << " , TimeA: " << toPrint.timeA << std::endl;
+	std::cout << "MESSAGE ENTRY - ClientID: " << toPrint.clientID << ", Command: " << toPrint.command << ", Message: " << toPrint.message << ", Time Received: " << toPrint.timeReceived << ", Time To Be Processed: " << toPrint.timeX << ", Delay: " << toPrint.delay << " , TimeA: " << toPrint.timeA << std::endl;
 }
+
 
 // Declare these functions to be used later
 long long randomNum();
-void ProcessRequest(int clientID, std::string command, std::string message, long long timeReceived, long long timeA);
+void ProcessRequest(int clientID, std::string command, std::string message, long long timeX, long long timeA, long long timeY);
 std::default_random_engine generator;
 
 // this is our queue. there are many like it, but this mine.
 queue<MessageEntry> requestQueue;
+queue<MessageEntry> outgoingQueue;
 set<long long> timeASet;
 std::map<long long, MessageEntry> buffer;
+
+
+void printSet() {
+	std::cout << "Time A Set: (";
+	for (auto i = timeASet.begin(); i != timeASet.end(); ++i) {
+		std::cout << *i << ", ";
+	}
+	std::cout << ") " << std::endl;
+}
 
 /* called when a client connects */
 void openHandler(int clientID) {
@@ -108,21 +124,28 @@ void messageHandler(int clientID, string message) {
 				break;
 			}
 		}
+		//Inserting delay
 		long long delay = randomNum();
+
+		//Creating the set and map entry
 		std::string::size_type sz = 0;
 		timeA = std::stoll(remainingCommand.substr(cmdCutOff+1), &sz, 0);
-		MessageEntry toInsert = MessageEntry{ clientID, command, os.str().substr(0,cmdCutOff), received.count(), received.count() + delay, delay, timeA };
-		requestQueue.push(toInsert);
+		MessageEntry toInsert = MessageEntry{ clientID, command, os.str().substr(0,cmdCutOff), received.count(), received.count() + delay, delay, timeA, randomNum(), received.count()};
+		//requestQueue.push(toInsert);
 		timeASet.insert(timeA);
 		buffer.insert(std::pair<long long, MessageEntry>(timeA, toInsert));
+
+		//Debug print statements
 		std::cout << "Key: " << timeA << " -> Value: " << std::endl;
 		printMessageEntry(buffer[timeA]);
+		printSet();
 	}
 	if (command == "startgame") {
 		vector<int> clientIDs = server.getClientIDs();
 		for (int i = 0; i < clientIDs.size(); i++) {
 			server.wsSend(clientIDs[i], "begin:");
 		}
+		timerz = time(0);
 
 		gameState.SetClientIDs(server.getClientIDs());
 		gameState.Init();
@@ -141,14 +164,14 @@ void messageHandler(int clientID, string message) {
 }
 
 long long randomNum() {
-	std::uniform_int_distribution<long long> distribution(0, 500);
+	std::uniform_int_distribution<long long> distribution(0, 250);
 
 	//std::cout << distribution(generator);
 	return distribution(generator);
 	//return rand() % (max - min + 1) + min;
 }
 
-int timerz = 0;
+
 
 /* called once per select() loop */
 void periodicHandler() {
@@ -156,6 +179,28 @@ void periodicHandler() {
 	time_t offset = 1; //randomNum();
 	static time_t next = time(0) + offset;
 	time_t current = time(0);
+
+	// 
+	if (current - timerz < 125) {
+		if (!timeASet.empty()) {
+			for (auto i = timeASet.begin(); i != timeASet.end();) {
+				if (current - buffer[*i].timeX < 125) {
+					//"Queue them"
+					requestQueue.push(buffer[*i]);
+					buffer.erase(*i);
+					i = timeASet.erase(i);
+				}
+				else {
+					++i;
+				}
+			}
+		}
+	}
+	else {
+		timerz = time(0);
+	}
+
+
 	if (current >= next && gameInSession) {
 
 		ostringstream os;
@@ -163,25 +208,33 @@ void periodicHandler() {
 		timestring = timestring.substr(0, timestring.size() - 1);
 		os << timestring;
 
+
+		
 		// Keep going through the queue and determine if it should be processed or not.
 		// This is to simulate latency.
 		while (!requestQueue.empty()) {
 
-			MessageEntry message = { requestQueue.front().clientID, requestQueue.front().command,requestQueue.front().message,requestQueue.front().timeReceived, requestQueue.front().timeToBeProcessed, requestQueue.front().delay, requestQueue.front().timeA };
-
+			MessageEntry message = { requestQueue.front().clientID, requestQueue.front().command,requestQueue.front().message,requestQueue.front().timeReceived, requestQueue.front().timeX, requestQueue.front().delay, requestQueue.front().timeA , requestQueue.front().outgoingDelay , requestQueue.front().timeY };
+			message.timeY = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() + message.outgoingDelay;
 			//std::cout << message.clientID << " " << message.command << " " << message.message << " " << message.timeReceived << std::endl;
-
+			//ProcessRequest(requestQueue.front().clientID, requestQueue.front().command, requestQueue.front().message, requestQueue.front().timeX, requestQueue.front().timeA);
 			requestQueue.pop();
-			if ((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - message.timeToBeProcessed >=  message.delay)) {
-				//std::cout << message.timeReceived << " and the delay is = " << message.delay << std::endl;
-				ProcessRequest(message.clientID, message.command, message.message, message.timeReceived, message.timeA);
+			outgoingQueue.push(message);
+		}
+		while (!outgoingQueue.empty()) {
+			MessageEntry message = { outgoingQueue.front().clientID, outgoingQueue.front().command,outgoingQueue.front().message,outgoingQueue.front().timeReceived, outgoingQueue.front().timeX, outgoingQueue.front().delay, outgoingQueue.front().timeA , outgoingQueue.front().outgoingDelay , outgoingQueue.front().timeY };
+			outgoingQueue.pop();
+			if ((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - message.timeY >= message.outgoingDelay)) {
+				//	//std::cout << message.timeReceived << " and the delay is = " << message.delay << std::endl;
+				ProcessRequest(message.clientID, message.command, message.message, message.timeReceived, message.timeA, message.timeY);
 			}
 			else {
-				//std::cout << message.timeReceived  << "Re-Queued" << std::endl;
-				requestQueue.push(message);
+				//	//std::cout << message.timeReceived  << "Re-Queued" << std::endl;
+				outgoingQueue.push(message);
 			}
-			gameState.UpdateLoop();
+			//gameState.UpdateLoop();
 		}
+		
 
 		
 		gameState.UpdateLoop();
@@ -194,7 +247,7 @@ void periodicHandler() {
 	}
 }
 
-void ProcessRequest(int clientID, std::string command, std::string message, long long timeReceived, long long timeA) {
+void ProcessRequest(int clientID, std::string command, std::string message, long long timeX, long long timeA, long long timeY) {
 	if (command == "setdir") {
 
 		int dirNumber = stoi(message); //Convert the number in string form to an int
@@ -207,13 +260,13 @@ void ProcessRequest(int clientID, std::string command, std::string message, long
 		}
 	}
 
-	if (command == "p1posupdate") {
+	/*if (command == "p1posupdate") {
 		server.wsSend(clientID, "p1posupdate:" + gameState.getSnake1().getPosString());
 	}
 
 	if (command == "p2posupdate") {
 		server.wsSend(clientID, "p2posupdate:" + gameState.getSnake2().getPosString());
-	}
+	}*/
 
 	if (command == "clienttime") {
 		std::string clientAtime = message;
@@ -223,8 +276,8 @@ void ProcessRequest(int clientID, std::string command, std::string message, long
 		//	time the server sends servertime
 		//std::cout << received.count() << std::endl;
 		//std::cout << std::to_string(received.count()) << std::endl;
-		server.wsSend(clientID, "servertime:" + clientAtime + "," + std::to_string(timeReceived) + "," +
-			std::to_string((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count())));
+		server.wsSend(clientID, "servertime:" + clientAtime + "," + std::to_string(timeX) + "," +
+			std::to_string(timeY));
 	}
 }
 
