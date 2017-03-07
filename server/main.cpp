@@ -221,22 +221,25 @@ void periodicHandler() {
 			requestQueue.pop();
 			outgoingQueue.push(message);
 		}
+
+		// THIS IS WHERE WE ARE HANDLING THE OUTGOING DELAY.
 		while (!outgoingQueue.empty()) {
 			MessageEntry message = { outgoingQueue.front().clientID, outgoingQueue.front().command,outgoingQueue.front().message,outgoingQueue.front().timeReceived, outgoingQueue.front().timeX, outgoingQueue.front().delay, outgoingQueue.front().timeA , outgoingQueue.front().outgoingDelay , outgoingQueue.front().timeY };
 			outgoingQueue.pop();
 			if ((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - message.timeY >= message.outgoingDelay)) {
 				//	//std::cout << message.timeReceived << " and the delay is = " << message.delay << std::endl;
+
+				// Processes client inputs
 				ProcessRequest(message.clientID, message.command, message.message, message.timeReceived, message.timeA, message.timeY);
 			}
 			else {
 				//	//std::cout << message.timeReceived  << "Re-Queued" << std::endl;
 				outgoingQueue.push(message);
 			}
-			//gameState.UpdateLoop();
 		}
 		
 
-		
+		// Updates the game state and sends the states to all clients
 		gameState.UpdateLoop();
 
 		vector<int> clientIDs = server.getClientIDs();

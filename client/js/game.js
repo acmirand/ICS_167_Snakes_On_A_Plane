@@ -37,11 +37,28 @@ var c = 20;
 //Client Side
 var cDir = 0;
 
+// OBJECTS / COMMANDS TO BE PROCESSED
+var set = new Set();
+var map = new Map();
+var queue = [];
+
+function dumby(message) {
+    console.log(message);
+}
+
 var boardInitialized = false;
 var lagValue = 0;
 
 var img_snake_head1 = document.getElementById("snake_head1"); //puts the snake image into the canvas.
 var img_snake_head2 = document.getElementById("snake_head2");
+
+function AddToSet(timeY) {
+    set.add(timeY);
+}
+
+function AddToMap(timeY, cmdStruct) {
+    map.set(timeY, cmdStruct);
+}
 
 function InitializeBoardArray(dimensions) {
     
@@ -105,10 +122,35 @@ function ClearBoard() {
 }
 
 var time = 0;
+var delayTime = Date.now();
 
 function drawBoard() {
     getInput();
     document.getElementById("realTime").value = lagValue;
+
+    var current = Date.now();
+
+    if (current - delayTime < 125) {
+        if (set.size > 0) {
+
+            var mapIter = map.entries();
+            for (var i = 0; i < set.size; ++i) {
+                if (current - mapIter.next().value.timeB < 125) {
+                    queue.push(map[set[i]]);
+                    map.delete[set[i]];
+                }
+            }
+        }
+    }
+    else {
+        delayTime = Date.now();
+    }
+
+    while (queue.size > 0) {
+        var cmdStruct = queue.shift();
+        cmdStruct.func(cmdStruct.str);
+    }
+
 
     var width = r;
     var height = c;
@@ -254,6 +296,14 @@ function ClearP2Tail(pos) {
     var y = parseInt(pos.substring(cmdCutOff + 1));
 
     board[x][y] = free;
+}
+
+function UpdateP1Score(score) {
+    p1_score = parseInt(score);
+}
+
+function UpdateP2Score(score) {
+    p2_score = parseInt(score);
 }
 
 var prevKey2 = move_down;

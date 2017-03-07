@@ -123,6 +123,27 @@ function connect() {
         command.toLowerCase();
         var message = payload.substring(cmdCutOff + 1);
 
+        var timeIndex = -1;
+        for (var i = 0; i < message.length; ++i){
+            if (message[i] == '@') {
+                timeIndex = i;
+            }
+        }
+
+        // IF THE COMMAND IS ONE OF THE FOLLOWING, P1POSUPDATE, P2POSUPDATE,
+        // UPDATEP1SCORE, UPDATEP2SCORE, SENDFOOD, CLEARP1TAIL, OR CLEARP2TAIL,
+        // MAKE SURE TO GET THE TIMEY SO CORRECT ORDER IS PROCESSED.
+        var timeY = -1;
+        if (timeIndex != -1) {
+            // THIS IS IMPORTANT INFORMATION!!!
+            var str = message;
+            message = message.substring(0, timeIndex);
+            timeY = str.substring(timeIndex + 1);
+
+            // add the time to the set
+            AddToSet(timeY);
+        }
+
         if (command == "print") {
             log(message);
         } else if (command == "ready") {
@@ -145,33 +166,65 @@ function connect() {
             page1.style.display = 'none';
             page2.style.display = 'block';
         }
-        else if (command == "updateP1Score") {
-            p1_score = parseInt(message);
+
+        // TIME DEPENDENT
+        else if (command == "p1posupdate" && timeIndex != -1) {
+            //P1PosUpdate(message);
+            var cmdStruct = { str: message, timeB:Date.now(), func: P1PosUpdate };
+           AddToMap(timeY, cmdStruct);
+            //console.log(cmdStruct);
+            //console.log(map);
         }
-        else if (command == "updateP2Score") {
-            p2_score = parseInt(message);
+        else if (command == "p2posupdate" && timeIndex != -1) {
+            //P2PosUpdate(message);
+            var cmdStruct = { str: message, timeB: Date.now(), func: P2PosUpdate };
+            AddToMap(timeY, cmdStruct);
+            //console.log(cmdStruct);
+            //console.log(map);
         }
+        else if (command == "updateP1Score" && timeIndex != -1) {
+            //UpdateP1Score(message);
+            var cmdStruct = { str: message, timeB: Date.now(), func: UpdateP1Score };
+            AddToMap(timeY, cmdStruct);
+            //console.log(cmdStruct);
+            //console.log(map);
+        }
+        else if (command == "updateP2Score" && timeIndex != -1) {
+            //UpdateP2Score(message);
+            var cmdStruct = { str: message, timeB: Date.now(), func: UpdateP2Score };
+            AddToMap(timeY, cmdStruct);
+            //console.log(cmdStruct);
+            //console.log(map);
+        }
+        else if (command == "sendfood" && timeIndex != -1) {
+            //SetFood(message);
+            var cmdStruct = { str: message, timeB: Date.now(), func: SetFood };
+            AddToMap(timeY, cmdStruct);
+            //console.log(cmdStruct);
+            //console.log(map);
+        }
+        else if (command == "clearp1tail" && timeIndex != -1) {
+            //ClearP1Tail(message);
+            var cmdStruct = { str: message, timeB: Date.now(), func: ClearP1Tail };
+            AddToMap(timeY, cmdStruct);
+            //console.log(cmdStruct);
+            //console.log(map);
+        }
+        else if (command == "clearp2tail" && timeIndex != -1) {
+            //ClearP2Tail(message);
+            var cmdStruct = { str: message, timeB: Date.now(), func: ClearP2Tail };
+            AddToMap(timeY, cmdStruct);
+            //console.log(cmdStruct);
+            //console.log(map);
+        }
+
+        // NOT TIME DEPENDENT
         else if (command == "drawboard") {
             InitializeBoardArray(message);
             drawBoard();
         }
         else if (command == "resetboard") {
 
-        }
-        else if (command == "p1posupdate") {
-            P1PosUpdate(message);
-        }
-        else if (command == "clearp1tail") {
-            ClearP1Tail(message);
-        }
-        else if (command == "clearp2tail") {
-            ClearP2Tail(message);
-        }
-        else if (command == "p2posupdate") {
-            P2PosUpdate(message);
-        }
-        else if (command == "sendfood") {
-            SetFood(message);
         }
         else if (command == "player1name") {
             p1id = message;
@@ -182,7 +235,6 @@ function connect() {
         else if (command == "servertime") {
             calculateServerTime(Date.now(), message);
         }
-
 
     });
 

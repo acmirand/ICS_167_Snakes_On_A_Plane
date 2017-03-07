@@ -346,20 +346,24 @@ public:
 		snake1Ate = UpdateSnake1();
 		snake2Ate = UpdateSnake2();
 
+		std::chrono::milliseconds timeY = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+
 		for (int i = 0; i < clientIDs.size(); ++i) {
 
-			serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString());
-			serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
+			serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString() + "@" + std::to_string( timeY.count()));
+			serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString() + "@" + std::to_string(timeY.count()));
 
 			if (snake1Ate || snake2Ate) {
 
-				serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score));
-				serverRef->wsSend(clientIDs[i], "updateP2Score:" + std::to_string(snake2score));
-				serverRef->wsSend(clientIDs[i], "sendfood:" + os.str());
+				serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score) + "@" + std::to_string(timeY.count()));
+				serverRef->wsSend(clientIDs[i], "updateP2Score:" + std::to_string(snake2score) + "@" + std::to_string(timeY.count()));
+				serverRef->wsSend(clientIDs[i], "sendfood:" + os.str() + "@" + std::to_string(timeY.count()));
 			}
 
-			serverRef->wsSend(clientIDs[i], "clearp1tail:" + std::to_string(oldTail_1.first) + "," + std::to_string(oldTail_1.second));
-			serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(oldTail_2.first) + "," + std::to_string(oldTail_2.second));
+			timeY = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+
+			serverRef->wsSend(clientIDs[i], "clearp1tail:" + std::to_string(oldTail_1.first) + "," + std::to_string(oldTail_1.second) + "@" + std::to_string(timeY.count()));
+			serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(oldTail_2.first) + "," + std::to_string(oldTail_2.second) + "@" + std::to_string(timeY.count()));
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
