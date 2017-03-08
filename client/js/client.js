@@ -126,7 +126,7 @@ function connect() {
         var timeIndex = -1;
         for (var i = 0; i < message.length; ++i){
             if (message[i] == '@') {
-                timeIndex = i;
+                timeIndex = i; break;
             }
         }
 
@@ -146,7 +146,8 @@ function connect() {
 
         if (command == "print") {
             log(message);
-        } else if (command == "ready") {
+        }
+        else if (command == "ready") {
             //console.log("starting game!" + " message: " + message);
             if (message == "2") {
 
@@ -158,7 +159,8 @@ function connect() {
                     startBtn.style.visibility = "visible";
                 }, 300);
             }
-        } else if (command == "begin") {
+        }
+        else if (command == "begin") {
             gameStarted = true;
             var page1 = document.getElementById('connectPage');
             var page2 = document.getElementById('snakePage');
@@ -168,51 +170,51 @@ function connect() {
         }
 
         // TIME DEPENDENT
-        else if (command == "p1posupdate" && timeIndex != -1) {
+        else if (command == "p1posupdate") {
             //P1PosUpdate(message);
-            var cmdStruct = { str: message, timeB:Date.now(), func: P1PosUpdate };
+            var cmdStruct = { str: message, timeB:Date.now(), func: "P1PosUpdate" };
            AddToMap(timeY, cmdStruct);
             //console.log(cmdStruct);
             //console.log(map);
         }
-        else if (command == "p2posupdate" && timeIndex != -1) {
+        else if (command == "p2posupdate") {
             //P2PosUpdate(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: P2PosUpdate };
+            var cmdStruct = { str: message, timeB: Date.now(), func: "P2PosUpdate" };
             AddToMap(timeY, cmdStruct);
             //console.log(cmdStruct);
             //console.log(map);
         }
-        else if (command == "updateP1Score" && timeIndex != -1) {
+        else if (command == "updateP1Score") {
             //UpdateP1Score(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: UpdateP1Score };
+            var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP1Score" };
             AddToMap(timeY, cmdStruct);
             //console.log(cmdStruct);
             //console.log(map);
         }
-        else if (command == "updateP2Score" && timeIndex != -1) {
+        else if (command == "updateP2Score") {
             //UpdateP2Score(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: UpdateP2Score };
+            var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP2Score" };
             AddToMap(timeY, cmdStruct);
             //console.log(cmdStruct);
             //console.log(map);
         }
-        else if (command == "sendfood" && timeIndex != -1) {
+        else if (command == "sendfood") {
             //SetFood(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: SetFood };
+            var cmdStruct = { str: message, timeB: Date.now(), func: "SetFood"};
             AddToMap(timeY, cmdStruct);
-            //console.log(cmdStruct);
+            //console.log(command);
             //console.log(map);
         }
-        else if (command == "clearp1tail" && timeIndex != -1) {
+        else if (command == "clearp1tail") {
             //ClearP1Tail(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: ClearP1Tail };
+            var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP1Tail" };
             AddToMap(timeY, cmdStruct);
             //console.log(cmdStruct);
             //console.log(map);
         }
-        else if (command == "clearp2tail" && timeIndex != -1) {
+        else if (command == "clearp2tail") {
             //ClearP2Tail(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: ClearP2Tail };
+            var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP2Tail" };
             AddToMap(timeY, cmdStruct);
             //console.log(cmdStruct);
             //console.log(map);

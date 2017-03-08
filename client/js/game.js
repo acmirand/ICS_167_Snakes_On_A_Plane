@@ -42,10 +42,6 @@ var set = new Set();
 var map = new Map();
 var queue = [];
 
-function dumby(message) {
-    console.log(message);
-}
-
 var boardInitialized = false;
 var lagValue = 0;
 
@@ -130,26 +126,102 @@ function drawBoard() {
 
     var current = Date.now();
 
-    if (current - delayTime < 125) {
-        if (set.size > 0) {
 
-            var mapIter = map.entries();
-            for (var i = 0; i < set.size; ++i) {
-                if (current - mapIter.next().value.timeB < 125) {
-                    queue.push(map[set[i]]);
-                    map.delete[set[i]];
-                }
+    if (set.size > 0) {
+
+        set.forEach(function (item) {
+
+            //if (current - map.get(item)["timeB"] < 125) {
+            queue.push(map.get(item));
+            map.delete(item);
+            set.delete(item);
+            //}
+        });
+    }
+
+    if (current - delayTime > 125) {
+
+        while (queue.length > 0) {
+            console.log(queue);
+            var cmdStruct = queue.shift();
+            //cmdStruct["func"](cmdStruct["str"]);
+
+            switch (cmdStruct["func"]) {
+                case "P1PosUpdate":
+                    //console.log("update p1 pos"); break;
+                    P1PosUpdate(cmdStruct["str"]); break;
+                case "P2PosUpdate":
+                    //console.log("update p2 pos"); break;
+                    P2PosUpdate(cmdStruct["str"]); break;
+                case "UpdateP1Score":
+                    //console.log("update p1 score"); break;
+                    UpdateP1Score(cmdStruct["str"]); break;
+                case "UpdateP2Score":
+                    //console.log("update p2 score"); break;
+                    UpdateP2Score(cmdStruct["str"]); break;
+                case "SetFood":
+                    console.log("set food");
+                    SetFood(cmdStruct["str"]); break;
+                case "ClearP1Tail":
+                    //console.log("clear p1 tail"); break;
+                    ClearP1Tail(cmdStruct["str"]); break;
+                case "ClearP2Tail":
+                    //console.log("clear p2 tail"); break;
+                    ClearP2Tail(cmdStruct["str"]); break;
             }
         }
-    }
-    else {
+
         delayTime = Date.now();
     }
 
-    while (queue.size > 0) {
-        var cmdStruct = queue.shift();
-        cmdStruct.func(cmdStruct.str);
-    }
+
+
+
+    //if (current - delayTime < 125) {
+    //    if (set.size > 0) {
+
+    //        set.forEach(function (item) {
+    //            console.log(current - map.get(item)["timeB"]);
+    //            //if (current - map.get(item)["timeB"] < 125) {
+    //                queue.push(map.get(item));
+    //                map.delete(item);
+    //                set.delete(item);
+    //            //}
+    //        });
+    //    }
+    //}
+    //else {
+    //    delayTime = Date.now();
+
+    //    while (queue.length > 0) {
+    //        var cmdStruct = queue.shift();
+    //        //cmdStruct["func"](cmdStruct["str"]);
+
+    //        switch (cmdStruct["func"]) {
+    //            case "P1PosUpdate":
+    //                //console.log("update p1 pos"); break;
+    //                P1PosUpdate(cmdStruct["str"]); break;
+    //            case "P2PosUpdate":
+    //                //console.log("update p2 pos"); break;
+    //                P2PosUpdate(cmdStruct["str"]); break;
+    //            case "UpdateP1Score":
+    //                //console.log("update p1 score"); break;
+    //                UpdateP1Score(cmdStruct["str"]); break;
+    //            case "UpdateP2Score":
+    //                //console.log("update p2 score"); break;
+    //                UpdateP2Score(cmdStruct["str"]); break;
+    //            case "SetFood":
+    //                console.log("set food");
+    //                SetFood(cmdStruct["str"]); break;
+    //            case "ClearP1Tail":
+    //                //console.log("clear p1 tail"); break;
+    //                ClearP1Tail(cmdStruct["str"]); break;
+    //            case "ClearP2Tail":
+    //                //console.log("clear p2 tail"); break;
+    //                ClearP2Tail(cmdStruct["str"]); break;
+    //        }
+    //    }
+    //}
 
 
     var width = r;
@@ -184,7 +256,7 @@ function drawBoard() {
     context.fillText(p1id + " Score: " + p1_score, 20, canvas.height - 21); //for the score.
     context.fillText(p2id + " Score: " + p2_score, canvas.width - 120, canvas.height - 21);
 
-    if (time++ == 750) {
+    if (time++ == 500) {
         sendTime();
         time = 0;
     }
