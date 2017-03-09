@@ -169,56 +169,79 @@ function connect() {
             page2.style.display = 'block';
         }
 
-        // TIME DEPENDENT
+            // TIME DEPENDENT
         else if (command == "p1posupdate") {
-            //P1PosUpdate(message);
-            var cmdStruct = { str: message, timeB:Date.now(), func: "P1PosUpdate" };
-           AddToMap(timeY, cmdStruct);
-            //console.log(cmdStruct);
-            //console.log(map);
+            P1PosUpdate(message);
         }
         else if (command == "p2posupdate") {
-            //P2PosUpdate(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: "P2PosUpdate" };
-            AddToMap(timeY, cmdStruct);
-            //console.log(cmdStruct);
-            //console.log(map);
+            P2PosUpdate(message);
         }
         else if (command == "updateP1Score") {
-            //UpdateP1Score(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP1Score" };
-            AddToMap(timeY, cmdStruct);
-            //console.log(cmdStruct);
-            //console.log(map);
+            UpdateP1Score(message);
         }
         else if (command == "updateP2Score") {
-            //UpdateP2Score(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP2Score" };
-            AddToMap(timeY, cmdStruct);
-            //console.log(cmdStruct);
-            //console.log(map);
+            UpdateP2Score(message);
         }
         else if (command == "sendfood") {
-            //SetFood(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: "SetFood"};
-            AddToMap(timeY, cmdStruct);
-            //console.log(command);
-            //console.log(map);
+            SetFood(message);
         }
         else if (command == "clearp1tail") {
-            //ClearP1Tail(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP1Tail" };
-            AddToMap(timeY, cmdStruct);
-            //console.log(cmdStruct);
-            //console.log(map);
+            ClearP1Tail(message);
         }
         else if (command == "clearp2tail") {
-            //ClearP2Tail(message);
-            var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP2Tail" };
-            AddToMap(timeY, cmdStruct);
-            //console.log(cmdStruct);
-            //console.log(map);
+            ClearP2Tail(message);
         }
+
+        //// TIME DEPENDENT
+        //else if (command == "p1posupdate") {
+        //    //P1PosUpdate(message);
+        //    var cmdStruct = { str: message, timeB:Date.now(), func: "P1PosUpdate" };
+        //   AddToMap(timeY, cmdStruct);
+        //    //console.log(cmdStruct);
+        //    //console.log(map);
+        //}
+        //else if (command == "p2posupdate") {
+        //    //P2PosUpdate(message);
+        //    var cmdStruct = { str: message, timeB: Date.now(), func: "P2PosUpdate" };
+        //    AddToMap(timeY, cmdStruct);
+        //    //console.log(cmdStruct);
+        //    //console.log(map);
+        //}
+        //else if (command == "updateP1Score") {
+        //    //UpdateP1Score(message);
+        //    var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP1Score" };
+        //    AddToMap(timeY, cmdStruct);
+        //    //console.log(cmdStruct);
+        //    //console.log(map);
+        //}
+        //else if (command == "updateP2Score") {
+        //    //UpdateP2Score(message);
+        //    var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP2Score" };
+        //    AddToMap(timeY, cmdStruct);
+        //    //console.log(cmdStruct);
+        //    //console.log(map);
+        //}
+        //else if (command == "sendfood") {
+        //    //SetFood(message);
+        //    var cmdStruct = { str: message, timeB: Date.now(), func: "SetFood"};
+        //    AddToMap(timeY, cmdStruct);
+        //    //console.log(command);
+        //    //console.log(map);
+        //}
+        //else if (command == "clearp1tail") {
+        //    //ClearP1Tail(message);
+        //    var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP1Tail" };
+        //    AddToMap(timeY, cmdStruct);
+        //    //console.log(cmdStruct);
+        //    //console.log(map);
+        //}
+        //else if (command == "clearp2tail") {
+        //    //ClearP2Tail(message);
+        //    var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP2Tail" };
+        //    AddToMap(timeY, cmdStruct);
+        //    //console.log(cmdStruct);
+        //    //console.log(map);
+        //}
 
         // NOT TIME DEPENDENT
         else if (command == "drawboard") {

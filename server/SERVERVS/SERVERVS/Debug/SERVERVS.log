@@ -33,12 +33,11 @@ d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\snake.cpp(3
 d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\snake.cpp(520): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\snake.cpp(523): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\snake.cpp(524): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(66): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(82): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(121): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(145): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(246): warning C4018: '<': signed/unsigned mismatch
-d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(288): warning C4101: 'port': unreferenced local variable
+d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(69): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(85): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(124): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(148): warning C4018: '<': signed/unsigned mismatch
+d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\main.cpp(299): warning C4101: 'port': unreferenced local variable
   base64.cpp
 d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\base64.cpp(96): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
 d:\users\daniel\documents\gitkraken\ics_167_snakes_on_a_plane\server\base64.cpp(113): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
