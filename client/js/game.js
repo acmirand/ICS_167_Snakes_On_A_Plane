@@ -38,9 +38,10 @@ var c = 20;
 var cDir = 0;
 
 // OBJECTS / COMMANDS TO BE PROCESSED
-var set = new Set();
+var set = [];
 var map = new Map();
 var queue = [];
+
 
 var boardInitialized = false;
 var lagValue = 0;
@@ -49,7 +50,7 @@ var img_snake_head1 = document.getElementById("snake_head1"); //puts the snake i
 var img_snake_head2 = document.getElementById("snake_head2");
 
 function AddToSet(timeY) {
-    set.add(timeY);
+    set.push(timeY);
 }
 
 function AddToMap(timeY, cmdStruct) {
@@ -59,7 +60,8 @@ function AddToMap(timeY, cmdStruct) {
 function InitializeBoardArray(dimensions) {
     
     if (!boardInitialized) {
-        // THIS CODE WORKS; THIS IS OUR BACKUP PLAN
+        // THIS CODE WORKS; THIS IS OUR BACKUP PLAN sure.
+        
         var cmdCutOff;
         for (var i = 0; i < dimensions.length; ++i) {
             if (dimensions[i] == 'x') {
@@ -411,6 +413,53 @@ function getInput() {
     }
 }
 
+
+function BucketProcessing() {
+    console.log("baguettes");
+    if (set.length > 0) {
+        set.sort();
+    }
+    for (var i = 0; i < set.length;) {
+        queue.push(map.get(set[i]));
+        map.delete(set[i]);
+        console.log(map);
+        set.splice(i, i);
+        //console.table(queue);
+        //console.log("map = " + map);
+        //console.log("set = " + set);
+        //set.shift();
+    }
+
+    while (queue.length > 0) {
+        console.table(queue);
+            var cmdStruct = queue.shift();
+            //cmdStruct["func"](cmdStruct["str"]);
+            switch (cmdStruct["func"]) {
+                case "P1PosUpdate":
+                    console.log("update p1 pos"); 
+                    P1PosUpdate(cmdStruct["str"]); break;
+                case "P2PosUpdate":
+                    console.log("update p2 pos");
+                    P2PosUpdate(cmdStruct["str"]); break;
+                case "UpdateP1Score":
+                    console.log("update p1 score"); 
+                    UpdateP1Score(cmdStruct["str"]); break;
+                case "UpdateP2Score":
+                    console.log("update p2 score"); 
+                    UpdateP2Score(cmdStruct["str"]); break;
+                case "SetFood":
+                    console.log("set food");
+                    SetFood(cmdStruct["str"]); break;
+                case "ClearP1Tail":
+                    console.log("clear p1 tail"); 
+                    ClearP1Tail(cmdStruct["str"]); break;
+                case "ClearP2Tail":
+                    console.log("clear p2 tail"); 
+                    ClearP2Tail(cmdStruct["str"]); break;
+            }
+        }
+}
+
 function sendTime() {
     timeAcheck = Date.now().toString();
     send("clienttime:" + timeAcheck);
@@ -440,6 +489,8 @@ function calculateServerTime(timeB, message) {
 var prevKey = null;
 
 function main() {
+
+    setInterval(BucketProcessing, 125);
 
     //for testing purposes
     document.getElementById("ip").value = "127.0.0.1";
