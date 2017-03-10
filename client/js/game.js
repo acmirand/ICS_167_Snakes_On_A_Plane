@@ -57,12 +57,12 @@ function AddToIncomingSet(timeY) {
 //}
 
 function InitializeBoardArray(dimensions) {
-    
+
     if (!boardInitialized) {
         // THIS CODE WORKS; THIS IS OUR BACKUP PLAN sure.
 
         setInterval(sendTime, 500);
-        
+
         var cmdCutOff;
         for (var i = 0; i < dimensions.length; ++i) {
             if (dimensions[i] == 'x') {
@@ -125,7 +125,7 @@ var delayTime = Date.now();
 
 function drawBoard() {
     getInput();
-    document.getElementById("realTime").value = lagValue;
+    document.getElementById("realTime").value = "Latency: " + lagValue + " ms";
 
     var width = r;
     var height = c;

@@ -69,6 +69,12 @@ button {
   text-align: center;
 }
 
+#realTime {
+  height: 15px;
+  width: 150px;
+  resize: none
+}
+
 .snakes {
   display: none;
 }
