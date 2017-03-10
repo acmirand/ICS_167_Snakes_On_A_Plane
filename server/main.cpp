@@ -106,7 +106,7 @@ void messageHandler(int clientID, string message) {
 
 		std::string command;
 		for (int i = 0; message.length(); ++i) {
-			if (message[i] == 58) {
+			if (message[i] == ':') {
 				cmdCutOff = i;
 				break;
 			}
@@ -132,7 +132,7 @@ void messageHandler(int clientID, string message) {
 
 		//Creating the set and map entry
 		std::string::size_type sz = 0;
-		milliseconds timeA(std::stoll(remainingCommand.substr(cmdCutOff+1), &sz, 0));
+		milliseconds timeA(std::stoll(remainingCommand.substr(cmdCutOff + 1), &sz, 0));
 		MessageEntry toInsert = MessageEntry{ clientID, command, os.str().substr(0,cmdCutOff), received, received + delay, delay, timeA, randomNum(), received};
 		//requestQueue.push(toInsert);
 		timeASet.insert(timeA);
@@ -143,6 +143,20 @@ void messageHandler(int clientID, string message) {
 		//printMessageEntry(buffer[timeA]);
 		//printSet();
 	}
+
+	if (command == "clienttime") {
+
+		//Inserting delay
+		milliseconds delay = randomNum();
+		std::string::size_type sz = 0;
+
+		milliseconds timeA(std::stoll(os.str(), &sz, 0));
+
+		MessageEntry toInsert = MessageEntry{ clientID, command, os.str(), received, received + delay, delay, timeA, randomNum(), received };
+		timeASet.insert(timeA);
+		buffer.insert(std::pair<milliseconds, MessageEntry>(timeA, toInsert));
+	}
+
 	if (command == "startgame") {
 		vector<int> clientIDs = server.getClientIDs();
 		for (int i = 0; i < clientIDs.size(); i++) {
@@ -210,8 +224,6 @@ void periodicHandler() {
 
 	if (current >= nextFrame && gameInSession) {
 
-		std::cout << "next Frame" << std::endl;
-
 		//ostringstream os;
 		//string timestring = ctime(&current);
 		//timestring = timestring.substr(0, timestring.size() - 1);
@@ -223,8 +235,6 @@ void periodicHandler() {
 		// This is to simulate latency.
 		while (!requestQueue.empty()) {
 
-			std::cout << "sending message" << std::endl;
-
 			MessageEntry message = { requestQueue.front().clientID, requestQueue.front().command, requestQueue.front().message,requestQueue.front().timeReceived, requestQueue.front().timeX, requestQueue.front().delay, requestQueue.front().timeA , requestQueue.front().outgoingDelay , requestQueue.front().timeY };
 			message.timeY = duration_cast< milliseconds >(system_clock::now().time_since_epoch()) + message.outgoingDelay;
 			//std::cout << message.clientID << " " << message.command << " " << message.message << " " << message.timeReceived << std::endl;
@@ -235,7 +245,7 @@ void periodicHandler() {
 
 		// THIS IS WHERE WE ARE HANDLING THE OUTGOING DELAY.
 		while (!outgoingQueue.empty()) {
-			MessageEntry message = { outgoingQueue.front().clientID, outgoingQueue.front().command,outgoingQueue.front().message,outgoingQueue.front().timeReceived, outgoingQueue.front().timeX, outgoingQueue.front().delay, outgoingQueue.front().timeA , outgoingQueue.front().outgoingDelay , outgoingQueue.front().timeY };
+			MessageEntry message = { outgoingQueue.front().clientID, outgoingQueue.front().command, outgoingQueue.front().message, outgoingQueue.front().timeReceived, outgoingQueue.front().timeX, outgoingQueue.front().delay, outgoingQueue.front().timeA , outgoingQueue.front().outgoingDelay , outgoingQueue.front().timeY };
 			outgoingQueue.pop();
 			if (duration_cast< milliseconds >(system_clock::now().time_since_epoch()) - message.timeY >= message.outgoingDelay) {
 				//	//std::cout << message.timeReceived << " and the delay is = " << message.delay << std::endl;
@@ -290,6 +300,7 @@ void ProcessRequest(int clientID, std::string command, std::string message, mill
 		//	time the server sends servertime
 		//std::cout << received.count() << std::endl;
 		//std::cout << std::to_string(received.count()) << std::endl;
+
 		server.wsSend(clientID, "servertime:" + clientAtime + "," + std::to_string(timeX.count()) + "," +
 			std::to_string(timeY.count()));
 	}

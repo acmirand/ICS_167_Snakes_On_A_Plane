@@ -27,6 +27,7 @@ var move_left = 37; //left-key
 var move_right = 39; //right-key
 var move_up = 38; //up-key
 var move_down = 40; //down-key
+var prevKey2 = -1;
 
 //Snake Game
 var p1_score = 0;
@@ -34,13 +35,11 @@ var p2_score = 0;
 var r = 20;
 var c = 20;
 
-//Client Side
-var cDir = 0;
-
 // OBJECTS / COMMANDS TO BE PROCESSED
+var incomingSet = [];
 var set = [];
-var map = new Map();
-var queue = [];
+//var map = new Map();
+//var queue = [];
 
 
 var boardInitialized = false;
@@ -49,18 +48,20 @@ var lagValue = 0;
 var img_snake_head1 = document.getElementById("snake_head1"); //puts the snake image into the canvas.
 var img_snake_head2 = document.getElementById("snake_head2");
 
-function AddToSet(timeY) {
-    set.push(timeY);
+function AddToIncomingSet(timeY) {
+    incomingSet.push(timeY);
 }
 
-function AddToMap(timeY, cmdStruct) {
-    map.set(timeY, cmdStruct);
-}
+//function AddToMap(timeY, cmdStruct) {
+//    map.set(timeY, cmdStruct);
+//}
 
 function InitializeBoardArray(dimensions) {
     
     if (!boardInitialized) {
         // THIS CODE WORKS; THIS IS OUR BACKUP PLAN sure.
+
+        setInterval(sendTime, 500);
         
         var cmdCutOff;
         for (var i = 0; i < dimensions.length; ++i) {
@@ -99,8 +100,8 @@ function InitializeBoardArray(dimensions) {
         ClearBoard();
         p1_score = 0;
         p2_score = 0;
+        prevKey2 = -1;
     }
-    //setInterval(sendTime(), 1000); //update latency every second
 }
 
 function ClearBoard() {
@@ -125,106 +126,6 @@ var delayTime = Date.now();
 function drawBoard() {
     getInput();
     document.getElementById("realTime").value = lagValue;
-
-    //var current = Date.now();
-
-
-    //if (set.size > 0) {
-
-    //    set.forEach(function (item) {
-
-    //        //if (current - map.get(item)["timeB"] < 125) {
-    //        queue.push(map.get(item));
-    //        map.delete(item);
-    //        set.delete(item);
-    //        //}
-    //    });
-    //}
-
-    //if (current - delayTime > 125) {
-
-    //    while (queue.length > 0) {
-    //        console.log(queue);
-    //        var cmdStruct = queue.shift();
-    //        //cmdStruct["func"](cmdStruct["str"]);
-
-    //        switch (cmdStruct["func"]) {
-    //            case "P1PosUpdate":
-    //                //console.log("update p1 pos"); break;
-    //                P1PosUpdate(cmdStruct["str"]); break;
-    //            case "P2PosUpdate":
-    //                //console.log("update p2 pos"); break;
-    //                P2PosUpdate(cmdStruct["str"]); break;
-    //            case "UpdateP1Score":
-    //                //console.log("update p1 score"); break;
-    //                UpdateP1Score(cmdStruct["str"]); break;
-    //            case "UpdateP2Score":
-    //                //console.log("update p2 score"); break;
-    //                UpdateP2Score(cmdStruct["str"]); break;
-    //            case "SetFood":
-    //                console.log("set food");
-    //                SetFood(cmdStruct["str"]); break;
-    //            case "ClearP1Tail":
-    //                //console.log("clear p1 tail"); break;
-    //                ClearP1Tail(cmdStruct["str"]); break;
-    //            case "ClearP2Tail":
-    //                //console.log("clear p2 tail"); break;
-    //                ClearP2Tail(cmdStruct["str"]); break;
-    //        }
-    //    }
-
-    //    delayTime = Date.now();
-    //}
-
-
-
-
-    //if (current - delayTime < 125) {
-    //    if (set.size > 0) {
-
-    //        set.forEach(function (item) {
-    //            console.log(current - map.get(item)["timeB"]);
-    //            //if (current - map.get(item)["timeB"] < 125) {
-    //                queue.push(map.get(item));
-    //                map.delete(item);
-    //                set.delete(item);
-    //            //}
-    //        });
-    //    }
-    //}
-    //else {
-    //    delayTime = Date.now();
-
-    //    while (queue.length > 0) {
-    //        var cmdStruct = queue.shift();
-    //        //cmdStruct["func"](cmdStruct["str"]);
-
-    //        switch (cmdStruct["func"]) {
-    //            case "P1PosUpdate":
-    //                //console.log("update p1 pos"); break;
-    //                P1PosUpdate(cmdStruct["str"]); break;
-    //            case "P2PosUpdate":
-    //                //console.log("update p2 pos"); break;
-    //                P2PosUpdate(cmdStruct["str"]); break;
-    //            case "UpdateP1Score":
-    //                //console.log("update p1 score"); break;
-    //                UpdateP1Score(cmdStruct["str"]); break;
-    //            case "UpdateP2Score":
-    //                //console.log("update p2 score"); break;
-    //                UpdateP2Score(cmdStruct["str"]); break;
-    //            case "SetFood":
-    //                console.log("set food");
-    //                SetFood(cmdStruct["str"]); break;
-    //            case "ClearP1Tail":
-    //                //console.log("clear p1 tail"); break;
-    //                ClearP1Tail(cmdStruct["str"]); break;
-    //            case "ClearP2Tail":
-    //                //console.log("clear p2 tail"); break;
-    //                ClearP2Tail(cmdStruct["str"]); break;
-    //        }
-    //    }
-    //}
-
 
     var width = r;
     var height = c;
@@ -257,11 +158,6 @@ function drawBoard() {
     context.fillStyle = "#000"; //white background.
     context.fillText(p1id + " Score: " + p1_score, 20, canvas.height - 21); //for the score.
     context.fillText(p2id + " Score: " + p2_score, canvas.width - 120, canvas.height - 21);
-
-    if (time++ == 500) {
-        sendTime();
-        time = 0;
-    }
 
     window.requestAnimationFrame(drawBoard, canvas);
 }
@@ -380,34 +276,29 @@ function UpdateP2Score(score) {
     p2_score = parseInt(score);
 }
 
-var prevKey2 = move_down;
-
 function getInput() {
+
     if (keystate[move_left]) {
         if (prevKey2 != move_left) {
             prevKey2 = move_left;
-            cDir = 2;
             send("setdir:2," + Date.now().toString());
         }
     }
     if (keystate[move_right]) {
         if (prevKey2 != move_right) {
             prevKey2 = move_right;
-            cDir = 3;
             send("setdir:3," + Date.now().toString());
         }
     }
     if (keystate[move_up]) {
         if (prevKey2 != move_up) {
             prevKey2 = move_up;
-            cDir = 0;
             send("setdir:0," + Date.now().toString());
         }
     }
     if (keystate[move_down]) {
         if (prevKey2 != move_down) {
             prevKey2 = move_down;
-            cDir = 1;
             send("setdir:1," + Date.now().toString());
         }
     }
@@ -415,54 +306,48 @@ function getInput() {
 
 
 function BucketProcessing() {
-    console.log("baguettes");
-    if (set.length > 0) {
-        set.sort();
-    }
-    for (var i = 0; i < set.length;) {
-        queue.push(map.get(set[i]));
-        map.delete(set[i]);
-        console.log(map);
-        set.splice(i, i);
-        //console.table(queue);
-        //console.log("map = " + map);
-        //console.log("set = " + set);
-        //set.shift();
+
+    if (incomingSet.length > 0) {
+        set = incomingSet.slice();
+        incomingSet = [];
     }
 
-    while (queue.length > 0) {
-        console.table(queue);
-            var cmdStruct = queue.shift();
-            //cmdStruct["func"](cmdStruct["str"]);
-            switch (cmdStruct["func"]) {
-                case "P1PosUpdate":
-                    console.log("update p1 pos"); 
-                    P1PosUpdate(cmdStruct["str"]); break;
-                case "P2PosUpdate":
-                    console.log("update p2 pos");
-                    P2PosUpdate(cmdStruct["str"]); break;
-                case "UpdateP1Score":
-                    console.log("update p1 score"); 
-                    UpdateP1Score(cmdStruct["str"]); break;
-                case "UpdateP2Score":
-                    console.log("update p2 score"); 
-                    UpdateP2Score(cmdStruct["str"]); break;
-                case "SetFood":
-                    console.log("set food");
-                    SetFood(cmdStruct["str"]); break;
-                case "ClearP1Tail":
-                    console.log("clear p1 tail"); 
-                    ClearP1Tail(cmdStruct["str"]); break;
-                case "ClearP2Tail":
-                    console.log("clear p2 tail"); 
-                    ClearP2Tail(cmdStruct["str"]); break;
-            }
+    for (var i = 0; i < set.length; ++i) {
+
+        var cmdStruct = set[i];
+
+        switch (cmdStruct["func"]) {
+            case "P1PosUpdate":
+                //console.log("update p1 pos");
+                P1PosUpdate(cmdStruct["str"]); break;
+            case "P2PosUpdate":
+                //console.log("update p2 pos");
+                P2PosUpdate(cmdStruct["str"]); break;
+            case "UpdateP1Score":
+                //console.log("update p1 score");
+                UpdateP1Score(cmdStruct["str"]); break;
+            case "UpdateP2Score":
+                //console.log("update p2 score");
+                UpdateP2Score(cmdStruct["str"]); break;
+            case "SetFood":
+                //console.log("set food");
+                SetFood(cmdStruct["str"]); break;
+            case "ClearP1Tail":
+                //console.log("clear p1 tail");
+                ClearP1Tail(cmdStruct["str"]); break;
+            case "ClearP2Tail":
+                //console.log("clear p2 tail");
+                ClearP2Tail(cmdStruct["str"]); break;
         }
+    }
+
+    set = [];
 }
 
 function sendTime() {
-    timeAcheck = Date.now().toString();
-    send("clienttime:" + timeAcheck);
+    var timeA = Date.now().toString();
+    //console.log("A: " + timeA);
+    send("clienttime:" + Date.now().toString());
 }
 
 function calculateServerTime(timeB, message) {
@@ -481,6 +366,11 @@ function calculateServerTime(timeB, message) {
     var timeA = parseInt(message.substring(0, clientTimeIndex));
     var timeX = parseInt(message.substring(clientTimeIndex + 1, serverTime1Index));
     var timeY = parseInt(message.substring(serverTime1Index + 1));
+
+    //console.log("A: " + timeA);
+    //console.log("X: " + timeX);
+    //console.log("Y: " + timeY);
+    //console.log("B: " + timeB);
 
     var realTime = timeY + (((timeB - timeA) - (timeY - timeX)) / 2);
     lagValue = realTime - timeA;
@@ -501,10 +391,10 @@ function main() {
     });
     keystate = {};
     document.addEventListener("keydown", function (evt) {
-        if (prevKey != evt.keyCode) {
+        //if (prevKey != evt.keyCode) {
             keystate[evt.keyCode] = true;
-            prevKey = evt.keyCode;
-        }
+        //    prevKey = evt.keyCode;
+        //}
     });
 
     document.addEventListener("keyup", function (evt) {
