@@ -13,7 +13,7 @@ Avelino Miranda   acmirand@uci.edu    16732033
 // SET
 #include <set>
 
-//MAP
+// MAP
 #include <map>
 
 // MESSAGES
@@ -41,50 +41,6 @@ Avelino Miranda   acmirand@uci.edu    16732033
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 
-//std::string PRINT = "print:";
-//
-///*
-//COMMAND LIST
-//*/
-////Scores
-//std::string UPDATEP1SCORE = "updatep1score:";
-//std::string UPDATEP2SCORE = "updatep2score:";
-//
-//
-///*
-//TEMPLATE
-//POSSIBLY HAVE THE CLIENT SAVE THIS STRING AND USE IT WHEN IT RECEIVES RESETBOARD
-//*/
-////Game State commands
-//std::string DRAWBOARD = "drawboard:";
-//std::string RESETBOARD = "RESETBOARD:";
-//
-///*
-//TEMPLATE PROTOCOL
-//sendFood:23,14
-//*/
-//std::string SENDFOOD = "sendfood:";
-//
-///*
-//TEMPLATE PROTOCOL
-//FIRST X-Y PAIR IS THE HEAD AND THE SECOND IS THE TAIL
-//P1POSUPDATE:23,14-23,13
-//*/
-//std::string P1POSUPDATE = "p1posupdate:";
-//std::string P2POSUPDATE = "p2posupdate:";
-//
-///*
-//TEMPLATE PROTOCOL
-//The client will send a command that is like this.
-//setdir:1
-//*/
-//std::string  SETDIR = "setdir:";
-//TEMPLATE PROTOCOL
-//The server will receive time like this.
-//clienttime:435
-//The server will send back time like this.
-//servertime:435,234,235
-
 /****************
 DIRECTIONS
 0 - up
@@ -94,23 +50,14 @@ DIRECTIONS
 *****************/
 class Snake {
 private:
-	int currDir = 1; //0 - UP, 1 - DOWN, 2 = LEFT, 3 - RIGHT
-	int player; //possibly client ID
-	std::deque<std::pair<int, int>> snakeArray; //every x-y pair of each part of the snake
+	int currDir = 1;
+	std::deque<std::pair<int, int>> snakeArray; // Every x-y pair of each part of the snake
 	std::pair<int, int> head;
 
 public:
-	void setPlayer(int p) {
-		player = p;
-	}
-
-	int getPlayer() {
-		return player;
-	}
-
 	// Set the Head and Tail in the Snake Array
 	// Clear the contents of the array so games do not carry over into each other.
-	// Pusht the head to the back and then the tail.
+	// Push the head to the back and then the tail.
 	// This will push the head of the snake to position 0 and tail to the last element.
 	void InitializeSnake(int xH, int yH) {
 		snakeArray.clear();
@@ -118,11 +65,7 @@ public:
 		head = snakeArray[0];
 	}
 
-	void setHead(int x, int y) {
-		snakeArray[0] = std::make_pair(x, y);
-	}
-
-	//RETURNS SNAKE HEAD AND TAIL AS "x,y-x,y" (First pair is head, second pair is tail)
+	// RETURNS SNAKE HEAD AND TAIL AS "x,y-x,y" (First pair is head, second pair is tail)
 	std::string getPosString() {
 		std::string h = std::to_string(snakeArray.front().first) + "," + std::to_string(snakeArray.front().second);
 		return (h);
@@ -138,6 +81,7 @@ public:
 		return snakeArray.back();
 	}
 
+	// Pushes next position into the snakeArray
 	void Insert(int x, int y) {
 		snakeArray.push_front(std::make_pair(x, y));
 		head = snakeArray[0];
@@ -151,7 +95,7 @@ public:
 	}
 
 	void setDirection(int dir) {
-		//Bool checks to see if it is a legal move
+		// Bool checks to see if it is a legal move (makes sure for player to not eat itself)
 		bool LeftOK = (dir == 2 && currDir != 3);
 		bool RightOK = (dir == 3 && currDir != 2);
 		bool UpOK = (dir == 0 && currDir != 1);
@@ -161,26 +105,18 @@ public:
 			currDir = dir;
 	}
 
+	// Called whenever game is started/restarted
 	void resetDirection() {
 		currDir = 1;
-	}
-
-	std::string getDirString() {
-		return std::to_string(currDir);
 	}
 
 	int GetDir() {
 		return currDir;
 	}
-
-	std::string getSnakeString() {
-
-	}
-
 };
 
 /****************
- BOARD STATES
+ BOARD ARRAY VALUES
 	0 - free
 	1 - wall
 	2 - snake 1
@@ -192,10 +128,8 @@ private:
 	int board[20][20];
 	int row;
 	int col;
-	std::string boardLayout;
 public:
-
-	//constructor
+	// Constructor
 	Board() {
 		row = 20;
 		col = 20;
@@ -203,31 +137,29 @@ public:
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
 				if (i == 0 || i == row - 1) {
-					board[i][j] = 1;
+					board[i][j] = 1; // Populates sides with wall spaces
 				}
 				else if (j == 0 || j == col - 1) {
 					board[i][j] = 1;
 				}
 				else {
-					board[i][j] = 0;
+					board[i][j] = 0; // Populates inside of walls as free spaces
 				}
 			}
 		}
 	}
 
-	int getValue(int x, int y) {
+	// Used to check what time is the next space (collision check and food set check)
+	int getValue(int x, int y) { 
 		return board[x][y];
 	}
 
-	// 0 - Free, 1 - Wall, 2 - Snake1, 3 - Snake2, 4 - Food
+	// 0 - Free, 1 - Wall, 2 - Snake1, 3 - Snake2, 4 - Food (Reference)
 	void setValue(int x, int y, int value) {
 		board[x][y] = value;
 	}
 
-	std::string getBoardString() {
-		return boardLayout;
-	}
-
+	// If game ending collision is detected called in the Init() method
 	void ResetBoard() {
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
@@ -247,23 +179,20 @@ public:
 
 class GameState {
 private:
-	Board board;
-	Snake snake1; //p1 snake instance
-	Snake snake2; //p2 snake instance
-	std::string player1Name;
+	Board board; // Board instance
+	Snake snake1; // P1 snake instance
+	Snake snake2; // P2 snake instance
+	std::string player1Name; // Specifies which snake is which
 	std::string player2Name;
-	int snake1score = 0;
+	int snake1score = 0; // Snake's respective score
 	int snake2score = 0;
-	std::pair<int, int> foodXY; //stores current food location
+	std::pair<int, int> foodXY; // Stores current food location
 
-	int frames = 0;
-	double frameSpeed = 60;
+	webSocket* serverRef; // Initializes the websocket to be established
+	std::vector<int> clientIDs; // Initializes the vector of the clientID
+	ostringstream os; // Used to pass commands
 
-	webSocket* serverRef;
-	std::vector<int> clientIDs;
-	ostringstream os;
-
-	std::pair<int, int> oldTail_1;
+	std::pair<int, int> oldTail_1; // References each player's old tails
 	std::pair<int, int> oldTail_2;
 
 public:
@@ -272,52 +201,53 @@ public:
 		serverRef = server;
 	}
 
+	// Called to Start/Restart the Game
 	void Init() {
 		/***********************
 		Server Game State
 		***********************/
-		//reset score
+		// Reset score
 		snake1score = 0;
 		snake2score = 0;
 
-		//reset board
+		// Resets array 'board'
 		board.ResetBoard();
+
+		// Resets food into random position
 		setFood();
+
+		// Clears snakeArray and restarts positions
 		snake1.InitializeSnake(3, 2);
 		snake2.InitializeSnake(5, 5);
 
+		// Populates the actual array 'board' with it's respective value
+		// 2 represents P1 and 3 represents P2 *reference*
 		board.setValue(snake1.getHead().first, snake1.getHead().second, 2);
 		board.setValue(snake2.getHead().first, snake2.getHead().second, 3);
 
-		//reset snake direction
+		// Reset snake direction
 		snake1.resetDirection();
 		snake2.resetDirection();
 
-		//reset server start time
-		//received = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-
 		/***********************
-		Client Updates
+		Client Updates (info sent to client.js)
 		***********************/
-		for (int i = 0; i < clientIDs.size(); ++i) {
 
-			// SEND THE BOARD LAYOUT
+		for (int i = 0; i < clientIDs.size(); ++i) {
+			// SENDS THE BOARD LAYOUT
 			os.str(std::string());
 			os.clear();
 			os << "20x20";
-			serverRef->wsSend(clientIDs[i], "drawboard:" + os.str());
-
+			serverRef->wsSend(clientIDs[i], "drawboard:" + os.str()); 
 			vector<int> clientIDs = serverRef->getClientIDs();
 			for (int i = 0; i < clientIDs.size(); i++) {
 				os.str(std::string());
 				os.clear();
 				os << "player1name:" + player1Name;
-				//std::cout << os.str() << std::endl;
 				serverRef->wsSend(clientIDs[i], os.str());
 				os.str(std::string());
 				os.clear();
 				os << "player2name:" + player2Name;
-				//std::cout << os.str() << std::endl;
 				serverRef->wsSend(clientIDs[i], os.str());
 			}
 
@@ -327,7 +257,7 @@ public:
 			// SEND THE STARTING POSITION FOR PLAYER 2
 			serverRef->wsSend(clientIDs[i], "p2posupdate:" + snake2.getPosString());
 
-			serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score));
+			serverRef->wsSend(clientIDs[i], "updateP1Score:" + std::to_string(snake1score)); // Scores reset to 0
 			serverRef->wsSend(clientIDs[i], "updateP2Score:" + std::to_string(snake2score));
 
 			// SEND THE STARTING FOOD POSITION
@@ -339,15 +269,14 @@ public:
 	}
 
 	void UpdateLoop() {
-
-		bool snake1Ate = false;
+		bool snake1Ate = false; // Resets check cases
 		bool snake2Ate = false;
 
-		snake1Ate = UpdateSnake1();
+		snake1Ate = UpdateSnake1(); // Checks collision cases
 		snake2Ate = UpdateSnake2();
 
-		//std::chrono::milliseconds timeY = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-
+		// Command format: (clientID, command: payload @ timeSent)
+		// Received in Time Dependent Block in client.js
 		for (int i = 0; i < clientIDs.size(); ++i) {
 
 			serverRef->wsSend(clientIDs[i], "p1posupdate:" + snake1.getPosString() + "@" + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()));
@@ -360,31 +289,17 @@ public:
 				serverRef->wsSend(clientIDs[i], "sendfood:" + os.str() + "@" + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()));
 			}
 
-			//timeY = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-
 			serverRef->wsSend(clientIDs[i], "clearp1tail:" + std::to_string(oldTail_1.first) + "," + std::to_string(oldTail_1.second) + "@" + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()));
 			serverRef->wsSend(clientIDs[i], "clearp2tail:" + std::to_string(oldTail_2.first) + "," + std::to_string(oldTail_2.second) + "@" + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()));
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Current thread is blocked to execute for 100ms
 	}
 
+	// Sets clientIDs for each client
+	// Called in main.cpp
 	void SetClientIDs(std::vector<int> ClientIDs) {
 		clientIDs = ClientIDs;
-	}
-
-	/****** BOARD STUFF ******/
-	Board getBoard() {
-		return board;
-	}
-
-	/****** SNAKE STUFF ******/
-	Snake getSnake1() {
-		return snake1;
-	}
-
-	Snake getSnake2() {
-		return snake2;
 	}
 
 	void SetPlayerName(int clientID, std::string name) {
@@ -397,16 +312,16 @@ public:
 		}
 	}
 
-	std::string GetPlayerName(int clientID) {
-		return clientID == 0 ? player1Name : player2Name;
-	}
-
+	// Game logic which checks next game space 
+	// returns true if snake ate a baguette
 	bool UpdateSnake1() {
 		int nextX = snake1.getHead().first;
 		int nextY = snake1.getHead().second;
 
-		bool snakeAte = false;
+		bool snakeAte = false; // Resets snake ate
 
+		// Switch statement which checks the currDir
+		// applies addition/subtraction on the direction headed
 		switch (snake1.GetDir()) {
 		case 0:
 			nextY--;
@@ -422,11 +337,15 @@ public:
 			break;
 		}
 
+		// If game ending collision is detected
+		// calls Init() which resets the game
 		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
-			Init(); //resets the game
+			Init();
 			return false;
 		}
 
+		// If next space is a food space scores are updated
+		// tails are enlargen
 		if (isFood(nextX, nextY)) {
 
 			oldTail_1.first = nextX;
@@ -441,18 +360,21 @@ public:
 
 			snakeAte = true;
 		}
+		// If neither game ending collision/food space is trigerred
+		// tail end of the snake is removed and set to a free space
 		else {
 			oldTail_1 = snake1.RemoveTail();
-			board.setValue(oldTail_1.first, oldTail_1.second, 0);
+			board.setValue(oldTail_1.first, oldTail_1.second, 0); // 0 signifies free_space
 			snakeAte = false;
 		}
 
 		snake1.Insert(nextX, nextY);
-		board.setValue(snake1.getHead().first, snake1.getHead().second, 2);
+		board.setValue(snake1.getHead().first, snake1.getHead().second, 2); // Updates array 'board' value to 2 (P1 space)
 
 		return snakeAte;
 	}
 
+	// Similar to UpdateSnake1, but in charge of snake2 instead
 	bool UpdateSnake2() {
 		int nextX = snake2.getHead().first;
 		int nextY = snake2.getHead().second;
@@ -475,7 +397,7 @@ public:
 		}
 
 		if (isWall(nextX, nextY) || isSnake(nextX, nextY)) {
-			Init(); //resets the game
+			Init();
 			return false;
 		}
 
@@ -505,10 +427,11 @@ public:
 		return snakeAte;
 	}
 
+	// Sets the snake's directions
+	// Called in main.cpp
 	void setSnake1Dir(int dir) {
 		snake1.setDirection(dir);
 	}
-
 	void setSnake2Dir(int dir) {
 		snake2.setDirection(dir);
 	}
@@ -516,24 +439,16 @@ public:
 	/****** FOOD STUFF ******/
 	// Sets random food
 	void setFood() {
-
-		srand(time(0));
-
 		while (true) {
-			int randX = floor(rand() % 20);
+			int randX = floor(rand() % 20); // Randomly generates x and y coordinates
 			int randY = floor(rand() % 20);
 
-			if (board.getValue(randX, randY) == 0) {
+			if (board.getValue(randX, randY) == 0) { // Makes sure the randomly generated x and y is a free space else loop again
 				board.setValue(randX, randY, 4);
 				foodXY = std::make_pair(randX, randY);
 				break;
 			}
 		}
-	}
-
-	// Returns current food location
-	std::pair<int, int> getFood() {
-		return foodXY;
 	}
 
 	// Returns string of current food location as "x,y"

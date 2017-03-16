@@ -17,28 +17,20 @@ webSocket server;
 GameState gameState(&server);
 bool gameInSession = false;
 time_t gameStart;
-//time_t timerz = 0;
 
 milliseconds timer = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 
 struct MessageEntry {
-	int clientID;
+	int clientID; // Specifies clientID
 	std::string command; // The command
 	std::string message; // The string associated with the command
 	milliseconds timeReceived; // The time the message came in to the server
-	milliseconds timeX; // 
-	milliseconds delay;
+	milliseconds timeX; // Time server receives message
+	milliseconds delay; // Delay added to incoming messages
 	milliseconds timeA;
 	milliseconds outgoingDelay;
 	milliseconds timeY;
 };
-
-
-
-//void printMessageEntry(MessageEntry toPrint) {
-//	std::cout << "MESSAGE ENTRY - ClientID: " << toPrint.clientID << ", Command: " << toPrint.command << ", Message: " << toPrint.message << ", Time Received: " << toPrint.timeReceived << ", Time To Be Processed: " << toPrint.timeX << ", Delay: " << toPrint.delay << " , TimeA: " << toPrint.timeA << std::endl;
-//}
-
 
 // Declare these functions to be used later
 milliseconds randomNum();
@@ -163,7 +155,6 @@ void messageHandler(int clientID, string message) {
 			server.wsSend(clientIDs[i], "begin:");
 		}
 		
-		//timerz = time(0);
 		timer = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 		
 		gameState.SetClientIDs(server.getClientIDs());
