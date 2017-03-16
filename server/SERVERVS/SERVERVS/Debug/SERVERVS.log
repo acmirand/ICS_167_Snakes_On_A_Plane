@@ -19,8 +19,8 @@ c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\websocket.
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(236): warning C4018: '<': signed/unsigned mismatch
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(243): warning C4018: '<': signed/unsigned mismatch
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(280): warning C4018: '<': signed/unsigned mismatch
-c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(443): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(444): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(445): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   sha1.cpp
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(226): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(233): warning C4267: '+=': conversion from 'size_t' to 'unsigned char', possible loss of data
@@ -29,13 +29,12 @@ c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\sha1.cpp(2
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(236): warning C4018: '<': signed/unsigned mismatch
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(243): warning C4018: '<': signed/unsigned mismatch
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(280): warning C4018: '<': signed/unsigned mismatch
-c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(443): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(444): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(61): warning C4018: '<': signed/unsigned mismatch
-c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(77): warning C4018: '<': signed/unsigned mismatch
-c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(116): warning C4018: '<': signed/unsigned mismatch
-c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(154): warning C4018: '<': signed/unsigned mismatch
-c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(301): warning C4101: 'port': unreferenced local variable
+c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\snake.cpp(445): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(52): warning C4018: '<': signed/unsigned mismatch
+c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(66): warning C4018: '<': signed/unsigned mismatch
+c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(100): warning C4018: '<': signed/unsigned mismatch
+c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\main.cpp(138): warning C4018: '<': signed/unsigned mismatch
   base64.cpp
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\base64.cpp(96): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
 c:\users\al miranda\documents\github\ics_167_snakes_on_a_plane\server\base64.cpp(113): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data

@@ -95,6 +95,7 @@ public:
 	}
 
 	void setDirection(int dir) {
+
 		// Bool checks to see if it is a legal move (makes sure for player to not eat itself)
 		bool LeftOK = (dir == 2 && currDir != 3);
 		bool RightOK = (dir == 3 && currDir != 2);
@@ -129,7 +130,6 @@ private:
 	int row;
 	int col;
 public:
-	// Constructor
 	Board() {
 		row = 20;
 		col = 20;
@@ -360,6 +360,7 @@ public:
 
 			snakeAte = true;
 		}
+
 		// If neither game ending collision/food space is trigerred
 		// tail end of the snake is removed and set to a free space
 		else {

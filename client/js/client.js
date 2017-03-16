@@ -181,7 +181,7 @@ function connect() {
             p2id = message;
         }
 
-        // Called everytime server sends a command
+        // Called everytime client receives a command from server.
         else if (command == "servertime") {
             calculateServerTime(Date.now().toString(), message);
         }

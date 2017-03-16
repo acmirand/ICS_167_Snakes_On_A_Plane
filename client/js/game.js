@@ -53,11 +53,13 @@ function InitializeBoardArray(dimensions) {
                 cmdCutOff = i; break;
             }
         }
+
         // Rows and Columns sent by server
         rows = parseInt(dimensions.substring(0, cmdCutOff));
         columns = parseInt(dimensions.substring(cmdCutOff + 1));
 
         board = [];
+
         // Populates the empty array 'board'
         for (var x = 0; x < columns; x++) {
             board.push([]);
@@ -82,6 +84,7 @@ function InitializeBoardArray(dimensions) {
         document.body.appendChild(canvas);
         boardInitialized = true;
     }
+
     // Enters this else statement if game restarts
     else {
         ClearBoard(); // Clears array 'board' of any previous player positions
@@ -290,6 +293,7 @@ function sendTime() {
     send("clienttime:" + Date.now().toString());
 }
 
+// Called when client receives server command, calculates latency
 function calculateServerTime(timeB, message) {
     var clientTimeIndex;
     var serverTime1Index;
