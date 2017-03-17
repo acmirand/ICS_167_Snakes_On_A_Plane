@@ -147,7 +147,7 @@ void messageHandler(int clientID, string message) {
 		gameInSession = true;
 	}
 
-	// Example message- setname:Baguettes
+	// Example message- setname:Breadstick
 	if (command == "setname") {
 
 		// If user does not enter a name, make the default name "Player #". Else, record the passed in value.

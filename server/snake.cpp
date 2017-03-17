@@ -313,7 +313,7 @@ public:
 	}
 
 	// Game logic which checks next game space 
-	// returns true if snake ate a baguette
+	// returns true if snake ate a breadstick
 	bool UpdateSnake1() {
 		int nextX = snake1.getHead().first;
 		int nextY = snake1.getHead().second;

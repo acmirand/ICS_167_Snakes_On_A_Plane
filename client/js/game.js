@@ -289,7 +289,6 @@ function BucketProcessing() {
 }
 
 function sendTime() {
-    //var timeA = Date.now().toString();
     send("clienttime:" + Date.now().toString());
 }
 
