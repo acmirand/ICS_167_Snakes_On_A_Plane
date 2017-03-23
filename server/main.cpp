@@ -17,6 +17,9 @@ webSocket server;
 GameState gameState(&server);
 bool gameInSession = false;
 
+bool MITIGATION = true;
+//bool MITIGATION = false;
+
 milliseconds timer = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 
 struct MessageEntry {
@@ -177,27 +180,41 @@ void periodicHandler() {
 	milliseconds offset(500);
 	milliseconds current = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 
-	// Enters 'if statement' once bucket threshold is hit
-	if (current - timer >= threshold) {
+	if (MITIGATION) {
+		
 		if (!timeASet.empty()) {
 			for (auto i = timeASet.begin(); i != timeASet.end();) {
-				if (current - buffer[*i].timeX < threshold) { // Using set as index, processes orders accordingly that fall within the bucket
 
-					// Adds to queue to be processed.
-					requestQueue.push(buffer[*i]);
-
-					// Clears up the buffer and set
-					buffer.erase(*i); 
-					i = timeASet.erase(i);
-				}
-				else {
-					++i;
-				}
+				requestQueue.push(buffer[*i]);
+				// Clears up the buffer and set
+				buffer.erase(*i);
+				i = timeASet.erase(i);
 			}
 		}
-		
-		// Resets timer
-		timer = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	}
+	else if (!MITIGATION) {
+		// Enters 'if statement' once bucket threshold is hit
+		if (current - timer >= threshold) {
+			if (!timeASet.empty()) {
+				for (auto i = timeASet.begin(); i != timeASet.end();) {
+					if (current - buffer[*i].timeX < threshold) { // Using set as index, processes orders accordingly that fall within the bucket
+
+						// Adds to queue to be processed.
+						requestQueue.push(buffer[*i]);
+
+						// Clears up the buffer and set
+						buffer.erase(*i);
+						i = timeASet.erase(i);
+					}
+					else {
+						++i;
+					}
+				}
+			}
+
+			// Resets timer
+			timer = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		}
 	}
 
 	// Enters this 'if statement' to update the gameState and populates outgoingQueue

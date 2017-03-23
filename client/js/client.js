@@ -140,32 +140,67 @@ function connect() {
         // func is the function called client side to render server information
         // IncomingSet is the 'bucket' in which server commands are put in to be processed
         else if (command == "p1posupdate") {
-            var cmdStruct = { str: message, timeB: Date.now(), func: "P1PosUpdate" };
-            AddToIncomingSet(cmdStruct);
+            if (MITIGATION) {
+                var cmdStruct = { str: message, timeB: Date.now(), func: "P1PosUpdate" };
+                AddToIncomingSet(cmdStruct);
+            }
+            else {
+                P1PosUpdate(message);
+            }
         }
         else if (command == "p2posupdate") {
-            var cmdStruct = { str: message, timeB: Date.now(), func: "P2PosUpdate" };
-            AddToIncomingSet(cmdStruct);
+            if (MITIGATION) {
+                var cmdStruct = { str: message, timeB: Date.now(), func: "P2PosUpdate" };
+                AddToIncomingSet(cmdStruct);
+            }
+            else {
+                P2PosUpdate(message);
+            }
         }
         else if (command == "updateP1Score") {
-            var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP1Score" };
-            AddToIncomingSet(cmdStruct);
+            if (MITIGATION) {
+                var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP1Score" };
+                AddToIncomingSet(cmdStruct);
+            }
+            else {
+                UpdateP1Score(message);
+            }
         }
         else if (command == "updateP2Score") {
-            var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP2Score" };
-            AddToIncomingSet(cmdStruct);
+            if (MITIGATION) {
+                var cmdStruct = { str: message, timeB: Date.now(), func: "UpdateP2Score" };
+                AddToIncomingSet(cmdStruct);
+            }
+            else {
+                UpdateP2Score(message);
+            }
         }
         else if (command == "sendfood") {
-            var cmdStruct = { str: message, timeB: Date.now(), func: "SetFood" };
-            AddToIncomingSet(cmdStruct);
+            if (MITIGATION) {
+                var cmdStruct = { str: message, timeB: Date.now(), func: "SetFood" };
+                AddToIncomingSet(cmdStruct);
+            }
+            else {
+                SetFood(message);
+            }
         }
         else if (command == "clearp1tail") {
-            var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP1Tail" };
-            AddToIncomingSet(cmdStruct);
+            if (MITIGATION) {
+                var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP1Tail" };
+                AddToIncomingSet(cmdStruct);
+            }
+            else {
+                ClearP1Tail(message);
+            }
         }
         else if (command == "clearp2tail") {
-            var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP2Tail" };
-            AddToIncomingSet(cmdStruct);
+            if (MITIGATION) {
+                var cmdStruct = { str: message, timeB: Date.now(), func: "ClearP2Tail" };
+                AddToIncomingSet(cmdStruct);
+            }
+            else {
+                ClearP2Tail(message);
+            }
         }
 
         // TIME INDEPENDENT COMMANDS

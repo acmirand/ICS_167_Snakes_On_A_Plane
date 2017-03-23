@@ -6,6 +6,9 @@ Daniel Lara       larad@uci.edu       49651280
 Avelino Miranda   acmirand@uci.edu    16732033
 */
 
+var MITIGATION = true;
+//var MITIGATION = false;
+
 // Webpage variables
 var canvas;
 var context;
@@ -314,7 +317,10 @@ function calculateServerTime(timeB, message) {
 }
 
 function main() {
-    setInterval(BucketProcessing, 125); // Simulates Buckets, queues up commands to be processed every 1/8ths of a second
+
+    if (MITIGATION) {
+        setInterval(BucketProcessing, 125); // Simulates Buckets, queues up commands to be processed every 1/8ths of a second
+    }
 
     // Automatically inputs values into text fields *Quick-Testing Purposes*
     document.getElementById("ip").value = "127.0.0.1";
